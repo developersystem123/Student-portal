@@ -184,8 +184,8 @@ export function Navbar() {
         <Link href="/" className="flex items-center gap-2 shrink-0 group">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logo.svg"
-            alt="Logo"
+            src="/xtroedge-x.svg"
+            alt="XtroEdge"
             width={40}
             height={40}
             className="rounded-xl shadow-md shadow-green-500/20 group-hover:shadow-lg group-hover:shadow-green-500/30 transition shrink-0"

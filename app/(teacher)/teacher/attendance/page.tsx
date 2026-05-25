@@ -118,6 +118,33 @@ export default function TeacherAttendancePage() {
     return { present, late, absent, excused, total, rate };
   }
 
+  function exportCsv() {
+    if (!activeCourseId || studentsInCourse.length === 0) return;
+    const csv = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+    const header = ["Student", "Email", "Present", "Late", "Absent", "Excused", "Total", "Rate"].join(",");
+    const lines = studentsInCourse.map((s) => {
+      const sum = summary(s.userId);
+      return [
+        csv(s.userName),
+        csv(s.userEmail),
+        sum.present,
+        sum.late,
+        sum.absent,
+        sum.excused,
+        sum.total,
+        `${sum.rate}%`,
+      ].join(",");
+    });
+    const blob = new Blob([[header, ...lines].join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `attendance-${activeCourse?.title ?? activeCourseId}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.push({ title: "Exported CSV", tone: "success" });
+  }
+
   async function save() {
     if (!activeCourseId) return;
     setSaving(true);
@@ -329,17 +356,22 @@ export default function TeacherAttendancePage() {
                           <td className="py-2.5 px-3 hidden md:table-cell text-[var(--muted)] text-xs">
                             {sum.present}P · {sum.late}L · {sum.absent}A · {sum.excused}E ({sum.total})
                           </td>
-                          <td className="py-2.5 px-3 w-40">
+                          <td className="py-2.5 px-3 w-44">
                             <div className="flex items-center gap-2">
                               <div className="flex-1 h-1.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
                                 <div
-                                  className="h-full bg-gradient-to-r from-emerald-500 to-teal-500"
+                                  className={`h-full ${sum.rate >= 75 ? "bg-gradient-to-r from-emerald-500 to-teal-500" : sum.rate >= 50 ? "bg-gradient-to-r from-amber-400 to-amber-500" : "bg-gradient-to-r from-red-500 to-red-400"}`}
                                   style={{ width: `${sum.rate}%` }}
                                 />
                               </div>
-                              <span className="text-xs text-[var(--muted)] w-9 text-right">
+                              <span className={`text-xs w-9 text-right font-medium ${sum.total > 0 && sum.rate < 75 ? "text-amber-500" : "text-[var(--muted)]"}`}>
                                 {sum.rate}%
                               </span>
+                              {sum.total > 0 && sum.rate < 75 && (
+                                <span title="Low attendance" className="text-amber-500 shrink-0">
+                                  <Icon.AlertCircle size={13} />
+                                </span>
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -375,13 +407,18 @@ export default function TeacherAttendancePage() {
                 </div>
               )}
 
-              <div className="flex items-center justify-between gap-3 pt-1 border-t border-[var(--border)]">
+              <div className="flex items-center justify-between gap-3 pt-1 border-t border-[var(--border)] flex-wrap">
                 <p className="text-xs text-[var(--muted)]">
                   {markedCount} of {studentsInCourse.length} students marked.
                 </p>
-                <Button onClick={save} loading={saving}>
-                  <Icon.Save size={16} /> Save attendance
-                </Button>
+                <div className="flex gap-2 flex-wrap">
+                  <Button variant="outline" size="sm" onClick={exportCsv} disabled={records.length === 0}>
+                    <Icon.Download size={15} /> Export CSV
+                  </Button>
+                  <Button onClick={save} loading={saving}>
+                    <Icon.Save size={16} /> Save attendance
+                  </Button>
+                </div>
               </div>
             </>
           )}

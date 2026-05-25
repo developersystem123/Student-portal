@@ -74,9 +74,14 @@ export function TeacherSidebar({
           onClick={onClose}
           title={collapsed ? "EduPortal Teacher" : undefined}
         >
-          <div className="h-10 w-10 rounded-xl btn-primary flex items-center justify-center shadow-md shadow-violet-500/20 group-hover:shadow-lg group-hover:shadow-violet-500/30 transition">
-            <Icon.Sparkles size={20} />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/xtroedge-x.svg"
+            alt="XtroEdge"
+            width={40}
+            height={40}
+            className="rounded-xl shadow-md shadow-green-500/20 group-hover:shadow-lg group-hover:shadow-green-500/30 transition shrink-0"
+          />
           {!collapsed && (
             <div className="flex flex-col leading-tight">
               <span className="text-base font-bold gradient-text">EduPortal</span>

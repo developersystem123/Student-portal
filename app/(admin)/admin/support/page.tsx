@@ -11,8 +11,6 @@ import {
   Input,
   Modal,
   Select,
-  StatCard,
-  Tabs,
   Textarea,
   useToast,
 } from "@/components/ui";
@@ -59,6 +57,10 @@ type TicketDetail = {
 };
 
 type Filter = "all" | TicketStatus;
+type SortKey = "newest" | "oldest" | "priority" | "updated";
+type PriorityFilter = "all" | TicketPriority;
+
+const PAGE_SIZE = 10;
 
 const STATUS_LABEL: Record<TicketStatus, string> = {
   open: "Open",
@@ -81,12 +83,37 @@ const PRIORITY_BADGE: Record<TicketPriority, "default" | "info" | "warning" | "d
   urgent: "danger",
 };
 
+const PRIORITY_RANK: Record<TicketPriority, number> = {
+  urgent: 4,
+  high: 3,
+  medium: 2,
+  low: 1,
+};
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: "newest", label: "Newest" },
+  { value: "oldest", label: "Oldest" },
+  { value: "priority", label: "Priority" },
+  { value: "updated", label: "Updated" },
+];
+
+const PRIORITY_OPTIONS: { value: PriorityFilter; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "low", label: "Low" },
+  { value: "medium", label: "Medium" },
+  { value: "high", label: "High" },
+  { value: "urgent", label: "Urgent" },
+];
+
 export default function AdminSupportPage() {
   const toast = useToast();
   const [tickets, setTickets] = React.useState<Ticket[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [filter, setFilter] = React.useState<Filter>("all");
   const [query, setQuery] = React.useState("");
+  const [sortKey, setSortKey] = React.useState<SortKey>("newest");
+  const [priorityFilter, setPriorityFilter] = React.useState<PriorityFilter>("all");
+  const [page, setPage] = React.useState(1);
 
   const [openId, setOpenId] = React.useState<string | null>(null);
   const [detail, setDetail] = React.useState<TicketDetail | null>(null);
@@ -114,7 +141,6 @@ export default function AdminSupportPage() {
     load();
   }, [load]);
 
-  // Load the full thread whenever a ticket is opened.
   React.useEffect(() => {
     if (!openId) {
       setDetail(null);
@@ -158,8 +184,9 @@ export default function AdminSupportPage() {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return tickets.filter((t) => {
+    let result = tickets.filter((t) => {
       if (filter !== "all" && t.status !== filter) return false;
+      if (priorityFilter !== "all" && t.priority !== priorityFilter) return false;
       if (!q) return true;
       return (
         t.subject.toLowerCase().includes(q) ||
@@ -168,7 +195,61 @@ export default function AdminSupportPage() {
         t.body.toLowerCase().includes(q)
       );
     });
-  }, [tickets, filter, query]);
+
+    result = [...result].sort((a, b) => {
+      if (sortKey === "newest") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      if (sortKey === "oldest") return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      if (sortKey === "priority") return PRIORITY_RANK[b.priority] - PRIORITY_RANK[a.priority];
+      if (sortKey === "updated") return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+      return 0;
+    });
+
+    return result;
+  }, [tickets, filter, query, sortKey, priorityFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  React.useEffect(() => {
+    setPage(1);
+  }, [filter, query, sortKey, priorityFilter]);
+
+  const activeFilters = React.useMemo(() => {
+    let count = 0;
+    if (sortKey !== "newest") count++;
+    if (priorityFilter !== "all") count++;
+    if (query.trim()) count++;
+    return count;
+  }, [sortKey, priorityFilter, query]);
+
+  const clearFilters = React.useCallback(() => {
+    setSortKey("newest");
+    setPriorityFilter("all");
+    setQuery("");
+  }, []);
+
+  const exportCSV = React.useCallback(() => {
+    const headers = ["Subject", "Requester", "Email", "Category", "Priority", "Status", "Replies", "Updated"];
+    const rows = filtered.map((t) => [
+      `"${t.subject.replace(/"/g, '""')}"`,
+      `"${t.userName.replace(/"/g, '""')}"`,
+      t.userEmail,
+      t.category,
+      t.priority,
+      t.status,
+      t.replyCount,
+      t.updatedAt,
+    ]);
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "support-tickets.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [filtered]);
 
   async function sendReply() {
     if (!detail || !replyText.trim()) return;
@@ -241,59 +322,140 @@ export default function AdminSupportPage() {
   const metaChanged =
     !!detail && (statusDraft !== detail.status || priorityDraft !== detail.priority);
 
+  const pillBase = "text-xs px-3 py-1.5 rounded-full font-medium transition whitespace-nowrap cursor-pointer";
+  const pillActive = "bg-[var(--primary)] text-white";
+  const pillInactive = "border border-[var(--border)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]";
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold">Support tickets</h1>
-        <p className="text-sm text-[var(--muted)] mt-1">
-          Respond to student support requests, set priorities, and track each ticket to resolution.
-        </p>
+      {/* Page header */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs uppercase tracking-wider text-[var(--primary)] font-semibold">Manage</p>
+          <h1 className="text-2xl sm:text-3xl font-bold mt-0.5">Support tickets</h1>
+          <p className="text-sm text-[var(--muted)] mt-1">
+            Respond to student support requests, set priorities, and track each ticket to resolution.
+          </p>
+        </div>
+        <button
+          onClick={exportCSV}
+          className="shrink-0 flex items-center gap-1.5 text-sm px-3.5 py-2 rounded-lg border border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-[var(--primary)] transition"
+        >
+          <Icon.Download size={15} /> Export CSV
+        </button>
       </div>
 
+      {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Open" value={counts.open} icon={<Icon.Inbox size={18} />} tone="primary" />
-        <StatCard
-          label="In progress"
-          value={counts.in_progress}
-          icon={<Icon.Clock size={18} />}
-          tone="warning"
-        />
-        <StatCard
-          label="Resolved"
-          value={counts.resolved}
-          icon={<Icon.CheckCircle size={18} />}
-          tone="success"
-        />
-        <StatCard
-          label="Urgent"
-          value={counts.urgent}
-          icon={<Icon.AlertCircle size={18} />}
-          tone="warning"
-        />
+        <Card>
+          <CardBody className="flex items-center gap-3 !py-3">
+            <div className="w-9 h-9 rounded-lg bg-[var(--primary-soft)] flex items-center justify-center text-[var(--primary)] shrink-0">
+              <Icon.Inbox size={18} />
+            </div>
+            <div>
+              <div className="text-xs text-[var(--muted)]">Open</div>
+              <div className="text-xl font-bold leading-tight">{counts.open}</div>
+            </div>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody className="flex items-center gap-3 !py-3">
+            <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500 shrink-0">
+              <Icon.Clock size={18} />
+            </div>
+            <div>
+              <div className="text-xs text-[var(--muted)]">In progress</div>
+              <div className="text-xl font-bold leading-tight">{counts.in_progress}</div>
+            </div>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody className="flex items-center gap-3 !py-3">
+            <div className="w-9 h-9 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500 shrink-0">
+              <Icon.CheckCircle size={18} />
+            </div>
+            <div>
+              <div className="text-xs text-[var(--muted)]">Resolved</div>
+              <div className="text-xl font-bold leading-tight">{counts.resolved}</div>
+            </div>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody className="flex items-center gap-3 !py-3">
+            <div className="w-9 h-9 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500 shrink-0">
+              <Icon.AlertCircle size={18} />
+            </div>
+            <div>
+              <div className="text-xs text-[var(--muted)]">Urgent</div>
+              <div className="text-xl font-bold leading-tight">{counts.urgent}</div>
+            </div>
+          </CardBody>
+        </Card>
       </div>
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        <Tabs
-          value={filter}
-          onChange={(v) => setFilter(v as Filter)}
-          options={[
-            { value: "all", label: "All", count: counts.all },
-            { value: "open", label: "Open", count: counts.open },
-            { value: "in_progress", label: "In progress", count: counts.in_progress },
-            { value: "resolved", label: "Resolved", count: counts.resolved },
-            { value: "closed", label: "Closed", count: counts.closed },
-          ]}
-        />
-        <div className="md:w-80">
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by subject, requester, or text…"
-            icon={<Icon.Search size={16} />}
-          />
+      {/* Toolbar */}
+      <div className="space-y-3">
+        {/* Status filter + search */}
+        <div className="flex flex-col md:flex-row md:items-center gap-3">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {(["all", "open", "in_progress", "resolved", "closed"] as Filter[]).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`${pillBase} ${filter === f ? pillActive : pillInactive}`}
+              >
+                {f === "all" ? "All" : STATUS_LABEL[f as TicketStatus]}
+                {" "}
+                <span className="opacity-70">
+                  {f === "all" ? counts.all : counts[f as keyof typeof counts]}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="md:ml-auto md:w-72">
+            <Input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by subject, requester…"
+              icon={<Icon.Search size={16} />}
+            />
+          </div>
+        </div>
+
+        {/* Sort + Priority filter row */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-[var(--muted)] font-medium shrink-0">Sort:</span>
+          {SORT_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setSortKey(opt.value)}
+              className={`${pillBase} ${sortKey === opt.value ? pillActive : pillInactive}`}
+            >
+              {opt.label}
+            </button>
+          ))}
+          <span className="text-xs text-[var(--muted)] font-medium shrink-0 ml-2">Priority:</span>
+          {PRIORITY_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setPriorityFilter(opt.value)}
+              className={`${pillBase} ${priorityFilter === opt.value ? pillActive : pillInactive}`}
+            >
+              {opt.label}
+            </button>
+          ))}
+          {activeFilters > 0 && (
+            <button
+              onClick={clearFilters}
+              className="text-xs px-2.5 py-1.5 rounded-lg text-[var(--primary)] bg-[var(--primary-soft)] hover:opacity-80 transition whitespace-nowrap flex items-center gap-1 shrink-0"
+            >
+              <Icon.X size={11} /> Clear ({activeFilters})
+            </button>
+          )}
         </div>
       </div>
 
+      {/* Table */}
       {loading ? (
         <Card>
           <CardBody>
@@ -306,7 +468,7 @@ export default function AdminSupportPage() {
         <Card>
           <CardBody>
             <EmptyState
-              icon={<Icon.MessageSquare size={28} />}
+              icon={<Icon.Inbox size={28} />}
               title="No tickets"
               description={
                 tickets.length === 0
@@ -318,6 +480,11 @@ export default function AdminSupportPage() {
         </Card>
       ) : (
         <Card>
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-[var(--border)]">
+            <span className="text-xs text-[var(--muted)]">
+              {filtered.length} {filtered.length === 1 ? "ticket" : "tickets"}
+            </span>
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-[var(--surface-2)] text-[var(--muted)] text-xs uppercase tracking-wider">
@@ -332,7 +499,7 @@ export default function AdminSupportPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((t) => (
+                {paginated.map((t) => (
                   <tr
                     key={t.id}
                     className="border-t border-[var(--border)] hover:bg-[var(--surface-2)]/50 cursor-pointer"
@@ -380,6 +547,45 @@ export default function AdminSupportPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-1 px-4 py-3 border-t border-[var(--border)]">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="p-1.5 rounded-lg border border-[var(--border)] text-[var(--muted)] disabled:opacity-40 hover:border-[var(--primary)] hover:text-[var(--primary)] transition"
+              >
+                <Icon.ChevronLeft size={15} />
+              </button>
+              {buildPageNumbers(currentPage, totalPages).map((pg, i) =>
+                pg === "..." ? (
+                  <span key={`ellipsis-${i}`} className="px-2 text-xs text-[var(--muted)]">
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={pg}
+                    onClick={() => setPage(pg as number)}
+                    className={`min-w-[32px] h-8 text-xs rounded-lg font-medium transition ${
+                      currentPage === pg
+                        ? "bg-[var(--primary)] text-white"
+                        : "border border-[var(--border)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]"
+                    }`}
+                  >
+                    {pg}
+                  </button>
+                ),
+              )}
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="p-1.5 rounded-lg border border-[var(--border)] text-[var(--muted)] disabled:opacity-40 hover:border-[var(--primary)] hover:text-[var(--primary)] transition"
+              >
+                <Icon.ChevronRight size={15} />
+              </button>
+            </div>
+          )}
         </Card>
       )}
 
@@ -509,6 +715,19 @@ export default function AdminSupportPage() {
       </Modal>
     </div>
   );
+}
+
+function buildPageNumbers(current: number, total: number): (number | "...")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | "...")[] = [];
+  pages.push(1);
+  if (current > 3) pages.push("...");
+  for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++) {
+    pages.push(i);
+  }
+  if (current < total - 2) pages.push("...");
+  pages.push(total);
+  return pages;
 }
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {

@@ -9,6 +9,8 @@ import { relativeTime } from "@/lib/utils";
 type Filter = "all" | "in-progress" | "completed" | "certified";
 type SortKey = "name" | "progress" | "enrolled";
 
+const PAGE_SIZE = 10;
+
 export default function TeacherStudentsPage() {
   const teacher = useTeacher();
   const toast = useToast();
@@ -17,6 +19,7 @@ export default function TeacherStudentsPage() {
   const [courseFilter, setCourseFilter] = React.useState<string>("all");
   const [sortKey, setSortKey] = React.useState<SortKey>("enrolled");
   const [sortDir, setSortDir] = React.useState<"asc" | "desc">("desc");
+  const [page, setPage] = React.useState(1);
 
   const rows = teacher.myStudents();
   const courses = teacher.myCourses();
@@ -37,7 +40,11 @@ export default function TeacherStudentsPage() {
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
     else { setSortKey(key); setSortDir(key === "progress" ? "desc" : "asc"); }
+    setPage(1);
   }
+
+  // Reset to first page whenever any filter changes
+  React.useEffect(() => { setPage(1); }, [query, filter, courseFilter]);
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -62,6 +69,10 @@ export default function TeacherStudentsPage() {
     });
     return result;
   }, [rows, query, filter, courseFilter, sortKey, sortDir]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   const counts = React.useMemo(
     () => ({
@@ -101,10 +112,10 @@ export default function TeacherStudentsPage() {
   }
 
   function SortIcon({ col }: { col: SortKey }) {
-    if (sortKey !== col) return <Icon.ArrowUpDown size={12} className="text-[var(--muted-2)] ml-1" />;
+    if (sortKey !== col) return <Icon.ArrowUp size={12} className="text-[var(--muted-2)] ml-1 opacity-40" />;
     return sortDir === "asc"
       ? <Icon.ArrowUp size={12} className="text-[var(--primary)] ml-1" />
-      : <Icon.ArrowDown size={12} className="text-[var(--primary)] ml-1" />;
+      : <Icon.ArrowUp size={12} className="text-[var(--primary)] ml-1 rotate-180" />;
   }
 
   return (
@@ -210,7 +221,7 @@ export default function TeacherStudentsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.map((r) => (
+                  {paginated.map((r) => (
                     <tr key={`${r.userId}-${r.courseId}`} className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--surface-2)]/50 transition">
                       <td className="py-3 px-3">
                         <div className="flex items-center gap-3">
@@ -255,9 +266,68 @@ export default function TeacherStudentsPage() {
                   ))}
                 </tbody>
               </table>
-              <p className="text-xs text-[var(--muted-2)] px-3 py-2 border-t border-[var(--border)]">
-                Showing {filtered.length} of {rows.length} students
-              </p>
+              {/* Pagination bar */}
+              <div className="flex items-center justify-between gap-4 px-3 py-3 border-t border-[var(--border)] flex-wrap">
+                <p className="text-xs text-[var(--muted-2)]">
+                  Showing {filtered.length === 0 ? 0 : (safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filtered.length)} of {filtered.length} student{filtered.length !== 1 ? "s" : ""}
+                </p>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setPage(1)}
+                    disabled={safePage === 1}
+                    className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-not-allowed transition"
+                    aria-label="First page"
+                  >
+                    <Icon.ArrowLeft size={14} />
+                  </button>
+                  <button
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={safePage === 1}
+                    className="h-8 px-2.5 rounded-lg flex items-center gap-1 text-xs font-medium text-[var(--muted)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  >
+                    Prev
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
+                    .reduce<(number | "…")[]>((acc, p, i, arr) => {
+                      if (i > 0 && p - (arr[i - 1] as number) > 1) acc.push("…");
+                      acc.push(p);
+                      return acc;
+                    }, [])
+                    .map((p, i) =>
+                      p === "…" ? (
+                        <span key={`ellipsis-${i}`} className="h-8 w-8 flex items-center justify-center text-xs text-[var(--muted-2)]">…</span>
+                      ) : (
+                        <button
+                          key={p}
+                          onClick={() => setPage(p as number)}
+                          className={`h-8 w-8 rounded-lg text-xs font-semibold transition ${
+                            safePage === p
+                              ? "bg-[var(--primary)] text-white"
+                              : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
+                          }`}
+                        >
+                          {p}
+                        </button>
+                      ),
+                    )}
+                  <button
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={safePage === totalPages}
+                    className="h-8 px-2.5 rounded-lg flex items-center gap-1 text-xs font-medium text-[var(--muted)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  >
+                    Next
+                  </button>
+                  <button
+                    onClick={() => setPage(totalPages)}
+                    disabled={safePage === totalPages}
+                    className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-not-allowed transition"
+                    aria-label="Last page"
+                  >
+                    <Icon.ArrowLeft size={14} className="rotate-180" />
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </CardBody>

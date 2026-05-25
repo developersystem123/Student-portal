@@ -1,0 +1,26 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    image: eduportal:dev
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source for hot-reload
+      - .:/app
+      # Preserve the container's node_modules (don't overwrite with host's)
+      - node_modules_cache:/app/node_modules
+      # Preserve Next.js build cache between restarts
+      - nextjs_cache:/app/.next
+
+volumes:
+  node_modules_cache:
+  nextjs_cache:

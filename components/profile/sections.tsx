@@ -28,11 +28,15 @@ export function SectionHeader({
   title,
   description,
   tone = "primary",
+  open,
+  onToggle,
 }: {
   icon: React.ReactNode;
   title: string;
   description?: string;
   tone?: "primary" | "danger";
+  open?: boolean;
+  onToggle?: () => void;
 }) {
   const cls =
     tone === "danger"
@@ -43,10 +47,23 @@ export function SectionHeader({
       <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${cls}`}>
         {icon}
       </div>
-      <div>
+      <div className="flex-1 min-w-0">
         <p className="font-semibold">{title}</p>
         {description && <p className="text-xs text-[var(--muted)] mt-0.5">{description}</p>}
       </div>
+      {onToggle && (
+        <button
+          type="button"
+          onClick={onToggle}
+          className="shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-2)] transition-all"
+          aria-label={open ? "Collapse" : "Expand"}
+        >
+          <Icon.ChevronDown
+            size={18}
+            className={`transition-transform duration-200 ${open ? "rotate-0" : "-rotate-90"}`}
+          />
+        </button>
+      )}
     </div>
   );
 }
@@ -282,6 +299,7 @@ export function PersonalInfoCard({
     (user?.education as EducationLevel) ?? "None",
   );
   const [saving, setSaving] = React.useState(false);
+  const [sectionOpen, setSectionOpen] = React.useState(true);
 
   React.useEffect(() => {
     if (!user) return;
@@ -334,8 +352,14 @@ export function PersonalInfoCard({
   return (
     <Card>
       <CardBody className="space-y-5">
-        <SectionHeader icon={<Icon.User size={18} />} title="Personal information" description={description} />
-        <form onSubmit={save} className="space-y-4">
+        <SectionHeader
+          icon={<Icon.User size={18} />}
+          title="Personal information"
+          description={description}
+          open={sectionOpen}
+          onToggle={() => setSectionOpen((v) => !v)}
+        />
+        {sectionOpen && <form onSubmit={save} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="pi-name">Full name</Label>
@@ -400,7 +424,7 @@ export function PersonalInfoCard({
               Save changes
             </Button>
           </div>
-        </form>
+        </form>}
       </CardBody>
     </Card>
   );

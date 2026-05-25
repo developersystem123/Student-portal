@@ -7,7 +7,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       <div className="flex flex-col p-6 sm:p-10 justify-between">
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="Logo" width={36} height={36} className="rounded-xl shrink-0" />
+          <img src="/xtroedge-x.svg" alt="XtroEdge" width={36} height={36} className="rounded-xl shrink-0" />
           <span className="text-lg font-semibold gradient-text">EduPortal</span>
         </div>
         <div className="flex-1 flex items-center justify-center py-8">

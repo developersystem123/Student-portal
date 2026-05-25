@@ -272,7 +272,14 @@ function parseOptions(children: React.ReactNode): SelectOption[] {
       if (c.type === "optgroup") return parseOptions(c.props.children as React.ReactNode);
       const val = String(c.props.value ?? "");
       const raw = c.props.children;
-      const label = typeof raw === "string" ? raw : val;
+      let label: string;
+      if (typeof raw === "string") {
+        label = raw;
+      } else if (Array.isArray(raw)) {
+        label = raw.map((r) => (typeof r === "string" || typeof r === "number" ? String(r) : "")).join("").trim() || val;
+      } else {
+        label = val;
+      }
       return [{ value: val, label, disabled: !!c.props.disabled }];
     });
 }
@@ -286,23 +293,50 @@ export function Select({
 }: React.SelectHTMLAttributes<HTMLSelectElement>) {
   const [open, setOpen] = React.useState(false);
   const [focused, setFocused] = React.useState<number>(-1);
+  const [dropdownPos, setDropdownPos] = React.useState({ top: 0, left: 0, width: 0 });
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
 
   const options = React.useMemo(() => parseOptions(children), [children]);
   const selectedIdx = options.findIndex((o) => o.value === String(value ?? ""));
   const selected = options[selectedIdx] ?? null;
 
+  function openDropdown() {
+    if (disabled || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setDropdownPos({ top: rect.bottom + 6, left: rect.left, width: rect.width });
+    setOpen(true);
+    setFocused(selectedIdx >= 0 ? selectedIdx : 0);
+  }
+
   // Close on outside click
   React.useEffect(() => {
     if (!open) return;
     function handler(e: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      const target = e.target as Node;
+      const inContainer = containerRef.current?.contains(target);
+      const inDropdown = dropdownRef.current?.contains(target);
+      if (!inContainer && !inDropdown) setOpen(false);
     }
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  // Reposition on scroll/resize while open
+  React.useEffect(() => {
+    if (!open) return;
+    function reposition() {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      setDropdownPos({ top: rect.bottom + 6, left: rect.left, width: rect.width });
+    }
+    window.addEventListener("scroll", reposition, true);
+    window.addEventListener("resize", reposition);
+    return () => {
+      window.removeEventListener("scroll", reposition, true);
+      window.removeEventListener("resize", reposition);
+    };
   }, [open]);
 
   // Scroll focused item into view
@@ -324,7 +358,7 @@ export function Select({
     if (disabled) return;
     if (!open) {
       if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
-        e.preventDefault(); setOpen(true); setFocused(selectedIdx >= 0 ? selectedIdx : 0);
+        e.preventDefault(); openDropdown();
       }
       return;
     }
@@ -342,35 +376,13 @@ export function Select({
     }
   }
 
-  return (
-    <div ref={containerRef} className={cn("relative", className)}>
-      <button
-        type="button"
-        disabled={disabled}
-        onKeyDown={onKeyDown}
-        onClick={() => { if (!disabled) { setOpen((o) => !o); setFocused(selectedIdx >= 0 ? selectedIdx : 0); } }}
-        className={cn(
-          "flex items-center justify-between w-full h-11 rounded-xl px-4 text-sm transition-all text-left",
-          "bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)]",
-          "hover:border-[var(--border-strong)]",
-          "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:border-transparent",
-          open && "border-[var(--primary)] ring-2 ring-[var(--ring)]/40",
-          disabled && "opacity-50 pointer-events-none",
-        )}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-      >
-        <span className={cn("truncate flex-1 mr-2", !selected && "text-[var(--muted)]")}>
-          {selected?.label ?? "Select…"}
-        </span>
-        <Icon.ChevronDown
-          size={16}
-          className={cn("shrink-0 text-[var(--muted)] transition-transform duration-200", open && "rotate-180")}
-        />
-      </button>
-
-      {open && (
-        <div className="absolute z-50 w-full mt-1.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xl overflow-hidden select-dropdown-in">
+  const dropdown = open && typeof document !== "undefined"
+    ? ReactDOM.createPortal(
+        <div
+          ref={dropdownRef}
+          style={{ position: "fixed", top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width, zIndex: 9999 }}
+          className="rounded-xl bg-[var(--surface)] border border-[var(--border)] shadow-xl overflow-hidden select-dropdown-in"
+        >
           <ul
             ref={listRef}
             role="listbox"
@@ -409,8 +421,38 @@ export function Select({
               );
             })}
           </ul>
-        </div>
-      )}
+        </div>,
+        document.body,
+      )
+    : null;
+
+  return (
+    <div ref={containerRef} className={cn("relative", className)}>
+      <button
+        type="button"
+        disabled={disabled}
+        onKeyDown={onKeyDown}
+        onClick={() => open ? setOpen(false) : openDropdown()}
+        className={cn(
+          "flex items-center justify-between w-full h-11 rounded-xl px-4 text-sm transition-all text-left",
+          "bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)]",
+          "hover:border-[var(--border-strong)]",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:border-transparent",
+          open && "border-[var(--primary)] ring-2 ring-[var(--ring)]/40",
+          disabled && "opacity-50 pointer-events-none",
+        )}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span className={cn("truncate flex-1 mr-2", !selected && "text-[var(--muted)]")}>
+          {selected?.label ?? "Select…"}
+        </span>
+        <Icon.ChevronDown
+          size={16}
+          className={cn("shrink-0 text-[var(--muted)] transition-transform duration-200", open && "rotate-180")}
+        />
+      </button>
+      {dropdown}
     </div>
   );
 }

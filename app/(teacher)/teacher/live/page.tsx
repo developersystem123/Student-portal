@@ -342,6 +342,14 @@ function Section({
   onEnd: (c: LiveClass) => void;
   past?: boolean;
 }) {
+  const toast = useToast();
+
+  function copyUrl(url: string) {
+    navigator.clipboard.writeText(url).then(() => {
+      toast.push({ title: "Meeting URL copied", tone: "success" });
+    });
+  }
+
   return (
     <Card>
       <CardBody className="space-y-3">
@@ -408,6 +416,11 @@ function Section({
                     )}
                   </div>
                   <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
+                    {c.meetingUrl && c.meetingUrl !== "https://" && (
+                      <Button size="sm" variant="ghost" onClick={() => copyUrl(c.meetingUrl)}>
+                        <Icon.Copy size={14} /> Copy URL
+                      </Button>
+                    )}
                     {c.status === "upcoming" && (
                       <Button size="sm" onClick={() => onStart(c)}>
                         <Icon.PlayCircle size={14} /> Start now

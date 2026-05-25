@@ -466,6 +466,34 @@ export const Icon = {
       <circle cx="15" cy="9.5" r="1" fill="currentColor" />
     </Base>
   ),
+  Printer: (p: IconProps) => (
+    <Base {...p}>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+      <path d="M6 9V3h12v6" />
+      <rect x="6" y="14" width="12" height="8" rx="1" />
+    </Base>
+  ),
+  Columns: (p: IconProps) => (
+    <Base {...p}>
+      <rect x="3" y="3" width="7" height="18" rx="1" />
+      <rect x="14" y="3" width="7" height="18" rx="1" />
+    </Base>
+  ),
+  LayoutGrid: (p: IconProps) => (
+    <Base {...p}>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </Base>
+  ),
+  LayoutList: (p: IconProps) => (
+    <Base {...p}>
+      <rect x="3" y="4" width="18" height="4" rx="1" />
+      <rect x="3" y="10" width="18" height="4" rx="1" />
+      <rect x="3" y="16" width="18" height="4" rx="1" />
+    </Base>
+  ),
 };
 
 export default Icon;

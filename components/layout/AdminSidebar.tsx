@@ -62,9 +62,14 @@ export function AdminSidebar({
           onClick={onClose}
           title={collapsed ? "EduPortal Admin" : undefined}
         >
-          <div className="h-8 w-8 rounded-xl btn-primary flex items-center justify-center shadow-md shadow-violet-500/20 group-hover:shadow-lg group-hover:shadow-violet-500/30 transition">
-            <Icon.Settings size={16} />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/xtroedge-x.svg"
+            alt="XtroEdge"
+            width={collapsed ? 32 : 36}
+            height={collapsed ? 32 : 36}
+            className="rounded-xl shadow-md shadow-green-500/20 group-hover:shadow-lg group-hover:shadow-green-500/30 transition shrink-0"
+          />
           {!collapsed && (
             <div className="flex flex-col leading-tight">
               <span className="text-base font-bold gradient-text">EduPortal</span>

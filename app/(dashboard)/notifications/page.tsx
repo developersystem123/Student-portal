@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Badge, Button, Card, CardBody, CardHeader, CardTitle, EmptyState, Tabs } from "@/components/ui";
+import { useState, useMemo } from "react";
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, EmptyState, Input, Tabs } from "@/components/ui";
 import Icon from "@/components/icons";
 import { useData } from "@/lib/store";
 import { cn, relativeTime } from "@/lib/utils";
@@ -57,6 +57,9 @@ export default function NotificationsPage() {
   const { notifications, markAllNotificationsRead, markNotificationRead, deleteNotification } = useData();
   const [readFilter, setReadFilter] = useState<"all" | "unread">("all");
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
+  const [inboxOpen, setInboxOpen] = useState(true);
+  const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
@@ -66,9 +69,23 @@ export default function NotificationsPage() {
     unread: notifications.filter((n) => n.type === t && !n.read).length,
   }));
 
-  const filtered = notifications
-    .filter((n) => readFilter === "all" || !n.read)
-    .filter((n) => typeFilter === "all" || n.type === typeFilter);
+  const readCount = notifications.filter((n) => n.read).length;
+
+  function deleteAllRead() {
+    notifications.filter((n) => n.read).forEach((n) => deleteNotification(n.id));
+  }
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return notifications
+      .filter((n) => readFilter === "all" || !n.read)
+      .filter((n) => typeFilter === "all" || n.type === typeFilter)
+      .filter((n) => !q || n.title.toLowerCase().includes(q) || n.message.toLowerCase().includes(q))
+      .sort((a, b) => {
+        const diff = new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        return sortOrder === "newest" ? diff : -diff;
+      });
+  }, [notifications, readFilter, typeFilter, search, sortOrder]);
 
   return (
     <div className="space-y-6">
@@ -96,6 +113,14 @@ export default function NotificationsPage() {
             disabled={unreadCount === 0}
           >
             <Icon.Check size={14} /> Mark all read
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={deleteAllRead}
+            disabled={readCount === 0}
+          >
+            <Icon.Trash size={14} /> Clear read
           </Button>
         </div>
       </div>
@@ -147,80 +172,114 @@ export default function NotificationsPage() {
       {/* Inbox */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
             <CardTitle>
               {typeFilter !== "all" ? `${TYPE_INFO[typeFilter].label} notifications` : "Inbox"}
             </CardTitle>
-            <span className="text-xs text-[var(--muted)]">{filtered.length} item{filtered.length !== 1 ? "s" : ""}</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="w-48">
+                <Input
+                  placeholder="Search…"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  icon={<Icon.Search size={14} />}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => setSortOrder((o) => o === "newest" ? "oldest" : "newest")}
+                title={sortOrder === "newest" ? "Showing newest first" : "Showing oldest first"}
+                className="h-8 px-2.5 rounded-lg flex items-center gap-1.5 text-xs font-medium text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-2)] border border-[var(--border)] transition-all"
+              >
+                <Icon.ArrowUp size={13} className={sortOrder === "oldest" ? "rotate-180 transition-transform" : "transition-transform"} />
+                {sortOrder === "newest" ? "Newest" : "Oldest"}
+              </button>
+              <span className="text-xs text-[var(--muted)]">{filtered.length} item{filtered.length !== 1 ? "s" : ""}</span>
+              <button
+                type="button"
+                onClick={() => setInboxOpen((v) => !v)}
+                className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-2)] transition-all"
+                aria-label={inboxOpen ? "Collapse" : "Expand"}
+              >
+                <Icon.ChevronDown
+                  size={18}
+                  className={`transition-transform duration-200 ${inboxOpen ? "rotate-0" : "-rotate-90"}`}
+                />
+              </button>
+            </div>
           </div>
         </CardHeader>
-        <CardBody className="p-0">
-          {filtered.length === 0 ? (
-            <EmptyState
-              icon={<Icon.Bell size={28} />}
-              title={typeFilter !== "all" ? `No ${TYPE_INFO[typeFilter].label.toLowerCase()} notifications` : "No notifications"}
-              description={
-                readFilter === "unread"
-                  ? "All caught up! No unread notifications."
-                  : "You'll see assignments, announcements, and reminders here."
-              }
-            />
-          ) : (
-            <ul className="divide-y divide-[var(--border)]">
-              {filtered.map((n) => {
-                const info = TYPE_INFO[n.type];
-                return (
-                  <li
-                    key={n.id}
-                    className={cn(
-                      "px-4 py-4 flex gap-3 items-start group transition-colors",
-                      !n.read && "bg-[var(--primary-soft)]/25",
-                    )}
-                  >
-                    <div
+        {inboxOpen && (
+          <CardBody className="p-0">
+            {filtered.length === 0 ? (
+              <EmptyState
+                icon={<Icon.Bell size={28} />}
+                title={search ? "No results found" : typeFilter !== "all" ? `No ${TYPE_INFO[typeFilter].label.toLowerCase()} notifications` : "No notifications"}
+                description={
+                  search
+                    ? `No notifications match "${search}".`
+                    : readFilter === "unread"
+                    ? "All caught up! No unread notifications."
+                    : "You'll see assignments, announcements, and reminders here."
+                }
+              />
+            ) : (
+              <ul className="divide-y divide-[var(--border)]">
+                {filtered.map((n) => {
+                  const info = TYPE_INFO[n.type];
+                  return (
+                    <li
+                      key={n.id}
                       className={cn(
-                        "h-10 w-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5",
-                        info.bg,
-                        info.color,
+                        "px-4 py-4 flex gap-3 items-start group transition-colors",
+                        !n.read && "bg-[var(--primary-soft)]/25",
                       )}
                     >
-                      {info.icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-sm font-semibold leading-snug">{n.title}</p>
-                        <Badge variant={BADGE_VARIANTS[n.type]}>{info.label}</Badge>
-                        {!n.read && (
-                          <span className="h-2 w-2 rounded-full bg-[var(--primary)] shrink-0" />
+                      <div
+                        className={cn(
+                          "h-10 w-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5",
+                          info.bg,
+                          info.color,
                         )}
-                      </div>
-                      <p className="text-sm text-[var(--muted)] mt-1 leading-relaxed">{n.message}</p>
-                      <p className="text-xs text-[var(--muted-2)] mt-1.5">{relativeTime(n.createdAt)}</p>
-                    </div>
-                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                      {!n.read && (
-                        <button
-                          onClick={() => markNotificationRead(n.id)}
-                          title="Mark as read"
-                          className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--primary)] hover:bg-[var(--primary-soft)] transition"
-                        >
-                          <Icon.Check size={15} />
-                        </button>
-                      )}
-                      <button
-                        onClick={() => deleteNotification(n.id)}
-                        title="Delete"
-                        className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--danger)] hover:bg-red-500/10 transition"
                       >
-                        <Icon.Trash size={15} />
-                      </button>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </CardBody>
+                        {info.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="text-sm font-semibold leading-snug">{n.title}</p>
+                          <Badge variant={BADGE_VARIANTS[n.type]}>{info.label}</Badge>
+                          {!n.read && (
+                            <span className="h-2 w-2 rounded-full bg-[var(--primary)] shrink-0" />
+                          )}
+                        </div>
+                        <p className="text-sm text-[var(--muted)] mt-1 leading-relaxed">{n.message}</p>
+                        <p className="text-xs text-[var(--muted-2)] mt-1.5">{relativeTime(n.createdAt)}</p>
+                      </div>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        {!n.read && (
+                          <button
+                            onClick={() => markNotificationRead(n.id)}
+                            title="Mark as read"
+                            className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--primary)] hover:bg-[var(--primary-soft)] transition"
+                          >
+                            <Icon.Check size={15} />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => deleteNotification(n.id)}
+                          title="Delete"
+                          className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--danger)] hover:bg-red-500/10 transition"
+                        >
+                          <Icon.Trash size={15} />
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </CardBody>
+        )}
       </Card>
     </div>
   );

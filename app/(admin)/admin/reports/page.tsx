@@ -56,6 +56,7 @@ export default function AdminReportsPage() {
   const [range, setRange] = React.useState("6");
   const [data, setData] = React.useState<ReportData | null>(null);
   const [loading, setLoading] = React.useState(true);
+  const [topCoursesOpen, setTopCoursesOpen] = React.useState(true);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -277,30 +278,49 @@ export default function AdminReportsPage() {
           {/* Top courses */}
           <Card>
             <CardBody>
-              <h2 className="font-semibold">Top courses</h2>
-              <p className="text-xs text-[var(--muted)] mb-3">
-                Most-enrolled courses and the revenue they earned
-              </p>
-              {(data?.topCourses ?? []).length === 0 ? (
-                <Empty />
-              ) : (
-                <ul className="space-y-4">
-                  {data!.topCourses.map((c) => (
-                    <li key={c.id}>
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span className="font-medium truncate pr-3">{c.title}</span>
-                        <span className="text-[var(--muted)] shrink-0 tabular-nums">
-                          {money(c.revenue, currency)}
-                        </span>
-                      </div>
-                      <ProgressBar
-                        label=""
-                        value={(c.enrollments / topMax) * 100}
-                        hint={`${c.enrollments} ${c.enrollments === 1 ? "learner" : "learners"}`}
-                      />
-                    </li>
-                  ))}
-                </ul>
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <div>
+                  <h2 className="font-semibold">Top courses</h2>
+                  <p className="text-xs text-[var(--muted)]">
+                    Most-enrolled courses and the revenue they earned
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setTopCoursesOpen((v) => !v)}
+                  className="shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-2)] transition-all"
+                  aria-label={topCoursesOpen ? "Collapse" : "Expand"}
+                >
+                  <Icon.ChevronDown
+                    size={18}
+                    className={`transition-transform duration-200 ${topCoursesOpen ? "rotate-0" : "-rotate-90"}`}
+                  />
+                </button>
+              </div>
+              {topCoursesOpen && (
+                <>
+                  {(data?.topCourses ?? []).length === 0 ? (
+                    <Empty />
+                  ) : (
+                    <ul className="space-y-4">
+                      {data!.topCourses.map((c) => (
+                        <li key={c.id}>
+                          <div className="flex items-center justify-between text-sm mb-1">
+                            <span className="font-medium truncate pr-3">{c.title}</span>
+                            <span className="text-[var(--muted)] shrink-0 tabular-nums">
+                              {money(c.revenue, currency)}
+                            </span>
+                          </div>
+                          <ProgressBar
+                            label=""
+                            value={(c.enrollments / topMax) * 100}
+                            hint={`${c.enrollments} ${c.enrollments === 1 ? "learner" : "learners"}`}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
               )}
             </CardBody>
           </Card>

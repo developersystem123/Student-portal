@@ -6,7 +6,6 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { NavigationProgress } from "@/components/layout/NavigationProgress";
 import { useAuth } from "@/lib/store";
-import Icon from "@/components/icons";
 import { cn } from "@/lib/utils";
 
 const LS_SIDEBAR = "eduportal:sidebar-open";
@@ -58,10 +57,29 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!hydrated || loading || !user || user.role !== "Student") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex items-center gap-2 text-[var(--muted)]">
-          <Icon.Loader size={20} /> Loading…
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative h-20 w-20">
+            <div className="absolute inset-0 rounded-2xl bg-[var(--primary)] opacity-15 animate-ping" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/xtroedge-x.svg" alt="XtroEdge" width={80} height={80} className="relative rounded-2xl shadow-xl shadow-green-500/30" />
+          </div>
+          <div className="text-center space-y-1">
+            <p className="text-xl font-bold gradient-text tracking-tight">EduPortal</p>
+            <p className="text-xs font-semibold tracking-widest text-[var(--muted-2)] uppercase">Learn · Build · Grow</p>
+          </div>
+          <div className="w-48 h-1 rounded-full bg-[var(--surface-2)] overflow-hidden">
+            <div className="h-full rounded-full btn-primary animate-[loading-bar_1.4s_ease-in-out_infinite]" />
+          </div>
+          <p className="text-xs text-[var(--muted)] animate-pulse">Loading your dashboard…</p>
         </div>
+        <style>{`
+          @keyframes loading-bar {
+            0%   { width: 0%;   margin-left: 0%; }
+            50%  { width: 60%;  margin-left: 20%; }
+            100% { width: 0%;   margin-left: 100%; }
+          }
+        `}</style>
       </div>
     );
   }

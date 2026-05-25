@@ -37,6 +37,8 @@ const STATUS_BADGE: Record<PhysicalClassStatus, "info" | "success" | "default" |
 };
 
 type Filter = "all" | PhysicalClassStatus;
+type SortKey = "date-asc" | "date-desc" | "name" | "enrolled-high";
+const PAGE_SIZE = 10;
 
 type FormState = {
   courseId: string;
@@ -79,6 +81,8 @@ export default function AdminPhysicalClassesPage() {
   const [filter, setFilter] = React.useState<Filter>("all");
   const [query, setQuery] = React.useState("");
 
+  const [sortKey, setSortKey] = React.useState<SortKey>("date-asc");
+  const [page, setPage] = React.useState(1);
   const [formOpen, setFormOpen] = React.useState(false);
   const [editing, setEditing] = React.useState<PhysicalClass | null>(null);
   const [form, setForm] = React.useState<FormState>(emptyForm);
@@ -109,7 +113,7 @@ export default function AdminPhysicalClassesPage() {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return classes.filter((c) => {
+    const base = classes.filter((c) => {
       if (filter !== "all" && c.status !== filter) return false;
       if (!q) return true;
       return (
@@ -119,7 +123,36 @@ export default function AdminPhysicalClassesPage() {
         c.campus.toLowerCase().includes(q)
       );
     });
-  }, [classes, filter, query]);
+    return [...base].sort((a, b) => {
+      if (sortKey === "date-desc") return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+      if (sortKey === "name") return a.title.localeCompare(b.title);
+      if (sortKey === "enrolled-high") return b.enrolledCount - a.enrolledCount;
+      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+    });
+  }, [classes, filter, query, sortKey]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  React.useEffect(() => { setPage(1); }, [filter, query, sortKey]);
+
+  function exportCsv() {
+    const header = "Title,Course,Instructor,Campus,Room,Batch,Capacity,Enrolled,Start,End,Status\n";
+    const csv = filtered.map((c) => [
+      `"${c.title}"`, `"${c.courseTitle}"`, `"${c.instructorName}"`,
+      c.campus, c.room, c.batch, c.capacity, c.enrolledCount,
+      c.startDate.slice(0, 10), c.endDate.slice(0, 10), c.status,
+    ].join(",")).join("\n");
+    const blob = new Blob([header + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `physical-classes-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.push({ title: "Exported", tone: "success" });
+  }
 
   function openCreate() {
     setEditing(null);
@@ -233,9 +266,14 @@ export default function AdminPhysicalClassesPage() {
             Create and manage in-person class batches, then place approved students into them.
           </p>
         </div>
-        <Button onClick={openCreate}>
-          <Icon.Plus size={16} /> New batch
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={exportCsv} disabled={filtered.length === 0}>
+            <Icon.Download size={16} /> Export CSV
+          </Button>
+          <Button onClick={openCreate}>
+            <Icon.Plus size={16} /> New batch
+          </Button>
+        </div>
       </div>
 
       {classes.length > 0 && (
@@ -259,7 +297,8 @@ export default function AdminPhysicalClassesPage() {
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      {/* Row 1: Tabs + Search */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <Tabs
           value={filter}
           onChange={(v) => setFilter(v as Filter)}
@@ -271,14 +310,34 @@ export default function AdminPhysicalClassesPage() {
             { value: "cancelled", label: "Cancelled", count: counts.cancelled },
           ]}
         />
-        <div className="md:w-80">
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by batch, course, instructor, campus…"
-            icon={<Icon.Search size={16} />}
-          />
-        </div>
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by batch, course, instructor, campus…"
+          icon={<Icon.Search size={16} />}
+          className="sm:w-80"
+        />
+      </div>
+
+      {/* Row 2: Count + Sort pills */}
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="text-sm text-[var(--muted)] font-medium mr-1">{filtered.length} batch{filtered.length !== 1 ? "es" : ""}</p>
+        <div className="h-4 w-px bg-[var(--border)] mx-1" />
+        <span className="text-xs text-[var(--muted)] font-medium mr-1">Sort:</span>
+        {([
+          { key: "date-asc", label: "Date ↑" },
+          { key: "date-desc", label: "Date ↓" },
+          { key: "name", label: "Name" },
+          { key: "enrolled-high", label: "Most enrolled" },
+        ] as { key: SortKey; label: string }[]).map((o) => (
+          <button
+            key={o.key}
+            onClick={() => setSortKey(o.key)}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
+          >
+            {o.label}
+          </button>
+        ))}
       </div>
 
       {loading ? (
@@ -324,7 +383,7 @@ export default function AdminPhysicalClassesPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((c) => {
+                {paginated.map((c) => {
                   const full = c.enrolledCount >= c.capacity;
                   return (
                     <tr
@@ -392,9 +451,28 @@ export default function AdminPhysicalClassesPage() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-[var(--muted)] px-4 py-2.5 border-t border-[var(--border)]">
-            Showing {filtered.length} of {classes.length} batch{classes.length !== 1 ? "es" : ""}
-          </p>
+          {totalPages > 1 ? (
+            <div className="flex items-center justify-between gap-3 px-4 py-3 border-t border-[var(--border)] flex-wrap">
+              <p className="text-sm text-[var(--muted)]">
+                Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filtered.length)} of {filtered.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}><Icon.ChevronLeft size={16} /></Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
+                  .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
+                  .map((p, idx) => p === "…"
+                    ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>
+                  )}
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
+              </div>
+            </div>
+          ) : (
+            <p className="text-xs text-[var(--muted)] px-4 py-2.5 border-t border-[var(--border)]">
+              Showing {filtered.length} of {classes.length} batch{classes.length !== 1 ? "es" : ""}
+            </p>
+          )}
         </Card>
       )}
 

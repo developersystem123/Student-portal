@@ -51,6 +51,9 @@ export default function AdminSettingsPage() {
   const [confirmLogout, setConfirmLogout] = React.useState(false);
   const [signedOut, setSignedOut] = React.useState(false);
   const [confirmReset, setConfirmReset] = React.useState(false);
+  const [appearanceOpen, setAppearanceOpen] = React.useState(true);
+  const [notificationsOpen, setNotificationsOpen] = React.useState(true);
+  const [dangerOpen, setDangerOpen] = React.useState(true);
 
   const stats = admin.stats();
 
@@ -152,35 +155,41 @@ export default function AdminSettingsPage() {
             icon={theme === "dark" ? <Icon.Moon size={18} /> : <Icon.Sun size={18} />}
             title="Appearance"
             description="Choose how the admin console looks to you."
+            open={appearanceOpen}
+            onToggle={() => setAppearanceOpen((v) => !v)}
           />
-          <div className="grid grid-cols-2 gap-3">
-            <ThemeCard
-              active={theme === "light"}
-              onClick={() => setTheme("light")}
-              label="Light"
-              preview={
-                <div className="h-16 rounded-lg bg-gradient-to-br from-rose-50 to-pink-100 border border-rose-200" />
-              }
-            />
-            <ThemeCard
-              active={theme === "dark"}
-              onClick={() => setTheme("dark")}
-              label="Dark"
-              preview={
-                <div className="h-16 rounded-lg bg-gradient-to-br from-rose-950 to-pink-900 border border-rose-800" />
-              }
-            />
-          </div>
-          <div className="pt-2 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium">Quick toggle</p>
-              <p className="text-xs text-[var(--muted)]">Flip between light and dark.</p>
-            </div>
-            <Button variant="outline" onClick={toggle}>
-              {theme === "dark" ? <Icon.Sun size={16} /> : <Icon.Moon size={16} />}
-              Switch to {theme === "dark" ? "light" : "dark"}
-            </Button>
-          </div>
+          {appearanceOpen && (
+            <>
+              <div className="grid grid-cols-2 gap-3">
+                <ThemeCard
+                  active={theme === "light"}
+                  onClick={() => setTheme("light")}
+                  label="Light"
+                  preview={
+                    <div className="h-16 rounded-lg bg-gradient-to-br from-white to-emerald-50 border border-emerald-200" />
+                  }
+                />
+                <ThemeCard
+                  active={theme === "dark"}
+                  onClick={() => setTheme("dark")}
+                  label="Dark"
+                  preview={
+                    <div className="h-16 rounded-lg bg-gradient-to-br from-emerald-950 to-green-900 border border-emerald-800" />
+                  }
+                />
+              </div>
+              <div className="pt-2 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium">Quick toggle</p>
+                  <p className="text-xs text-[var(--muted)]">Flip between light and dark.</p>
+                </div>
+                <Button variant="outline" onClick={toggle}>
+                  {theme === "dark" ? <Icon.Sun size={16} /> : <Icon.Moon size={16} />}
+                  Switch to {theme === "dark" ? "light" : "dark"}
+                </Button>
+              </div>
+            </>
+          )}
         </CardBody>
       </Card>
 
@@ -191,38 +200,44 @@ export default function AdminSettingsPage() {
             icon={<Icon.Bell size={18} />}
             title="Notifications"
             description="What we send you by email."
+            open={notificationsOpen}
+            onToggle={() => setNotificationsOpen((v) => !v)}
           />
-          <ul className="divide-y divide-[var(--border)]">
-            <PrefRow
-              title="New student signups"
-              description="Email me when a new student registers."
-              checked={prefs.emailNewStudents}
-              onChange={(v) => setPref("emailNewStudents", v)}
-            />
-            <PrefRow
-              title="New enrollments"
-              description="Email me when a student enrolls in a course."
-              checked={prefs.emailNewEnrollments}
-              onChange={(v) => setPref("emailNewEnrollments", v)}
-            />
-            <PrefRow
-              title="Weekly digest"
-              description="A Monday summary of platform activity."
-              checked={prefs.weeklyDigest}
-              onChange={(v) => setPref("weeklyDigest", v)}
-            />
-            <PrefRow
-              title="Product updates"
-              description="Occasional updates about new features."
-              checked={prefs.productUpdates}
-              onChange={(v) => setPref("productUpdates", v)}
-            />
-          </ul>
-          <div className="pt-2 flex justify-end">
-            <Button variant="ghost" onClick={resetPrefs}>
-              Reset to defaults
-            </Button>
-          </div>
+          {notificationsOpen && (
+            <>
+              <ul className="divide-y divide-[var(--border)]">
+                <PrefRow
+                  title="New student signups"
+                  description="Email me when a new student registers."
+                  checked={prefs.emailNewStudents}
+                  onChange={(v) => setPref("emailNewStudents", v)}
+                />
+                <PrefRow
+                  title="New enrollments"
+                  description="Email me when a student enrolls in a course."
+                  checked={prefs.emailNewEnrollments}
+                  onChange={(v) => setPref("emailNewEnrollments", v)}
+                />
+                <PrefRow
+                  title="Weekly digest"
+                  description="A Monday summary of platform activity."
+                  checked={prefs.weeklyDigest}
+                  onChange={(v) => setPref("weeklyDigest", v)}
+                />
+                <PrefRow
+                  title="Product updates"
+                  description="Occasional updates about new features."
+                  checked={prefs.productUpdates}
+                  onChange={(v) => setPref("productUpdates", v)}
+                />
+              </ul>
+              <div className="pt-2 flex justify-end">
+                <Button variant="ghost" onClick={resetPrefs}>
+                  Reset to defaults
+                </Button>
+              </div>
+            </>
+          )}
         </CardBody>
       </Card>
 
@@ -234,25 +249,31 @@ export default function AdminSettingsPage() {
             title="Danger zone"
             description="Irreversible actions. Be sure before continuing."
             tone="danger"
+            open={dangerOpen}
+            onToggle={() => setDangerOpen((v) => !v)}
           />
-          <div className="flex items-center justify-between gap-4 flex-wrap border border-[var(--danger)]/20 rounded-xl p-4">
-            <div className="min-w-0">
-              <p className="text-sm font-medium">Reset demo data</p>
-              <p className="text-xs text-[var(--muted)] mt-0.5">
-                Clears all students, teachers, courses, enrollments, certificates, and notifications, then re-seeds the
-                default demo accounts.
-              </p>
-            </div>
-            <Button variant="danger" onClick={() => setConfirmReset(true)}>
-              <Icon.Trash size={16} /> Reset everything
-            </Button>
-          </div>
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <p className="text-sm text-[var(--muted)]">Sign out of this device.</p>
-            <Button variant="outline" onClick={() => setConfirmLogout(true)}>
-              <Icon.Logout size={16} /> Sign out
-            </Button>
-          </div>
+          {dangerOpen && (
+            <>
+              <div className="flex items-center justify-between gap-4 flex-wrap border border-[var(--danger)]/20 rounded-xl p-4">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium">Reset demo data</p>
+                  <p className="text-xs text-[var(--muted)] mt-0.5">
+                    Clears all students, teachers, courses, enrollments, certificates, and notifications, then re-seeds the
+                    default demo accounts.
+                  </p>
+                </div>
+                <Button variant="danger" onClick={() => setConfirmReset(true)}>
+                  <Icon.Trash size={16} /> Reset everything
+                </Button>
+              </div>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <p className="text-sm text-[var(--muted)]">Sign out of this device.</p>
+                <Button variant="outline" onClick={() => setConfirmLogout(true)}>
+                  <Icon.Logout size={16} /> Sign out
+                </Button>
+              </div>
+            </>
+          )}
         </CardBody>
       </Card>
 
@@ -300,11 +321,15 @@ function SectionHeader({
   title,
   description,
   tone = "primary",
+  open,
+  onToggle,
 }: {
   icon: React.ReactNode;
   title: string;
   description?: string;
   tone?: "primary" | "danger";
+  open?: boolean;
+  onToggle?: () => void;
 }) {
   const cls =
     tone === "danger"
@@ -313,10 +338,23 @@ function SectionHeader({
   return (
     <div className="flex items-start gap-3">
       <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${cls}`}>{icon}</div>
-      <div>
+      <div className="flex-1 min-w-0">
         <p className="font-semibold">{title}</p>
         {description && <p className="text-xs text-[var(--muted)] mt-0.5">{description}</p>}
       </div>
+      {onToggle && (
+        <button
+          type="button"
+          onClick={onToggle}
+          className="shrink-0 h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-2)] transition-all"
+          aria-label={open ? "Collapse" : "Expand"}
+        >
+          <Icon.ChevronDown
+            size={18}
+            className={`transition-transform duration-200 ${open ? "rotate-0" : "-rotate-90"}`}
+          />
+        </button>
+      )}
     </div>
   );
 }

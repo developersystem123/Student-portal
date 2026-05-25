@@ -58,10 +58,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex flex-col items-center gap-6">
           {/* Animated logo mark */}
           <div className="relative h-20 w-20">
-            <div className="absolute inset-0 rounded-2xl btn-primary opacity-20 animate-ping" />
-            <div className="relative h-20 w-20 rounded-2xl btn-primary flex items-center justify-center shadow-xl shadow-violet-500/30">
-              <Icon.Settings size={36} className="text-white animate-spin" style={{ animationDuration: "3s" }} />
-            </div>
+            <div className="absolute inset-0 rounded-2xl bg-[var(--primary)] opacity-15 animate-ping" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/xtroedge-x.svg"
+              alt="XtroEdge"
+              width={80}
+              height={80}
+              className="relative rounded-2xl shadow-xl shadow-green-500/30"
+            />
           </div>
 
           {/* Brand */}
@@ -122,7 +127,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       <div className="flex flex-col flex-1 min-w-0">
         <Topbar onToggleSidebar={handleToggle} sidebarOpen={desktopOpen} />
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto scrollbar-thin scrollbar-fade">
           <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">{children}</div>
         </main>
       </div>

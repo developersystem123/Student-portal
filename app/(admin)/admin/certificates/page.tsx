@@ -17,6 +17,9 @@ import Icon from "@/components/icons";
 import { useAdmin, useData } from "@/lib/store";
 import { formatDate } from "@/lib/utils";
 
+type SortKey = "newest" | "oldest" | "score-high" | "score-low" | "student" | "course";
+const PAGE_SIZE = 10;
+
 type CertRow = {
   id: string;
   userId: string;
@@ -38,6 +41,8 @@ export default function AdminCertificatesPage() {
   const [certs, setCerts] = React.useState<CertRow[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [query, setQuery] = React.useState("");
+  const [sortKey, setSortKey] = React.useState<SortKey>("newest");
+  const [page, setPage] = React.useState(1);
 
   const [issueOpen, setIssueOpen] = React.useState(false);
   const [studentId, setStudentId] = React.useState("");
@@ -59,15 +64,46 @@ export default function AdminCertificatesPage() {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return certs;
-    return certs.filter(
-      (c) =>
-        c.studentName.toLowerCase().includes(q) ||
-        c.studentEmail.toLowerCase().includes(q) ||
-        c.courseTitle.toLowerCase().includes(q) ||
-        c.verifyCode.toLowerCase().includes(q),
-    );
-  }, [certs, query]);
+    const base = q
+      ? certs.filter(
+          (c) =>
+            c.studentName.toLowerCase().includes(q) ||
+            c.studentEmail.toLowerCase().includes(q) ||
+            c.courseTitle.toLowerCase().includes(q) ||
+            c.verifyCode.toLowerCase().includes(q),
+        )
+      : certs;
+    return [...base].sort((a, b) => {
+      if (sortKey === "oldest") return new Date(a.issuedAt).getTime() - new Date(b.issuedAt).getTime();
+      if (sortKey === "score-high") return b.score - a.score;
+      if (sortKey === "score-low") return a.score - b.score;
+      if (sortKey === "student") return a.studentName.localeCompare(b.studentName);
+      if (sortKey === "course") return a.courseTitle.localeCompare(b.courseTitle);
+      return new Date(b.issuedAt).getTime() - new Date(a.issuedAt).getTime();
+    });
+  }, [certs, query, sortKey]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  React.useEffect(() => { setPage(1); }, [query, sortKey]);
+
+  function exportCsv() {
+    const header = "Student,Email,Course,Score,Issued,Verify Code\n";
+    const csv = filtered.map((c) => [
+      `"${c.studentName}"`, `"${c.studentEmail}"`, `"${c.courseTitle}"`,
+      `${c.score}%`, c.issuedAt.slice(0, 10), c.verifyCode,
+    ].join(",")).join("\n");
+    const blob = new Blob([header + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `certificates-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.push({ title: "Exported", tone: "success" });
+  }
 
   async function issue() {
     const n = Number(score);
@@ -112,6 +148,19 @@ export default function AdminCertificatesPage() {
     load();
   }
 
+  const eligibleStudents = React.useMemo(() => {
+    if (!courseId) {
+      // No course selected — exclude students who already have ANY certificate
+      const certifiedIds = new Set(certs.map((c) => c.userId));
+      return students.filter((s) => !certifiedIds.has(s.id));
+    }
+    // Course selected — exclude students who already have a cert for this specific course
+    const certifiedForCourse = new Set(
+      certs.filter((c) => c.courseId === courseId).map((c) => c.userId),
+    );
+    return students.filter((s) => !certifiedForCourse.has(s.id));
+  }, [students, certs, courseId]);
+
   const certStats = React.useMemo(() => {
     const avgScore = certs.length ? Math.round(certs.reduce((s, c) => s + c.score, 0) / certs.length) : 0;
     const highScore = certs.filter((c) => c.score >= 90).length;
@@ -128,9 +177,14 @@ export default function AdminCertificatesPage() {
             Every certificate issued across the platform — issue new ones or revoke.
           </p>
         </div>
-        <Button onClick={() => setIssueOpen(true)}>
-          <Icon.Plus size={16} /> Issue certificate
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={exportCsv} disabled={filtered.length === 0}>
+            <Icon.Download size={16} /> Export CSV
+          </Button>
+          <Button onClick={() => setIssueOpen(true)}>
+            <Icon.Plus size={16} /> Issue certificate
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-3">
@@ -151,13 +205,35 @@ export default function AdminCertificatesPage() {
         ))}
       </div>
 
-      <div className="md:w-96">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search by student, course or code…"
           icon={<Icon.Search size={16} />}
+          className="sm:w-80"
         />
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <p className="text-sm text-[var(--muted)] font-medium mr-1">{filtered.length} cert{filtered.length !== 1 ? "s" : ""}</p>
+          <div className="h-4 w-px bg-[var(--border)] mx-1" />
+          <span className="text-xs text-[var(--muted)] font-medium mr-1">Sort:</span>
+          {([
+            { key: "newest", label: "Newest" },
+            { key: "oldest", label: "Oldest" },
+            { key: "score-high", label: "Score ↓" },
+            { key: "score-low", label: "Score ↑" },
+            { key: "student", label: "Student" },
+            { key: "course", label: "Course" },
+          ] as { key: SortKey; label: string }[]).map((o) => (
+            <button
+              key={o.key}
+              onClick={() => setSortKey(o.key)}
+              className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? (
@@ -195,7 +271,7 @@ export default function AdminCertificatesPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((c) => (
+                {paginated.map((c) => (
                   <tr
                     key={c.id}
                     className="border-t border-[var(--border)] hover:bg-[var(--surface-2)]/50"
@@ -224,26 +300,59 @@ export default function AdminCertificatesPage() {
               </tbody>
             </table>
           </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between gap-3 px-4 py-3 border-t border-[var(--border)] flex-wrap">
+              <p className="text-sm text-[var(--muted)]">
+                Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filtered.length)} of {filtered.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}><Icon.ChevronLeft size={16} /></Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
+                  .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
+                  .map((p, idx) => p === "…"
+                    ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>
+                  )}
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
+              </div>
+            </div>
+          )}
         </Card>
       )}
 
       {/* Issue modal */}
       <Modal open={issueOpen} onClose={() => setIssueOpen(false)} size="md" title="Issue certificate">
-        <div className="p-5 space-y-4">
-          <div>
-            <Label>Student</Label>
+        <div className="p-6 space-y-5">
+          {/* Student */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium">Student</Label>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--primary-soft)] text-[var(--primary)] font-medium">
+                {eligibleStudents.length} eligible
+              </span>
+            </div>
             <Select value={studentId} onChange={(e) => setStudentId(e.target.value)}>
               <option value="">Select a student…</option>
-              {students.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name} — {s.email}
-                </option>
-              ))}
+              {eligibleStudents.length === 0 ? (
+                <option disabled value="">All students already have a certificate</option>
+              ) : (
+                eligibleStudents.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} — {s.email}
+                  </option>
+                ))
+              )}
             </Select>
+            {eligibleStudents.length === 0 && (
+              <p className="text-xs text-[var(--muted)] mt-1">All students already hold a certificate for this course.</p>
+            )}
           </div>
-          <div>
-            <Label>Course</Label>
-            <Select value={courseId} onChange={(e) => setCourseId(e.target.value)}>
+
+          {/* Course */}
+          <div className="space-y-1.5">
+            <Label className="text-sm font-medium">Course</Label>
+            <Select value={courseId} onChange={(e) => { setCourseId(e.target.value); setStudentId(""); }}>
               <option value="">Select a course…</option>
               {courses.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -252,22 +361,38 @@ export default function AdminCertificatesPage() {
               ))}
             </Select>
           </div>
-          <div>
-            <Label>Score (%)</Label>
+
+          {/* Score */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium">Score (%)</Label>
+              <span className={`text-xs font-semibold ${Number(score) >= 60 ? "text-emerald-600" : "text-red-500"}`}>
+                {score ? `${score}%` : "—"}
+              </span>
+            </div>
             <Input
               type="number"
               min={0}
               max={100}
               value={score}
               onChange={(e) => setScore(e.target.value)}
+              placeholder="0–100"
             />
+            <div className="h-1.5 w-full rounded-full bg-[var(--surface-2)] overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-300 ${Number(score) >= 90 ? "bg-emerald-500" : Number(score) >= 60 ? "bg-[var(--primary)]" : "bg-red-400"}`}
+                style={{ width: `${Math.min(100, Math.max(0, Number(score) || 0))}%` }}
+              />
+            </div>
+            <p className="text-xs text-[var(--muted)]">Minimum passing score is 60%.</p>
           </div>
-          <div className="flex justify-end gap-2 pt-2 border-t border-[var(--border)]">
+
+          <div className="flex justify-end gap-2 pt-1 border-t border-[var(--border)]">
             <Button variant="outline" onClick={() => setIssueOpen(false)} disabled={saving}>
               Cancel
             </Button>
             <Button onClick={issue} loading={saving} disabled={!studentId || !courseId}>
-              <Icon.Award size={16} /> Issue
+              <Icon.Award size={16} /> Issue certificate
             </Button>
           </div>
         </div>

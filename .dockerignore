@@ -1,0 +1,39 @@
+# Dependencies (installed inside the image)
+node_modules
+
+# Next.js build output
+.next
+out
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment files (injected at runtime via docker-compose env_file)
+.env
+.env.*
+
+# Docker files themselves
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Editor & OS
+.vscode
+.idea
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test & coverage
+coverage
+__tests__
+
+# Misc
+*.md
+README*

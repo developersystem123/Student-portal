@@ -29,12 +29,22 @@ type Coupon = {
   createdAt: string;
 };
 
+type TypeFilter = "all" | "percent" | "fixed";
+type StatusFilter = "all" | "active" | "expired" | "used";
+type CouponSortKey = "newest" | "oldest" | "value-high" | "value-low" | "most-used";
+const PAGE_SIZE = 10;
+
 export default function AdminCouponsPage() {
   const toast = useToast();
   const [coupons, setCoupons] = React.useState<Coupon[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [formOpen, setFormOpen] = React.useState(false);
   const [deleting, setDeleting] = React.useState<Coupon | null>(null);
+  const [query, setQuery] = React.useState("");
+  const [typeFilter, setTypeFilter] = React.useState<TypeFilter>("all");
+  const [statusFilter, setStatusFilter] = React.useState<StatusFilter>("all");
+  const [sortKey, setSortKey] = React.useState<CouponSortKey>("newest");
+  const [page, setPage] = React.useState(1);
 
   const [code, setCode] = React.useState("");
   const [type, setType] = React.useState<"percent" | "fixed">("percent");
@@ -112,6 +122,53 @@ export default function AdminCouponsPage() {
     return c.type === "percent" ? `${c.value}% off` : `$${(c.value / 100).toFixed(2)} off`;
   }
 
+  const filtered = React.useMemo(() => {
+    const now = Date.now();
+    const q = query.trim().toLowerCase();
+    const base = coupons.filter((c) => {
+      if (typeFilter !== "all" && c.type !== typeFilter) return false;
+      if (statusFilter === "active" && (!c.active || (c.expiresAt && new Date(c.expiresAt).getTime() < now))) return false;
+      if (statusFilter === "expired" && !(c.expiresAt && new Date(c.expiresAt).getTime() < now)) return false;
+      if (statusFilter === "used" && !(c.maxUses !== undefined && c.usedCount >= c.maxUses)) return false;
+      if (q && !c.code.toLowerCase().includes(q)) return false;
+      return true;
+    });
+    return [...base].sort((a, b) => {
+      if (sortKey === "oldest") return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      if (sortKey === "value-high") return b.value - a.value;
+      if (sortKey === "value-low") return a.value - b.value;
+      if (sortKey === "most-used") return b.usedCount - a.usedCount;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [coupons, query, typeFilter, statusFilter, sortKey]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  React.useEffect(() => { setPage(1); }, [query, typeFilter, statusFilter, sortKey]);
+
+  const activeFilters = (typeFilter !== "all" ? 1 : 0) + (statusFilter !== "all" ? 1 : 0) + (query ? 1 : 0);
+  function clearFilters() { setQuery(""); setTypeFilter("all"); setStatusFilter("all"); setSortKey("newest"); setPage(1); }
+
+  function exportCsv() {
+    const header = "Code,Type,Discount,Used,Max Uses,Active,Expires\n";
+    const csv = filtered.map((c) => [
+      c.code, c.type, discountLabel(c), c.usedCount,
+      c.maxUses !== undefined ? c.maxUses : "unlimited",
+      c.active ? "Yes" : "No",
+      c.expiresAt ? c.expiresAt.slice(0, 10) : "Never",
+    ].join(",")).join("\n");
+    const blob = new Blob([header + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `coupons-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.push({ title: "Exported", tone: "success" });
+  }
+
   const couponStats = React.useMemo(() => {
     const active = coupons.filter((c) => c.active && !(c.expiresAt && new Date(c.expiresAt).getTime() < Date.now())).length;
     const expired = coupons.filter((c) => c.expiresAt && new Date(c.expiresAt).getTime() < Date.now()).length;
@@ -129,9 +186,14 @@ export default function AdminCouponsPage() {
             Create discount codes students can apply at checkout.
           </p>
         </div>
-        <Button onClick={openCreate}>
-          <Icon.Plus size={16} /> New coupon
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={exportCsv} disabled={filtered.length === 0}>
+            <Icon.Download size={16} /> Export CSV
+          </Button>
+          <Button onClick={openCreate}>
+            <Icon.Plus size={16} /> New coupon
+          </Button>
+        </div>
       </div>
 
       {coupons.length > 0 && (
@@ -153,6 +215,52 @@ export default function AdminCouponsPage() {
           ))}
         </div>
       )}
+
+      {/* Search + Filter + Sort */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by code…"
+            icon={<Icon.Search size={16} />}
+            className="max-w-xs"
+          />
+          {activeFilters > 0 && (
+            <button onClick={clearFilters} className="text-xs px-2.5 py-1.5 rounded-lg text-primary bg-primary-soft hover:opacity-80 transition flex items-center gap-1">
+              <Icon.X size={11} /> Clear ({activeFilters})
+            </button>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-sm text-muted font-medium mr-1">{filtered.length} coupon{filtered.length !== 1 ? "s" : ""}</p>
+          <div className="h-4 w-px bg-border mx-1" />
+          <span className="text-xs text-muted font-medium mr-1">Type:</span>
+          {(["all", "percent", "fixed"] as TypeFilter[]).map((f) => (
+            <button key={f} onClick={() => setTypeFilter(f)} className={`h-8 px-3 rounded-lg text-xs font-medium transition ${typeFilter === f ? "bg-primary text-white" : "border border-border text-muted hover:bg-surface-2"}`}>
+              {f === "all" ? "All" : f === "percent" ? "% Off" : "$ Off"}
+            </button>
+          ))}
+          <span className="text-xs text-muted font-medium ml-3 mr-1">Status:</span>
+          {(["all", "active", "expired", "used"] as StatusFilter[]).map((f) => (
+            <button key={f} onClick={() => setStatusFilter(f)} className={`h-8 px-3 rounded-lg text-xs font-medium transition capitalize ${statusFilter === f ? "bg-primary text-white" : "border border-border text-muted hover:bg-surface-2"}`}>
+              {f === "all" ? "All" : f}
+            </button>
+          ))}
+          <span className="text-xs text-muted font-medium ml-3 mr-1">Sort:</span>
+          {([
+            { key: "newest", label: "Newest" },
+            { key: "oldest", label: "Oldest" },
+            { key: "value-high", label: "Value ↓" },
+            { key: "value-low", label: "Value ↑" },
+            { key: "most-used", label: "Most used" },
+          ] as { key: CouponSortKey; label: string }[]).map((o) => (
+            <button key={o.key} onClick={() => setSortKey(o.key)} className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-primary text-white" : "border border-border text-muted hover:bg-surface-2"}`}>
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {loading ? (
         <Card>
@@ -190,7 +298,7 @@ export default function AdminCouponsPage() {
                 </tr>
               </thead>
               <tbody>
-                {coupons.map((c) => {
+                {paginated.map((c) => {
                   const exhausted = c.maxUses !== undefined && c.usedCount >= c.maxUses;
                   const expired = c.expiresAt && new Date(c.expiresAt).getTime() < Date.now();
                   return (
@@ -227,6 +335,24 @@ export default function AdminCouponsPage() {
               </tbody>
             </table>
           </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between gap-3 px-4 py-3 border-t border-border flex-wrap">
+              <p className="text-sm text-muted">
+                Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filtered.length)} of {filtered.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}><Icon.ChevronLeft size={16} /></Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
+                  .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
+                  .map((p, idx) => p === "…"
+                    ? <span key={`e-${idx}`} className="px-2 text-muted text-sm">…</span>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-primary text-white" : "border border-border hover:bg-surface-2"}`}>{p}</button>
+                  )}
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
+              </div>
+            </div>
+          )}
         </Card>
       )}
 

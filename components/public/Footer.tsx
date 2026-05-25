@@ -51,7 +51,14 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-2 md:grid-cols-6 gap-8">
         <div className="col-span-2">
           <Link href="/" className="flex items-center gap-2 group">
-            <XtroEdgeLogo size={56} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/xtroedge-x.svg"
+              alt="XtroEdge"
+              width={44}
+              height={44}
+              className="rounded-xl shadow-sm group-hover:shadow-md group-hover:shadow-green-500/20 transition shrink-0"
+            />
             <div className="flex flex-col leading-tight">
               <span className="text-base font-bold gradient-text">EduPortal</span>
               <span className="text-[10px] text-[var(--muted-2)] -mt-0.5 tracking-wider">LEARN · BUILD · GROW</span>
@@ -105,29 +112,3 @@ export function Footer() {
   );
 }
 
-function XtroEdgeLogo({ size = 56 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 200 200" width={size} height={size} aria-label="XtroEdge" className="shrink-0">
-      <defs>
-        <linearGradient id="fe-g" x1="40" y1="0" x2="160" y2="200" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#4ade80" />
-          <stop offset="55%" stopColor="#22c55e" />
-          <stop offset="100%" stopColor="#15803d" />
-        </linearGradient>
-        <mask id="fe-m">
-          <rect x="0" y="0" width="200" height="200" fill="white" />
-          {/* Slash 1 — right */}
-          <polygon points="161,13 169,15 151,65 143,63" fill="black" />
-          {/* Slash 2 — left, parallel */}
-          <polygon points="150,9 158,11 140,61 132,59" fill="black" />
-          {/* Lightning bolt — 8-point, follows arm direction with rightward kink */}
-          <polygon points="107,78 119,86 98,116 113,126 93,156 81,148 101,118 86,108" fill="black" />
-        </mask>
-      </defs>
-      <g mask="url(#fe-m)">
-        <polygon points="20,8 52,8 180,192 148,192" fill="url(#fe-g)" />
-        <polygon points="148,8 180,8 52,192 20,192" fill="url(#fe-g)" />
-      </g>
-    </svg>
-  );
-}

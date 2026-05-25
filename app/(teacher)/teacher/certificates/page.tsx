@@ -38,6 +38,7 @@ export default function TeacherCertificatesPage() {
   const [certs, setCerts] = React.useState<CertRow[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [query, setQuery] = React.useState("");
+  const [showPending, setShowPending] = React.useState(false);
 
   const [issueOpen, setIssueOpen] = React.useState(false);
   const [pairKey, setPairKey] = React.useState(""); // "userId::courseId"
@@ -71,6 +72,40 @@ export default function TeacherCertificatesPage() {
         c.verifyCode.toLowerCase().includes(q),
     );
   }, [certs, query]);
+
+  function exportCsv() {
+    const csv = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+    const header = ["Student", "Email", "Course", "Score", "Issued", "Verify Code"].join(",");
+    const lines = filtered.map((c) =>
+      [
+        csv(c.studentName),
+        csv(c.studentEmail),
+        csv(c.courseTitle),
+        `${c.score}%`,
+        csv(new Date(c.issuedAt).toLocaleDateString()),
+        csv(c.verifyCode),
+      ].join(","),
+    );
+    const blob = new Blob([[header, ...lines].join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "certificates.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.push({ title: "Exported CSV", tone: "success" });
+  }
+
+  async function revoke(certId: string) {
+    const r = await fetch(`/api/teacher/certificates/${certId}`, { method: "DELETE" });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      toast.push({ title: "Couldn't revoke certificate", description: e.error, tone: "danger" });
+      return;
+    }
+    toast.push({ title: "Certificate revoked", tone: "info" });
+    load();
+  }
 
   async function issue() {
     const [userId, courseId] = pairKey.split("::");
@@ -114,9 +149,14 @@ export default function TeacherCertificatesPage() {
             Award certificates to students who have completed your courses.
           </p>
         </div>
-        <Button onClick={() => setIssueOpen(true)} disabled={issuable.length === 0}>
-          <Icon.Plus size={16} /> Issue certificate
-        </Button>
+        <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" onClick={exportCsv} disabled={filtered.length === 0}>
+            <Icon.Download size={16} /> Export CSV
+          </Button>
+          <Button onClick={() => setIssueOpen(true)} disabled={issuable.length === 0}>
+            <Icon.Plus size={16} /> Issue certificate
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
@@ -134,6 +174,54 @@ export default function TeacherCertificatesPage() {
           tone="warning"
         />
       </div>
+
+      {issuable.length > 0 && (
+        <Card>
+          <CardBody className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-semibold">Pending eligible</h2>
+                <p className="text-xs text-[var(--muted)] mt-0.5">
+                  Students who haven&apos;t received a certificate yet.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowPending((v) => !v)}
+                className="text-xs text-[var(--primary)] font-medium hover:underline"
+              >
+                {showPending ? "Hide" : "Show all"}
+              </button>
+            </div>
+            {showPending && (
+              <div className="divide-y divide-[var(--border)]">
+                {issuable.map((s) => (
+                  <div
+                    key={`${s.userId}::${s.courseId}`}
+                    className="flex items-center justify-between gap-3 py-2.5"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-medium text-sm truncate">{s.userName}</p>
+                      <p className="text-xs text-[var(--muted)] truncate">
+                        {s.courseTitle} · {s.completed ? "Completed" : `${s.progress}% progress`}
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setPairKey(`${s.userId}::${s.courseId}`);
+                        setIssueOpen(true);
+                      }}
+                    >
+                      <Icon.Award size={13} /> Issue
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardBody>
+        </Card>
+      )}
 
       <div className="md:w-96">
         <Input
@@ -175,6 +263,7 @@ export default function TeacherCertificatesPage() {
                   <Th>Score</Th>
                   <Th>Issued</Th>
                   <Th>Verify code</Th>
+                  <Th></Th>
                 </tr>
               </thead>
               <tbody>
@@ -193,6 +282,15 @@ export default function TeacherCertificatesPage() {
                     <Td className="text-xs text-[var(--muted)]">{formatDate(c.issuedAt)}</Td>
                     <Td>
                       <span className="font-mono text-xs">{c.verifyCode}</span>
+                    </Td>
+                    <Td>
+                      <button
+                        onClick={() => revoke(c.id)}
+                        title="Revoke certificate"
+                        className="p-1.5 rounded-lg text-[var(--muted-2)] hover:text-red-500 hover:bg-red-500/10 transition"
+                      >
+                        <Icon.Trash size={15} />
+                      </button>
                     </Td>
                   </tr>
                 ))}

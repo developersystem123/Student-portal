@@ -21,6 +21,8 @@ export default function AdminProfilePage() {
   const router = useRouter();
   const [confirmLogout, setConfirmLogout] = React.useState(false);
   const [signedOut, setSignedOut] = React.useState(false);
+  const [systemOpen, setSystemOpen] = React.useState(true);
+  const [sessionOpen, setSessionOpen] = React.useState(true);
 
   if (!user) return null;
 
@@ -49,19 +51,25 @@ export default function AdminProfilePage() {
             icon={<Icon.Settings size={18} />}
             title="System overview"
             description="What you currently oversee on the platform."
+            open={systemOpen}
+            onToggle={() => setSystemOpen((v) => !v)}
           />
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-            <StatMini label="Students" value={stats.students} />
-            <StatMini label="Teachers" value={stats.teachers} />
-            <StatMini label="Courses" value={courses.length} />
-            <StatMini label="Enrollments" value={stats.enrollments} />
-            <StatMini label="Certificates" value={stats.certificates} />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-            <QuickLink href="/admin/students" icon={<Icon.User size={16} />} title="Manage students" description="Onboard, edit, reset" />
-            <QuickLink href="/admin/teachers" icon={<Icon.Sparkles size={16} />} title="Manage teachers" description="Instructors & permissions" />
-            <QuickLink href="/admin/courses" icon={<Icon.Book size={16} />} title="Manage courses" description="Catalog & chapters" />
-          </div>
+          {systemOpen && (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                <StatMini label="Students" value={stats.students} />
+                <StatMini label="Teachers" value={stats.teachers} />
+                <StatMini label="Courses" value={courses.length} />
+                <StatMini label="Enrollments" value={stats.enrollments} />
+                <StatMini label="Certificates" value={stats.certificates} />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <QuickLink href="/admin/students" icon={<Icon.User size={16} />} title="Manage students" description="Onboard, edit, reset" />
+                <QuickLink href="/admin/teachers" icon={<Icon.Sparkles size={16} />} title="Manage teachers" description="Instructors & permissions" />
+                <QuickLink href="/admin/courses" icon={<Icon.Book size={16} />} title="Manage courses" description="Catalog & chapters" />
+              </div>
+            </>
+          )}
         </CardBody>
       </Card>
 
@@ -89,22 +97,26 @@ export default function AdminProfilePage() {
             title="Session"
             description="End your session on this device."
             tone="danger"
+            open={sessionOpen}
+            onToggle={() => setSessionOpen((v) => !v)}
           />
-          <div className="flex items-center justify-between gap-4 flex-wrap border border-[var(--danger)]/20 rounded-xl p-4">
-            <div className="min-w-0">
-              <p className="text-sm font-medium">Sign out</p>
-              <p className="text-xs text-[var(--muted)] mt-0.5">
-                Admin accounts can&apos;t be self-deleted to keep the system manageable. Reset everything from{" "}
-                <Link href="/admin/settings" className="text-[var(--primary)] hover:underline">
-                  Settings
-                </Link>{" "}
-                if you really need a clean slate.
-              </p>
+          {sessionOpen && (
+            <div className="flex items-center justify-between gap-4 flex-wrap border border-[var(--danger)]/20 rounded-xl p-4">
+              <div className="min-w-0">
+                <p className="text-sm font-medium">Sign out</p>
+                <p className="text-xs text-[var(--muted)] mt-0.5">
+                  Admin accounts can&apos;t be self-deleted to keep the system manageable. Reset everything from{" "}
+                  <Link href="/admin/settings" className="text-[var(--primary)] hover:underline">
+                    Settings
+                  </Link>{" "}
+                  if you really need a clean slate.
+                </p>
+              </div>
+              <Button variant="danger" onClick={() => setConfirmLogout(true)}>
+                <Icon.Logout size={16} /> Sign out
+              </Button>
             </div>
-            <Button variant="danger" onClick={() => setConfirmLogout(true)}>
-              <Icon.Logout size={16} /> Sign out
-            </Button>
-          </div>
+          )}
         </CardBody>
       </Card>
 

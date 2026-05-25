@@ -22,6 +22,9 @@ import { relativeTime } from "@/lib/utils";
 import type { ApplicationStatus, PhysicalClass } from "@/lib/mockData";
 
 type Filter = "all" | ApplicationStatus;
+type SortKey = "newest" | "oldest" | "name" | "course";
+
+const PAGE_SIZE = 10;
 
 const STATUS_LABEL: Record<ApplicationStatus, string> = {
   pending: "Pending",
@@ -49,6 +52,8 @@ export default function AdminApplicationsPage() {
   const [reviewNote, setReviewNote] = React.useState("");
   const [selectedClassId, setSelectedClassId] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
+  const [sortKey, setSortKey] = React.useState<SortKey>("newest");
+  const [page, setPage] = React.useState(1);
 
   // In-person batches — needed so an approval can place the student into one.
   const [physicalClasses, setPhysicalClasses] = React.useState<PhysicalClass[]>([]);
@@ -74,7 +79,7 @@ export default function AdminApplicationsPage() {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return rows.filter((r) => {
+    const base = rows.filter((r) => {
       if (filter !== "all" && r.status !== filter) return false;
       if (!q) return true;
       return (
@@ -84,7 +89,35 @@ export default function AdminApplicationsPage() {
         r.cnic.toLowerCase().includes(q)
       );
     });
-  }, [rows, filter, query]);
+    return [...base].sort((a, b) => {
+      if (sortKey === "oldest") return new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime();
+      if (sortKey === "name") return a.studentName.localeCompare(b.studentName);
+      if (sortKey === "course") return a.courseTitle.localeCompare(b.courseTitle);
+      return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+    });
+  }, [rows, filter, query, sortKey]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  React.useEffect(() => { setPage(1); }, [filter, query, sortKey]);
+
+  function exportCsv() {
+    const header = "Student,Email,CNIC,Course,Campus,Batch,Status,Submitted\n";
+    const csv = filtered.map((r) => [
+      `"${r.studentName}"`, `"${r.studentEmail}"`, `"${r.cnic}"`,
+      `"${r.courseTitle}"`, r.campus, r.batch, r.status, r.submittedAt.slice(0, 10),
+    ].join(",")).join("\n");
+    const blob = new Blob([header + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `applications-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.push({ title: "Exported", tone: "success" });
+  }
 
   // Batches that belong to the application's course.
   const batchesForReview = React.useMemo(() => {
@@ -149,11 +182,17 @@ export default function AdminApplicationsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold">In-person applications</h1>
-        <p className="text-sm text-[var(--muted)] mt-1">
-          Review applications and place approved students into a physical class batch.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <div>
+          <p className="text-xs uppercase tracking-wider text-[var(--primary)] font-semibold">Manage</p>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight">In-person applications</h1>
+          <p className="mt-1 text-[var(--muted)]">
+            Review applications and place approved students into a physical class batch.
+          </p>
+        </div>
+        <Button variant="outline" onClick={exportCsv} disabled={filtered.length === 0}>
+          <Icon.Download size={16} /> Export CSV
+        </Button>
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
@@ -175,6 +214,27 @@ export default function AdminApplicationsPage() {
             icon={<Icon.Search size={16} />}
           />
         </div>
+      </div>
+
+      {/* Sort pills */}
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="text-sm text-muted font-medium mr-1">{filtered.length} application{filtered.length !== 1 ? "s" : ""}</p>
+        <div className="h-4 w-px bg-border mx-1" />
+        <span className="text-xs text-muted font-medium mr-1">Sort:</span>
+        {([
+          { key: "newest", label: "Newest" },
+          { key: "oldest", label: "Oldest" },
+          { key: "name", label: "Name" },
+          { key: "course", label: "Course" },
+        ] as { key: SortKey; label: string }[]).map((o) => (
+          <button
+            key={o.key}
+            onClick={() => setSortKey(o.key)}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+          >
+            {o.label}
+          </button>
+        ))}
       </div>
 
       {filtered.length === 0 ? (
@@ -207,7 +267,7 @@ export default function AdminApplicationsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((row) => (
+                {paginated.map((row) => (
                   <tr
                     key={row.id}
                     className="border-t border-[var(--border)] hover:bg-[var(--surface-2)]/50"
@@ -274,6 +334,24 @@ export default function AdminApplicationsPage() {
               </tbody>
             </table>
           </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between gap-3 px-4 py-3 border-t border-border flex-wrap">
+              <p className="text-sm text-muted">
+                Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filtered.length)} of {filtered.length}
+              </p>
+              <div className="flex items-center gap-1">
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}><Icon.ChevronLeft size={16} /></Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
+                  .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
+                  .map((p, idx) => p === "…"
+                    ? <span key={`e-${idx}`} className="px-2 text-muted text-sm">…</span>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-border hover:bg-surface-2"}`}>{p}</button>
+                  )}
+                <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
+              </div>
+            </div>
+          )}
         </Card>
       )}
 
