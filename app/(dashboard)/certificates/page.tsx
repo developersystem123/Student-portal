@@ -11,10 +11,10 @@ import { formatDate, formatHours } from "@/lib/utils";
 type SortKey = "newest" | "oldest" | "score-high" | "score-low";
 
 function scoreGrade(score: number): { label: string; color: string; bg: string } {
-  if (score >= 90) return { label: "Excellent", color: "text-green-700", bg: "bg-green-100 dark:bg-green-900/30" };
-  if (score >= 80) return { label: "Great", color: "text-blue-700", bg: "bg-blue-100 dark:bg-blue-900/30" };
-  if (score >= 70) return { label: "Good", color: "text-amber-700", bg: "bg-amber-100 dark:bg-amber-900/30" };
-  return { label: "Pass", color: "text-orange-700", bg: "bg-orange-100 dark:bg-orange-900/30" };
+  if (score >= 90) return { label: "Excellent", color: "text-[var(--primary)]", bg: "bg-[var(--primary-soft)]" };
+  if (score >= 80) return { label: "Great", color: "text-[var(--info)]", bg: "bg-[var(--info-soft)]" };
+  if (score >= 70) return { label: "Good", color: "text-[var(--amber)]", bg: "bg-[var(--amber-soft)]" };
+  return { label: "Pass", color: "text-[var(--amber)]", bg: "bg-[var(--amber-soft)]" };
 }
 
 function SkeletonCard() {
@@ -73,7 +73,7 @@ export default function CertificatesPage() {
       setCopied(code);
       toast.push({ title: "Verification link copied!", tone: "success" });
       setTimeout(() => setCopied(null), 2000);
-    });
+    }, () => toast.push({ title: "Couldn't copy the link", description: url, tone: "danger" }));
   }
 
   function downloadCertificate(courseName: string, name: string, score: number, code: string, date: string) {
@@ -157,7 +157,7 @@ export default function CertificatesPage() {
                 onClick={() => setSort(k)}
                 className={`text-xs px-3 py-1.5 rounded-lg font-medium transition ${
                   sort === k
-                    ? "bg-[var(--primary)] text-white"
+                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                     : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"
                 }`}
               >
@@ -200,7 +200,7 @@ export default function CertificatesPage() {
           <div className="flex-1">
             <p className="text-sm font-medium">
               {items.length < 3
-                ? `${3 - items.length} more certificate${3 - items.length > 1 ? "s" : ""} to earn the Scholar badge 🎓`
+                ? `${3 - items.length} more certificate${3 - items.length > 1 ? "s" : ""} to earn the Scholar badge`
                 : `${5 - items.length} more certificate${5 - items.length > 1 ? "s" : ""} to reach Gold status`}
             </p>
             <div className="mt-1.5 h-1.5 rounded-full bg-[var(--border)] overflow-hidden">
@@ -236,7 +236,7 @@ export default function CertificatesPage() {
             return (
               <Card key={cert.id} className="overflow-hidden group">
                 {/* Card hero */}
-                <div className="relative h-44 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white p-5 flex flex-col justify-between">
+                <div className="relative h-44 brand-fill text-white p-5 flex flex-col justify-between">
                   <div
                     className="absolute inset-0 opacity-25"
                     style={{ backgroundImage: "radial-gradient(circle at 80% 20%, rgba(255,255,255,.6), transparent 40%)" }}
@@ -274,7 +274,7 @@ export default function CertificatesPage() {
                       <button
                         onClick={() => copyVerifyCode(cert.verifyCode)}
                         className={`p-1 rounded transition ${
-                          copied === cert.verifyCode ? "text-green-500" : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                          copied === cert.verifyCode ? "text-[var(--primary)]" : "text-[var(--muted)] hover:text-[var(--foreground)]"
                         }`}
                         title="Copy verify link"
                       >

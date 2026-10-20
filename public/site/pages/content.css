@@ -1,0 +1,206 @@
+/* Site template content pages: blog, policies, service status, sitemap and 404. */
+.edu-content-section, .edu-sitemap, .edu-status { padding: 95px 0 110px; }
+.edu-section-intro { max-width: 65ch; margin: 16px auto 0; font-size: 18px; line-height: 1.7; color: #6B7280; }
+.edu-section-intro a, .edu-legal__contact a { color: #15803D; text-decoration: underline; }
+.edu-section-title { margin: 46px 0 20px; font-size: clamp(24px, 3vw, 34px); font-weight: 600; color: #374151; }
+.edu-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.edu-outline-link { display: inline-flex; align-items: center; justify-content: center; padding: 12px 20px; border: 1px solid #16A34A; border-radius: 999px; color: #15803D; font-weight: 600; text-align: center; }
+.edu-outline-link:hover { color: #fff; background: #15803D; }
+.edu-blog-page { padding: 90px 0 110px; }
+.edu-blog-page .section-title { margin-bottom: 28px; }
+.edu-blog-filter { max-width: 550px; margin: 0 auto 24px; }
+.edu-blog-categories { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: 0 0 38px; }
+.edu-blog-categories a { border: 1px solid #BBF7D0; border-radius: 30px; padding: 8px 18px; color: #374151; font-size: 15px; }
+.edu-blog-categories a:hover, .edu-blog-categories a.active { background: var(--edu-action); color: #fff; }
+.edu-blog-grid > div { margin-bottom: 24px; }
+/* margin-bottom comes from .blog-two__single, but the grid column already spaces the rows; on a
+   full-height card it only added a strip of dead space above the byline. */
+.edu-blog-card { height: 100%; margin-bottom: 0; display: flex; flex-direction: column; }
+.edu-blog-card .blog-two__img img { height: 245px; object-fit: cover; }
+.edu-blog-card .blog-two__content { display: flex; flex-direction: column; flex: 1; }
+.edu-blog-card .blog-two__meta { justify-content: flex-start; flex-wrap: wrap; gap: 4px 14px; }
+.edu-blog-card .blog-two__meta li+li { margin-left: 0; }
+.edu-blog-card .blog-two__meta li > span { display: inline-flex; align-items: center; gap: 6px; font: italic 500 15px var(--site-font-two); color: #374151; }
+.edu-blog-card .blog-two__meta li a span { color: var(--edu-text-green); }
+.edu-blog-card .blog-two__meta li > span [class^="icon-"] { color: var(--edu-text-green); }
+.edu-blog-card .blog-two__title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.edu-blog-card .blog-two__text { line-height: 1.7; }
+/* The byline is pushed to the card's bottom edge so every card in a row ends at the same line,
+   instead of the author's name floating at a different height per card (Fix G9). */
+.edu-blog-card__author { margin-top: auto; padding-top: 14px; color: #6B7280; font-size: 14px; }
+.edu-empty { text-align: center; padding: 60px 15px; }
+.edu-empty p { margin: 12px 0 24px; }
+.edu-blog-details.blog-details { padding: 90px 0 115px; }
+.edu-blog-details .blog-details__left { margin-right: 25px; }
+.edu-blog-details .blog-details__img img { width: 100%; max-height: 430px; object-fit: cover; }
+.edu-blog-details .blog-details__title-1 { overflow-wrap: anywhere; }
+.edu-blog-details__excerpt { font-size: 18px; line-height: 1.7; margin: 14px 0; }
+.edu-blog-details__body { max-width: 70ch; margin: 26px 0; line-height: 1.8; }
+.edu-blog-details__body p { white-space: pre-line; margin: 0 0 22px; }
+.edu-blog-details__body h3 { margin: 34px 0 13px; }
+.edu-blog-details__body strong, .edu-legal__body strong { font-weight: 700; color: #374151; }
+.edu-blog-details .blog-details__tag-and-share { flex-wrap: wrap; gap: 12px; }
+.edu-blog-related { margin-top: 55px; }
+.edu-blog-related .blog-two__single { margin-top: 18px; }
+.edu-blog-cta { margin: 42px 0 0; padding: 30px; border-radius: 20px; background: #F0FDF4; }
+.edu-blog-cta p { margin: 10px 0 20px; }
+.edu-blog-details .sidebar__single { background: linear-gradient(180deg, #F0FDF4 0%, #fff 100%); }
+.edu-blog-details .sidebar__title-icon img { max-width: 28px; }
+.edu-legal.blog-details { padding: 90px 0 115px; }
+.edu-legal__toc { position: sticky !important; top: 110px; max-height: calc(100vh - 130px); overflow-y: auto; background: linear-gradient(180deg, #F0FDF4 0%, #fff 100%) !important; }
+.edu-legal__content { max-width: 70ch; margin: 0 auto; }
+.edu-legal__updated { color: #6B7280; font-size: 14px; margin-bottom: 18px; }
+/* The summary sits in a callout, so it can stay at body size — larger type here outranked the policy itself. */
+.edu-legal__intro { padding: 20px 24px; background: #F0FDF4; border-left: 3px solid #16A34A; border-radius: 12px; font-size: 16px; line-height: 1.75; color: #374151; }
+.edu-legal__section { scroll-margin-top: 110px; margin-top: 38px; }
+.edu-legal__section h2 { font-size: clamp(21px, 2vw, 27px); line-height: 1.3; margin-bottom: 13px; }
+.edu-legal__body { color: #4B5563; font-size: 16px; line-height: 1.85; overflow-wrap: anywhere; }
+.edu-legal__body p { white-space: pre-line; margin-bottom: 18px; }
+.edu-legal__body ul, .edu-legal__body ol { margin: 0 0 18px; padding-left: 24px; }
+.edu-legal__body ul { list-style: disc; }
+.edu-legal__body ol { list-style: decimal; }
+.edu-legal__body li { padding-left: 4px; }
+.edu-legal__body li + li { margin-top: 8px; }
+.edu-legal__body li::marker { color: #16A34A; font-weight: 600; }
+.edu-legal__table-wrap { margin: 4px 0 18px; overflow-x: auto; border: 1px solid #D1FAE5; border-radius: 12px; }
+.edu-legal__table-wrap:focus-visible { outline: 2px solid #16A34A; outline-offset: 2px; }
+.edu-legal__table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 15px; line-height: 1.5; color: #4B5563; }
+.edu-legal__table caption { caption-side: top; padding: 12px 16px; font-size: 14px; font-weight: 600; color: #374151; text-align: left; background: #F0FDF4; border-bottom: 1px solid #D1FAE5; }
+.edu-legal__table th, .edu-legal__table td { padding: 12px 16px; text-align: left; vertical-align: top; border-bottom: 1px solid #E5E7EB; }
+.edu-legal__table thead th { font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #6B7280; }
+.edu-legal__table tbody tr:last-child > * { border-bottom: 0; }
+.edu-legal__table tbody th { font-weight: 400; white-space: nowrap; }
+/* On phones each cookie becomes its own labelled block instead of a sideways-scrolling table. */
+@media (max-width: 575px) {
+  .edu-legal__table { min-width: 0; }
+  .edu-legal__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .edu-legal__table tr, .edu-legal__table tbody th, .edu-legal__table td { display: block; }
+  .edu-legal__table tbody tr { padding: 14px 16px; border-bottom: 1px solid #E5E7EB; }
+  .edu-legal__table tbody tr:last-child { border-bottom: 0; }
+  .edu-legal__table tbody th, .edu-legal__table td { padding: 0; border: 0; }
+  .edu-legal__table tbody th { margin-bottom: 8px; }
+  .edu-legal__table td { display: grid; grid-template-columns: 84px 1fr; gap: 12px; }
+  .edu-legal__table td + td { margin-top: 4px; }
+  .edu-legal__table td::before { content: attr(data-label); font-size: 13px; font-weight: 600; color: #6B7280; }
+}
+.edu-legal__body code, .edu-legal__table code { font-size: .9em; background: #F0FDF4; padding: 2px 5px; border-radius: 4px; color: #1f2937; }
+.edu-legal__contact { padding: 24px; margin-top: 48px; border: 1px solid #BBF7D0; border-radius: 16px; line-height: 1.7; }
+.edu-legal__toc .sidebar__title-icon { color: var(--edu-text-green); }
+.edu-sitemap__grid > div { margin-bottom: 24px; }
+.edu-sitemap__card { height: 100%; background: linear-gradient(180deg, #F0FDF4 0%, #fff 100%) !important; }
+.edu-sitemap__card .sidebar__title-icon { color: var(--edu-text-green); }
+.edu-sitemap__card .sidebar__category-list li a { align-items: center; gap: 8px; }
+.edu-sitemap__link { display: flex; flex-direction: column; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+.edu-sitemap__link strong { font-weight: 600; }
+.edu-sitemap__link small { font-size: 14px; line-height: 1.4; }
+/* Legal is five short links with no descriptions: one full-width strip instead of a fifth tall card. */
+.edu-sitemap__card--strip { display: flex; align-items: center; gap: 24px; }
+.edu-sitemap__card--strip .sidebar__title-box { flex: none; margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+/* Links grow to fill each row, so a wrapped last row never leaves an empty slot. */
+.edu-sitemap__card--strip .sidebar__category-list { flex: 1; display: flex; flex-wrap: wrap; gap: 8px; }
+.edu-sitemap__card--strip .sidebar__category-list li { flex: 1 1 190px; border-bottom: 0; padding-bottom: 0; }
+.edu-sitemap__card--strip .sidebar__category-list li + li { margin-top: 0; }
+@media (max-width: 1199px) { .edu-sitemap__card--strip { flex-direction: column; align-items: stretch; gap: 16px; } .edu-sitemap__card--strip .sidebar__title-box { padding-bottom: 10px; border-bottom: 1px dashed var(--site-bdr-color); } }
+@media (max-width: 767px) { .edu-sitemap__card--strip .sidebar__category-list li { flex-basis: 100%; } }
+.edu-status__summary, .edu-status__service, .edu-status__incident, .edu-status__sla { border: 1px solid #BBF7D0; background: #fff; border-radius: 18px; padding: 25px; }
+.edu-status__summary { display: flex; gap: 20px; align-items: center; background: #F0FDF4; }
+.edu-status__summary > div { flex: 1; }
+.edu-status__summary h2, .edu-status__incident h3 { font-size: 22px; line-height: 1.35; color: #374151; }
+.edu-status__summary p { margin-top: 6px; }
+.edu-status__icon { color: var(--edu-text-green); font-size: 34px; }
+.edu-status__service { margin-bottom: 12px; }
+.edu-status__service-top { display: flex; align-items: center; gap: 14px; }
+.edu-status__dot { flex: none; width: 12px; height: 12px; border-radius: 50%; background: var(--edu-action); }
+.edu-status__service-name { flex: 1; min-width: 0; }
+.edu-status__service-name h3 { font-size: 18px; color: #374151; }
+.edu-status__service-name p { font-size: 14px; }
+.edu-status__uptime { display: flex; flex-direction: column; text-align: right; white-space: nowrap; }
+.edu-status__uptime small { font-size: 14px; }
+.edu-status__uptime strong { color: #374151; }
+.edu-status__badge { display: inline-flex; padding: 5px 12px; border-radius: 40px; font-size: 14px; color: #15803D; background: #DCFCE7; font-weight: 600; white-space: nowrap; }
+.edu-status__intro { max-width: 65ch; margin: 0 0 28px; }
+.edu-status__head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin: 46px 0 20px; }
+.edu-status__head .edu-section-title { margin: 0; }
+.edu-status__legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; font-size: 14px; color: #4B5563; }
+.edu-status__legend li { display: inline-flex; align-items: center; gap: 8px; }
+.edu-status__swatch { width: 10px; height: 10px; border-radius: 2px; }
+.edu-status__history { margin-top: 18px; }
+.edu-status__bars { display: flex; gap: 2px; height: 28px; }
+.edu-status__bar { position: relative; flex: 1; min-width: 1px; border-radius: 2px; transition: opacity 120ms ease-out; }
+/* Problem days are coloured by severity, so they read at a glance instead of as two shades of grey. */
+.edu-status__bar--up { background: var(--edu-action); }
+.edu-status__bar--partial { background: #D97706; }
+.edu-status__bar--outage { background: #DC2626; }
+.edu-status__bars:hover .edu-status__bar { opacity: .55; }
+.edu-status__bars:hover .edu-status__bar:hover { opacity: 1; }
+/* Hover tooltip with the day and its state. The row's full history is in the bars' aria-label. */
+.edu-status__bar::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); z-index: 2; padding: 5px 9px; border-radius: 6px; background: #1F2937; color: #F9FAFB; font-size: 13px; line-height: 1.3; white-space: nowrap; pointer-events: none; display: none; }
+.edu-status__bar--start::after { left: 0; transform: none; }
+.edu-status__bar--end::after { left: auto; right: 0; transform: none; }
+/* display:none rather than hidden, so an idle tooltip never widens the page on a phone. */
+.edu-status__bar:hover::after { display: block; }
+.edu-status__axis { display: flex; justify-content: space-between; margin-top: 6px; font-size: 13px; color: #6B7280; }
+.edu-status__badge--minor { color: #92400E; background: #FEF3C7; }
+.edu-status__badge--major { color: #991B1B; background: #FEE2E2; }
+.edu-status__subheading { margin-top: -15px; margin-bottom: 20px; }
+.edu-status__incident { margin-bottom: 16px; }
+.edu-status__incident-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 14px; margin-bottom: 12px; }
+.edu-status__incident ol { margin-top: 18px; padding-left: 22px; border-left: 2px solid #BBF7D0; list-style: none; }
+.edu-status__incident ol li { padding: 4px 0; line-height: 1.65; }
+.edu-status__incident ol strong { color: #374151; margin-right: 8px; }
+.edu-status__sla { display: flex; align-items: center; gap: 24px; margin-top: 50px; }
+.edu-status__sla > div:first-child { flex: 1; }
+.edu-status__sla h2 { font-size: 23px; }
+.edu-status__sla p { margin-top: 7px; }
+.edu-status__actions, .edu-not-found__buttons { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; }
+/* 404: the template blends its art with mix-blend-mode: difference, which would invert the artwork's colours. */
+.edu-not-found .error-page__img { mix-blend-mode: normal; }
+.edu-404-art { display: block; width: 100%; max-width: 480px; height: auto; margin: 0 auto; overflow: visible;
+  --nf-green: #16A34A; --nf-leaf: #86D9A3; --nf-mint: #EEF8F1; --nf-mint-2: #D9F1E1; --nf-line: #8FD3A6; --nf-surface: #FFFFFF;
+  --nf-tick: #B6C2BC; --nf-needle: #14532D; --nf-amber: #F5A524; --nf-cap: #14532D; --nf-cap-band: #166534; }
+:where(.site-dark) .edu-404-art { --nf-leaf: #3F8F5C; --nf-mint: rgba(74, 222, 128, 0.06); --nf-mint-2: rgba(74, 222, 128, 0.13);
+  --nf-line: rgba(74, 222, 128, 0.45); --nf-surface: #1F2937; --nf-tick: #4B5563; --nf-needle: #4ADE80; --nf-cap: #0F3D22; --nf-cap-band: #15803D; }
+/* The compass needle wanders, looking for the page. */
+.edu-404-art__needle { transform-box: fill-box; transform-origin: center; transform: rotate(32deg); animation: edu-404-needle 7s ease-in-out infinite; }
+@keyframes edu-404-needle { 0%, 100% { transform: rotate(32deg); } 30% { transform: rotate(-44deg); } 55% { transform: rotate(70deg); } 78% { transform: rotate(8deg); } }
+@media (prefers-reduced-motion: reduce) { .edu-404-art__needle { animation: none; } .edu-status__bar { transition: none; } }
+.edu-not-found .error-page__content { margin-top: 48px; }
+.edu-not-found .error-page__content h2 { color: var(--site-black); font-size: 32px; line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; text-transform: none; margin-bottom: 12px; }
+.edu-not-found .error-page__content p { color: var(--site-gray); font-size: 17px; max-width: 520px; margin: 0 auto; }
+.edu-not-found .error-page__content .edu-not-found__buttons { display: flex; margin-top: 32px; }
+:where(.site-dark) .edu-not-found { background: #111827; }
+:where(.site-dark) .edu-not-found .error-page__content h2 { color: #F9FAFB; }
+:where(.site-dark) .edu-section-intro, :where(.site-dark) .edu-blog-card__author, :where(.site-dark) .edu-legal__updated, :where(.site-dark) .edu-legal__body { color: #9CA3AF; }
+:where(.site-dark) .edu-section-title, :where(.site-dark) .edu-blog-card .blog-two__title a, :where(.site-dark) .edu-blog-card .blog-two__meta li > span, :where(.site-dark) .edu-blog-details__body strong, :where(.site-dark) .edu-legal__body strong, :where(.site-dark) .edu-status__summary h2, :where(.site-dark) .edu-status__service-name h3, :where(.site-dark) .edu-status__uptime strong, :where(.site-dark) .edu-status__incident h3, :where(.site-dark) .edu-status__incident ol strong { color: #E5E7EB; }
+:where(.site-dark) .edu-blog-details .sidebar__single, :where(.site-dark) .edu-legal__toc, :where(.site-dark) .edu-sitemap__card, :where(.site-dark) .edu-status__service, :where(.site-dark) .edu-status__incident, :where(.site-dark) .edu-status__sla { background: #1F2937 !important; border-color: #374151; }
+:where(.site-dark) .edu-status__summary, :where(.site-dark) .edu-blog-cta, :where(.site-dark) .edu-legal__intro, :where(.site-dark) .edu-legal__body code { background: #1F2937; border-color: #374151; }
+:where(.site-dark) .edu-legal__body code { color: #FBCFE8; }
+:where(.site-dark) .edu-legal__intro { color: #D1D5DB; }
+:where(.site-dark) .edu-legal__body li::marker { color: #4ADE80; }
+:where(.site-dark) .edu-legal__table-wrap { border-color: #374151; }
+:where(.site-dark) .edu-legal__table-wrap:focus-visible { outline-color: #4ADE80; }
+:where(.site-dark) .edu-legal__table { color: #9CA3AF; }
+:where(.site-dark) .edu-legal__table caption { background: #1F2937; border-color: #374151; color: #E5E7EB; }
+:where(.site-dark) .edu-legal__table th, :where(.site-dark) .edu-legal__table td { border-color: #374151; }
+:where(.site-dark) .edu-legal__table thead th, :where(.site-dark) .edu-legal__table td::before { color: #9CA3AF; }
+:where(.site-dark) .edu-legal__table tbody tr { border-color: #374151; }
+:where(.site-dark) .edu-legal__table code { background: #1F2937; color: #FBCFE8; }
+:where(.site-dark) .edu-legal__contact, :where(.site-dark) .edu-blog-categories a, :where(.site-dark) .edu-blog-card .blog-two__meta-box { border-color: #374151; }
+:where(.site-dark) .edu-legal__toc .sidebar__category-list a, :where(.site-dark) .edu-sitemap__card .sidebar__category-list a, :where(.site-dark) .edu-blog-details .sidebar__category-list a { background: #111827; color: #E5E7EB; }
+:where(.site-dark) .edu-legal__toc .sidebar__category-list a:hover, :where(.site-dark) .edu-sitemap__card .sidebar__category-list a:hover, :where(.site-dark) .edu-blog-details .sidebar__category-list a:hover { color: #fff; }
+:where(.site-dark) .edu-blog-categories a, :where(.site-dark) .edu-outline-link { color: #4ADE80; }
+:where(.site-dark) .edu-blog-categories a.active, :where(.site-dark) .edu-blog-categories a:hover, :where(.site-dark) .edu-outline-link:hover { color: #fff; }
+:where(.site-dark) .edu-section-intro a, :where(.site-dark) .edu-legal__contact a { color: #4ADE80; }
+:where(.site-dark) .edu-blog-details .blog-details__title-1, :where(.site-dark) .edu-blog-details .blog-details__title-2, :where(.site-dark) .edu-blog-details .blog-details__client-content h3, :where(.site-dark) .edu-blog-details .blog-details__client-meta p, :where(.site-dark) .edu-blog-details .sidebar__title, :where(.site-dark) .edu-legal__section h2, :where(.site-dark) .edu-legal__toc .sidebar__title, :where(.site-dark) .edu-sitemap__card .sidebar__title { color: #E5E7EB; }
+:where(.site-dark) .edu-blog-details .sidebar__post-title a, :where(.site-dark) .edu-blog-details .sidebar__tag-list a { color: #E5E7EB; }
+:where(.site-dark) .edu-status__bar--up { background: #22C55E; }
+:where(.site-dark) .edu-status__bar--partial { background: #F59E0B; }
+:where(.site-dark) .edu-status__bar--outage { background: #F87171; }
+:where(.site-dark) .edu-status__bar::after { background: #F9FAFB; color: #111827; }
+:where(.site-dark) .edu-status__legend, :where(.site-dark) .edu-status__axis { color: #9CA3AF; }
+.site-dark .edu-status__badge.edu-status__badge--minor { color: #FCD34D; background: rgba(245, 158, 11, .14); }
+.site-dark .edu-status__badge.edu-status__badge--major { color: #FCA5A5; background: rgba(248, 113, 113, .14); }
+/* The template stacks the meta into a column below 992px; keep it aligned with the card's own text. */
+@media (max-width: 991px) { .edu-legal__row { display: flex; flex-direction: column-reverse; } .edu-legal__toc { position: static !important; max-height: none; margin-top: 45px; } .edu-blog-details .blog-details__left { margin-right: 0; } .edu-status__sla { flex-direction: column; align-items: stretch; } .edu-blog-card .blog-two__meta { align-items: flex-start; } }
+@media (max-width: 767px) { .edu-blog-page, .edu-blog-details.blog-details, .edu-legal.blog-details, .edu-content-section { padding: 55px 0 75px; } .edu-status__summary { align-items: flex-start; flex-wrap: wrap; } .edu-status__summary .thm-btn { width: 100%; justify-content: center; } .edu-status__service-top { flex-wrap: wrap; row-gap: 10px; } .edu-status__service-name { flex-basis: calc(100% - 26px); } .edu-status__uptime { flex-direction: row; align-items: baseline; gap: 6px; margin-left: 26px; text-align: left; } .edu-status__badge { margin-left: auto; } .edu-status__bars { gap: 1px; } .edu-sitemap__card, .edu-legal__toc { padding: 16px !important; } }
+@media (max-width: 400px) { .edu-status__service-top .edu-status__badge { margin-left: 0; } }

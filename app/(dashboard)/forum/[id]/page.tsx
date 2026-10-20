@@ -102,7 +102,7 @@ export default function ForumDetailPage() {
           <Avatar name={post.author.name} src={post.author.avatar} size={44} />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              {post.pinned && <Icon.Pin size={14} className="text-amber-500" />}
+              {post.pinned && <Icon.Pin size={14} className="text-[var(--amber)]" />}
               <h1 className="text-xl font-bold">{post.title}</h1>
               <Badge variant="primary">{post.category}</Badge>
               {post.course && <Badge variant="default">{post.course.title}</Badge>}

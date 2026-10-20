@@ -190,8 +190,8 @@ export default function AdminCertificatesPage() {
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: "Total issued", value: certStats.total, icon: <Icon.Award size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-          { label: "Average score", value: certStats.total ? `${certStats.avgScore}%` : "—", icon: <Icon.TrendingUp size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-          { label: "Score ≥ 90%", value: certStats.highScore, icon: <Icon.Star size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+          { label: "Average score", value: certStats.total ? `${certStats.avgScore}%` : "—", icon: <Icon.TrendingUp size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+          { label: "Score ≥ 90%", value: certStats.highScore, icon: <Icon.Star size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 !py-3">
@@ -228,7 +228,7 @@ export default function AdminCertificatesPage() {
             <button
               key={o.key}
               onClick={() => setSortKey(o.key)}
-              className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
+              className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
             >
               {o.label}
             </button>
@@ -312,7 +312,7 @@ export default function AdminCertificatesPage() {
                   .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
                   .map((p, idx) => p === "…"
                     ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span>
-                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>
                   )}
                 <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
               </div>
@@ -366,7 +366,7 @@ export default function AdminCertificatesPage() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <Label className="text-sm font-medium">Score (%)</Label>
-              <span className={`text-xs font-semibold ${Number(score) >= 60 ? "text-emerald-600" : "text-red-500"}`}>
+              <span className={`text-xs font-semibold ${Number(score) >= 60 ? "text-[var(--primary)]" : "text-[var(--danger)]"}`}>
                 {score ? `${score}%` : "—"}
               </span>
             </div>
@@ -380,7 +380,7 @@ export default function AdminCertificatesPage() {
             />
             <div className="h-1.5 w-full rounded-full bg-[var(--surface-2)] overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-300 ${Number(score) >= 90 ? "bg-emerald-500" : Number(score) >= 60 ? "bg-[var(--primary)]" : "bg-red-400"}`}
+                className={`h-full rounded-full transition-all duration-300 ${Number(score) >= 90 ? "bg-[var(--primary)]" : Number(score) >= 60 ? "bg-[var(--primary)]" : "bg-[var(--danger)]"}`}
                 style={{ width: `${Math.min(100, Math.max(0, Number(score) || 0))}%` }}
               />
             </div>

@@ -41,15 +41,15 @@ function rateTone(rate: number): "success" | "warning" | "danger" {
 }
 
 const RATE_COLOR = {
-  success: "text-emerald-500",
-  warning: "text-amber-500",
-  danger: "text-red-500",
+  success: "text-[var(--primary)]",
+  warning: "text-[var(--amber)]",
+  danger: "text-[var(--danger)]",
 };
 
 const RATE_BAR = {
-  success: "bg-emerald-500",
-  warning: "bg-amber-500",
-  danger: "bg-red-500",
+  success: "bg-[var(--primary)]",
+  warning: "bg-[var(--amber)]",
+  danger: "bg-[var(--danger)]",
 };
 
 function nextSessionDate(daysOfWeek: string[]): string {
@@ -176,11 +176,11 @@ export default function StudentPhysicalClassesPage() {
 
       {/* Low attendance warning */}
       {!loading && lowAttendance.length > 0 && (
-        <div className="rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-700/40 px-4 py-3 flex items-start gap-3">
-          <Icon.AlertCircle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+        <div className="rounded-xl border border-[var(--amber)]/40 bg-[var(--amber-soft)] px-4 py-3 flex items-start gap-3">
+          <Icon.AlertCircle size={18} className="text-[var(--amber)] shrink-0 mt-0.5" />
           <div className="text-sm">
-            <p className="font-semibold text-amber-700 dark:text-amber-400">Low attendance warning</p>
-            <p className="text-amber-600/90 dark:text-amber-400/80 text-xs mt-0.5">
+            <p className="font-semibold text-[var(--amber)]">Low attendance warning</p>
+            <p className="text-[var(--amber)] text-xs mt-0.5">
               {lowAttendance.length === 1
                 ? `${lowAttendance[0].class.courseTitle} has ${lowAttendance[0].attendanceRate}% attendance — below the 75% requirement.`
                 : `${lowAttendance.length} classes have attendance below 75%. Improve attendance to avoid issues.`}
@@ -317,7 +317,7 @@ function GridClassCard({ item }: { item: MyPhysicalClass }) {
             {STATUS_LABEL[pc.status]}
           </Badge>
           {item.attendanceRate < 75 && pc.status === "ongoing" && (
-            <Badge variant="danger" className="backdrop-blur">⚠ Low attendance</Badge>
+            <Badge variant="danger" className="backdrop-blur"><Icon.AlertCircle size={12} /> Low attendance</Badge>
           )}
         </div>
         {next && (
@@ -371,10 +371,10 @@ function GridClassCard({ item }: { item: MyPhysicalClass }) {
           </div>
           {/* Attendance breakdown pills */}
           <div className="flex items-center gap-1.5 text-[10px]">
-            <span className="text-emerald-500">✓ {item.present} present</span>
-            {item.late > 0 && <span className="text-amber-500">~ {item.late} late</span>}
-            {item.absent > 0 && <span className="text-red-500">✗ {item.absent} absent</span>}
-            {item.excused > 0 && <span className="text-sky-500">◎ {item.excused} excused</span>}
+            <span className="text-[var(--primary)]">✓ {item.present} present</span>
+            {item.late > 0 && <span className="text-[var(--amber)]">~ {item.late} late</span>}
+            {item.absent > 0 && <span className="text-[var(--danger)]">✗ {item.absent} absent</span>}
+            {item.excused > 0 && <span className="text-[var(--info)]">◎ {item.excused} excused</span>}
           </div>
         </div>
 

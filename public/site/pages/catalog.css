@@ -1,0 +1,241 @@
+/* EduPortal catalog pages — see app/site. */
+.edu-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.edu-catalog { margin-bottom: 0; background: linear-gradient(180deg, #fff 0%, #f0fdf4 100%); padding: 90px 0; }
+.edu-catalog__intro { max-width: 720px; margin-bottom: 44px; }
+.edu-catalog__intro h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.18; margin: 12px 0; color: #374151; }
+.edu-catalog__intro p { color: #6b7280; font-size: 17px; }
+.edu-catalog .course-grid__list-item a { color: #374151; flex: 1; line-height: 1.4; }
+.edu-catalog .course-grid__list-item a:hover, .edu-catalog .course-grid__list-item a.edu-filter-active { color: #15803d; font-weight: 600; }
+.edu-catalog .course-grid__list-item li:has(.edu-filter-active) .course-grid__list-check { background: var(--edu-action); }
+.edu-catalog .course-grid__list-item li:has(.edu-filter-active) .course-grid__list-check::before { opacity: 1; }
+.edu-catalog .course-list__right-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.edu-reset, .edu-pricing__more a { color: #15803d; text-decoration: underline; }
+.edu-catalog__column { display: flex; margin-bottom: 25px; }
+.edu-course-card { width: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.edu-course-card .courses-two__img img { width: 100%; height: 215px; object-fit: cover; }
+.edu-course-card .courses-two__content { display: flex; flex-direction: column; flex: 1; }
+.edu-course-card__category { position: absolute; top: 15px; left: 15px; z-index: 2; background: var(--edu-action); color: #fff; border-radius: 20px; padding: 3px 12px; font-size: 14px; }
+/* Card layout: title, description and meta each get a fixed height so the footers of the cards in a
+   row line up, and the meta sits with the copy it describes instead of between two action rows. */
+.edu-course-card .courses-two__title { font-size: 20px; line-height: 1.3; min-height: 52px; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.edu-course-card__description { margin: 0; font-size: 14px; line-height: 1.6; min-height: 44px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* The template gives the meta row its own dashed top border; with the footer's line right below it
+   the card read as a stack of stripes. The meta belongs with the copy above it, so it keeps no rule
+   and the footer keeps the single divider. */
+.edu-course-card .courses-two__meta { gap: 14px; margin-top: 12px; padding-top: 0; border-top: 0; }
+.edu-course-card .courses-two__meta li { gap: 6px; }
+.edu-course-card .courses-two__meta li .icon span { font-size: 13px; color: var(--edu-action); }
+.edu-course-card .courses-two__meta li p { margin: 0; font-size: 13px; line-height: 1.4; color: #6b7280; }
+/* One footer row: who teaches it on the left, the single action on the right. */
+.edu-course-card__footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 14px; border-top: 1px solid #bbf7d0; }
+.edu-course-card__byline { display: flex; align-items: center; gap: 8px; min-width: 0; margin: 0; font-size: 13px; line-height: 1.3; color: #6b7280; }
+.edu-course-card__avatar { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 700; letter-spacing: .3px; }
+.edu-course-card__byline-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.edu-course-card__enroll { display: inline-flex; align-items: center; gap: 7px; flex: none; padding: 9px 16px; border-radius: 999px; background: var(--edu-action); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; white-space: nowrap; transition: background-color 160ms ease-out; }
+.edu-course-card__enroll:hover, .edu-course-card__enroll:focus-visible { background: #166534; color: #fff; }
+.edu-course-card__enroll i { font-size: 12px; }
+.edu-apply-btn { border: 1px solid #16a34a; background: transparent; color: #15803d; padding: 8px 12px; border-radius: 8px; font-size: 14px; line-height: 1.4; cursor: pointer; }
+.edu-apply-btn:hover { background: var(--edu-action); color: #fff; }
+.edu-apply-notice { flex-basis: 100%; margin: 0; font-size: 13px; line-height: 1.5; color: #b91c1c; }
+:where(.site-dark) .edu-apply-notice { color: #fca5a5; }
+.edu-catalog__empty { text-align: center; padding: 70px 15px; border: 1px solid #bbf7d0; border-radius: 16px; background: #fff; }
+.edu-catalog__empty > span { font-size: 32px; color: var(--edu-text-green); }
+.edu-catalog__empty h3 { margin: 16px 0 8px; }
+.edu-catalog__empty .thm-btn { margin-top: 24px; }
+/* Catalogue pagination: the template's round page buttons plus arrows, a focus ring and a disabled state. */
+#course-results { scroll-margin-top: 120px; }
+.edu-pagination { margin-top: 10px; }
+.edu-pagination .pg-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 0; }
+.edu-pagination .pg-pagination li { margin: 0; }
+.edu-pagination .pg-pagination li a, .edu-pagination__arrow > span { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; line-height: 1; font-weight: 600; color: #374151; transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out; }
+.edu-pagination .pg-pagination li a:focus-visible { outline: 2px solid #15803d; outline-offset: 3px; }
+.edu-pagination__arrow > span { border: 1px solid #e5e7eb; border-radius: 50%; color: #9ca3af; cursor: not-allowed; }
+.edu-pagination__gap { width: 24px; text-align: center; color: #6b7280; }
+@media (prefers-reduced-motion: reduce) { .edu-pagination .pg-pagination li a { transition: none; } }
+.edu-catalog-cta { padding: 60px 0 90px; }
+.edu-catalog-cta__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 42px; background: #15803d; border-radius: 20px; color: #fff; }
+.edu-catalog-cta h2, .edu-catalog-cta p { color: #fff; }
+.edu-catalog-cta__links { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
+.edu-catalog-cta__links .thm-btn { background: #fff; color: #15803d; white-space: nowrap; }
+.edu-catalog-cta__contact { color: #fff; text-decoration: underline; }
+.edu-detail .course-details__img img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.edu-detail .course-details__title { font-size: clamp(28px, 3vw, 42px); line-height: 1.22; }
+.edu-detail .course-details__client-content { padding-left: 0; }
+/* Values in the meta row (instructor, level, review count, rating). The template types them as
+   headings, which put an <h4> straight after the page's <h1> and broke the document outline. */
+.edu-detail__value { margin: 5px 0 0; font-size: 20px; font-weight: 500; line-height: 1.3; color: var(--site-black); }
+.edu-detail__score { margin: 0; font-size: 28px; font-weight: 500; line-height: 1.2; color: var(--edu-text-green); }
+/* Tab strip: the template drew four identical links with no current-section state, sitting flush
+   against the meta row. Tabs now align with the content edge, show which section you are reading,
+   and scroll sideways instead of wrapping to a second line on phones. */
+.edu-detail__nav { display: flex; flex-wrap: wrap; gap: 0; margin: 22px 0 25px; border-bottom: 1px solid #bbf7d0; }
+.edu-detail__nav a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 14px; color: #374151; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 160ms ease-out, border-color 160ms ease-out; }
+.edu-detail__nav a:first-child { padding-left: 0; }
+.edu-detail__nav a:hover { color: var(--edu-text-green); }
+.edu-detail__nav a[aria-current="true"] { color: var(--edu-text-green); border-bottom-color: var(--edu-action); }
+.edu-detail__nav a:focus-visible { outline: 2px solid #15803D; outline-offset: 2px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) { .edu-detail__nav a { transition: none; } }
+.edu-detail__panel { scroll-margin-top: 100px; margin-bottom: 30px; }
+.edu-detail__panel:focus-visible { outline: none; }
+.edu-detail__panel + .edu-detail__panel { border-top: 1px solid #bbf7d0; padding-top: 28px; }
+/* Lesson rows. The template dresses `.accrodion-title__count` as a FAQ accordion header — a `::before`
+   printing "Module N" in the serif, a `::after` colon floating 7px to its right, and the number we
+   render underneath — which is where the stray "Module 1 : 01" came from. These rows are a plain
+   list, so the number becomes a badge, the decorations go, and the row is no longer a dead click
+   target (it never expanded to anything). */
+.edu-detail__lesson { margin-bottom: 12px; padding: 0; }
+.edu-detail__lesson .accrodion-title { padding: 16px 22px; gap: 16px; cursor: default; }
+.edu-detail__lesson .accrodion-title::after, .edu-detail__lesson .accrodion-title::before { display: none; }
+.edu-detail__lesson .accrodion-title-box { gap: 16px; min-width: 0; }
+.edu-detail__lesson .accrodion-title__count::before, .edu-detail__lesson .accrodion-title__count::after { content: none; }
+.edu-detail__lesson .accrodion-title__count { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 8px; border-radius: 12px; background: #ECFDF5; color: var(--edu-action); font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.edu-detail__lesson .accrodion-title-text { min-width: 0; }
+.edu-detail__lesson .accrodion-title-text h3 { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4; color: var(--site-black); }
+.edu-detail__lesson .accrodion-meta { flex: none; }
+.edu-detail__lesson .accrodion-meta p { margin: 0; font-size: 14px; color: var(--site-gray); }
+.edu-detail .course-details__overview-title, .edu-detail .course-details__curriculam-title { font-size: clamp(22px, 2.4vw, 30px); }
+.edu-detail .course-details__overview-points-content h4 { font-size: 20px; font-weight: 500; line-height: 1.3; margin-bottom: 13px; }
+.edu-detail .course-details__Instructor-client-name-box h2 { font-size: clamp(22px, 2.4vw, 30px); }
+@media (max-width: 767px) {
+  .edu-detail__nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .edu-detail__nav::-webkit-scrollbar { display: none; }
+  .edu-detail__nav a { white-space: nowrap; padding: 12px; }
+  .edu-detail__nav a:first-child { padding-left: 2px; }
+  /* The template stacks the lesson badge above the title on phones; keep them on one line and drop
+     the duration underneath, indented to the title. */
+  .edu-detail__lesson .accrodion-title { flex-direction: row; align-items: center; flex-wrap: wrap; }
+  .edu-detail__lesson .accrodion-title-box { flex-direction: row; align-items: center; width: 100%; gap: 12px; }
+  .edu-detail__lesson .accrodion-meta { flex: 1 1 100%; justify-content: flex-start; margin-left: 0; padding-left: 56px; }
+}
+/* Course detail enroll card: price, then the two ways to take the course as full-width buttons. */
+.edu-enroll .course-details__info-box { padding: 28px; }
+.edu-enroll__price { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #DCFCE7; }
+.edu-enroll__price p { margin: 0; font-size: 15px; color: var(--site-gray); }
+.edu-enroll .course-details__doller { margin: 0; font-size: 36px; line-height: 1.1; font-weight: 600; letter-spacing: -0.01em; color: #15803D; }
+.edu-enroll__actions { display: grid; gap: 12px; }
+.edu-enroll__actions .thm-btn, .edu-enroll__actions .edu-apply-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; padding: 12px 20px; border-radius: 999px; font-size: 16px; font-weight: 600; line-height: 1.3; text-align: center; }
+.edu-enroll__actions .thm-btn > span { margin: 0; }
+.edu-enroll__actions .edu-apply-btn { border: 1px solid #16A34A; background: transparent; color: #15803D; transition: background-color 160ms ease-out, color 160ms ease-out; }
+.edu-enroll__actions .edu-apply-btn:hover { background: #15803D; color: #fff; }
+.edu-enroll__actions .thm-btn:focus-visible, .edu-enroll__actions .edu-apply-btn:focus-visible { outline: 2px solid #15803D; outline-offset: 3px; }
+.edu-enroll__note { margin: 14px 0 0; font-size: 14px; line-height: 1.55; color: var(--site-gray); }
+.edu-enroll .course-details__info-list-title { margin-top: 28px; }
+@media (min-width: 992px) { .edu-enroll { position: sticky; top: 120px; } }
+/* Phones and tablets: show the enroll card straight after the banner instead of below the whole curriculum. */
+@media (max-width: 991px) { .edu-detail .row > .col-xl-4 { order: -1; margin-bottom: 40px; } .edu-enroll.course-details__right { margin-top: 0; } }
+@media (max-width: 767px) { .edu-detail.course-details { padding: 48px 0 80px; } .edu-enroll .course-details__info-box { padding: 22px; } }
+@media (prefers-reduced-motion: reduce) { .edu-enroll__actions .edu-apply-btn { transition: none; } }
+.edu-detail .course-details__review-count h3, .edu-detail__score { color: var(--edu-text-green); }
+.edu-star { color: #eab308; }
+.edu-pricing { background: linear-gradient(135deg, #fff, #f0fdf4); margin-bottom: 0; padding: 90px 0; }
+.edu-pricing .section-title-two > p, .edu-verify .section-title-two > p { margin: 12px auto 0; max-width: 620px; }
+.edu-pricing__toggle { display: flex; justify-content: center; gap: 4px; width: fit-content; padding: 5px; margin: 28px auto 40px; border: 1px solid #bbf7d0; background: #fff; border-radius: 12px; }
+.edu-pricing__toggle a { padding: 9px 14px; color: #374151; border-radius: 9px; }
+.edu-pricing__toggle a[aria-current] { color: #fff; background: var(--edu-action); }
+.edu-pricing__toggle a span { font-size: 14px; margin-left: 4px; }
+.edu-pricing__plans > div { display: flex; }
+.edu-pricing__card { position: relative; width: 100%; display: flex; flex-direction: column; background: #fff; text-align: left; padding: 30px; }
+.edu-pricing__card--highlight { border: 2px solid #16a34a; }
+/* The badge sits in the card corner instead of the flow: as a flow item it pushed the price, the
+   features and the button of the highlighted card out of line with the other two. */
+.edu-pricing__popular { position: absolute; top: 25px; right: 25px; background: var(--edu-action); color: #fff; border-radius: 20px; padding: 4px 12px; font-size: 13px; line-height: 1.4; font-weight: 600; }
+.edu-pricing__tagline { margin-top: 9px; min-height: 46px; }
+.edu-pricing__bill { font-size: 14px; margin: 0 0 14px; }
+/* The template puts the price in a 150px solid green circle, centred in an otherwise left-aligned
+   card. Here it is a large, plain price that lines up with the name and the feature list. */
+.edu-pricing__card .pricing-one__price-box { display: flex; flex-direction: row; align-items: baseline; justify-content: flex-start; gap: 8px; width: auto; height: auto; background: none; border-radius: 0; margin: 20px 0 6px; }
+.edu-pricing__card .pricing-one__price-box h3 { font-size: 42px; line-height: 1.05; font-weight: 600; letter-spacing: -.02em; color: var(--site-black); }
+.edu-pricing__card .pricing-one__price-box p { margin: 0; font-size: 16px; color: #6b7280; }
+.edu-pricing__card .pricing-one__feature { flex: 1; }
+.edu-pricing__card .pricing-one__feature li { display: flex; gap: 8px; line-height: 1.4; }
+.edu-pricing__card .pricing-one__feature .fa-check { color: var(--edu-text-green); margin-top: 4px; }
+.edu-pricing__enterprise { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; padding: 28px; margin-top: 35px; border: 1px solid #bbf7d0; background: #fff; border-radius: 16px; }
+.edu-pricing__enterprise > span { color: var(--edu-text-green); font-size: 30px; }
+.edu-pricing__enterprise > div { flex: 1; min-width: 200px; }
+.edu-pricing__enterprise h3 { font-size: 22px; }
+.edu-pricing__faq { padding: 90px 0; }
+.edu-pricing__faq .section-title-two { margin-bottom: 40px; }
+.edu-pricing__more { text-align: center; margin-top: 25px; }
+.edu-verify { padding: 90px 0; }
+.edu-verify__inner { max-width: 720px; margin: auto; }
+.edu-verify__icon { display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 14px; background: #dcfce7; color: #15803d; font-size: 28px; margin-bottom: 20px; }
+.edu-verify__card { padding: 30px; margin-top: 30px; border: 1px solid #bbf7d0; border-radius: 16px; background: #fff; }
+/* Input and button share one row height, so the button lines up with the field instead of sitting a few px low. */
+.edu-verify__form-row { display: flex; align-items: stretch; gap: 12px; margin-top: 10px; }
+.edu-verify__form-row .contact-three__input-box { margin-bottom: 0; }
+.edu-verify__form-row .contact-three__btn-box { display: flex; }
+.edu-verify__form-row .edu-submit { min-height: 50px; padding-top: 0; padding-bottom: 0; }
+.edu-verify__help { margin: 12px 0 0; font-size: 14px; line-height: 1.6; color: #6b7280; }
+.edu-verify__help code { font-size: 13px; padding: 1px 6px; border-radius: 4px; background: #f0fdf4; color: #15803d; }
+.edu-verify__card [role="status"]:empty { display: none; }
+.edu-verify__form-row .contact-three__input-box { flex: 1; min-width: 0; }
+.edu-verify__form-row .contact-three__btn-box { margin-top: 0; }
+.edu-verify__form-row input { text-transform: uppercase; }
+.edu-verify__form-row input::placeholder { text-transform: none; }
+.edu-verify__feedback { margin-top: 20px; }
+.edu-verify__result { margin-top: 24px; border-radius: 12px; border: 1px solid #86efac; background: #f0fdf4; padding: 22px; }
+.edu-verify__result--invalid { background: #fef2f2; border-color: #fecaca; }
+.edu-verify__result h3 { font-size: 20px; color: #15803d; display: flex; align-items: center; gap: 8px; }
+.edu-verify__result--invalid h3 { color: #b91c1c; }
+.edu-verify__score { margin-left: auto; font-size: 16px; }
+.edu-verify__result dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin: 18px 0 0; }
+.edu-verify__result dt { font-size: 12px; color: #6b7280; }
+.edu-verify__result dd { font-weight: 600; overflow-wrap: anywhere; color: #374151; }
+:where(.site-dark) .edu-catalog, :where(.site-dark) .edu-pricing { background: #111827; }
+:where(.site-dark) .edu-catalog__intro h2, :where(.site-dark) .edu-catalog .course-grid__list-item a, :where(.site-dark) .edu-detail__nav a, :where(.site-dark) .edu-pricing__toggle a { color: #e5e7eb; }
+:where(.site-dark) .edu-catalog__intro p { color: #9ca3af; }
+:where(.site-dark) .edu-catalog__empty, :where(.site-dark) .edu-course-card, :where(.site-dark) .edu-pricing__card, :where(.site-dark) .edu-pricing__enterprise, :where(.site-dark) .edu-pricing__toggle, :where(.site-dark) .edu-verify__card { background: #1f2937; border-color: #374151; }
+:where(.site-dark) .edu-pricing__card .pricing-one__package-name, :where(.site-dark) .edu-pricing__enterprise h3, :where(.site-dark) .edu-detail__panel h3, :where(.site-dark) .edu-detail__panel h4, :where(.site-dark) .edu-detail .course-details__title { color: #e5e7eb; }
+:where(.site-dark) .edu-pricing__card .pricing-one__price-box h3 { color: #e5e7eb; }
+:where(.site-dark) .edu-pricing__card .pricing-one__price-box p { color: #9ca3af; }
+:where(.site-dark) .edu-course-card__footer, :where(.site-dark) .edu-detail__panel + .edu-detail__panel, :where(.site-dark) .edu-detail__nav { border-color: #374151; }
+:where(.site-dark) .edu-pricing__toggle a[aria-current] { background: var(--edu-action); color: #fff; }
+:where(.site-dark) .edu-verify__result--valid { background: #123528; border-color: #166534; }
+:where(.site-dark) .edu-verify__result--invalid { background: #3b1e26; border-color: #7f1d1d; }
+:where(.site-dark) .edu-verify__result dd { color: #e5e7eb; }
+:where(.site-dark) .edu-detail, :where(.site-dark) .edu-verify, :where(.site-dark) .edu-pricing__faq { background: #111827; }
+:where(.site-dark) .edu-detail .course-details__info-box, :where(.site-dark) .edu-detail__lesson, :where(.site-dark) .edu-pricing__faq .accrodion { background: #1f2937; border-color: #374151; }
+:where(.site-dark) .edu-detail .course-details__info-list-1 li, :where(.site-dark) .edu-detail .course-details__client-and-ratting-box { border-color: #374151; }
+:where(.site-dark) .edu-detail .course-details__info-list-title, :where(.site-dark) .edu-detail .course-details__info-list-1 li > span, :where(.site-dark) .edu-detail__value, :where(.site-dark) .edu-detail .course-details__overview-points-content h4, :where(.site-dark) .edu-detail .course-details__Instructor-client-name-box h2, :where(.site-dark) .edu-detail__lesson .accrodion-title-text h3, :where(.site-dark) .edu-pricing__faq .accrodion-title h4 { color: #e5e7eb; }
+:where(.site-dark) .edu-detail .edu-apply-btn, :where(.site-dark) .edu-enroll .course-details__doller, :where(.site-dark) .edu-reset { color: #4ade80; }
+:where(.site-dark) .edu-detail__score, :where(.site-dark) .edu-detail__nav a[aria-current="true"] { color: #4ade80; }
+:where(.site-dark) .edu-detail__nav a { color: #d1d5db; }
+:where(.site-dark) .edu-detail__nav a[aria-current="true"] { border-bottom-color: #4ade80; }
+:where(.site-dark) .edu-detail__lesson .accrodion-title__count { background: #14532d; }
+:where(.site-dark) .edu-detail__lesson .accrodion-meta p, :where(.site-dark) .edu-detail .course-details__overview-points-content { color: #9ca3af; }
+:where(.site-dark) .edu-verify__result dt { color: #9ca3af; }
+:where(.site-dark) .edu-verify__help { color: #9ca3af; }
+:where(.site-dark) .edu-verify__help code { background: #1f2937; color: #4ade80; }
+:where(.site-dark) .edu-catalog .course-grid__title, :where(.site-dark) .edu-course-card .courses-two__review p, :where(.site-dark) .edu-course-card .courses-two__title a { color: #f9fafb; }
+:where(.site-dark) .edu-course-card .courses-two__meta li p, :where(.site-dark) .edu-course-card__byline { color: #9ca3af; }
+:where(.site-dark) .edu-course-card__avatar { background: #14532d; color: #86efac; }
+:where(.site-dark) .edu-course-card .courses-two__title a:hover { color: #4ade80; }
+:where(.site-dark) .edu-catalog .course-list__right-top { background: #1f2937; border-color: #374151; }
+:where(.site-dark) .edu-catalog .course-list__right-top-text { color: #d1d5db; }
+:where(.site-dark) .edu-pagination .pg-pagination li:not(.active):not(:hover) a { color: #e5e7eb; border-color: #374151; }
+:where(.site-dark) .edu-pagination__arrow > span { border-color: #374151; color: #6b7280; }
+:where(.site-dark) .edu-pagination .pg-pagination li a:focus-visible { outline-color: #4ade80; }
+:where(.site-dark) .edu-pagination__gap { color: #9ca3af; }
+:where(.site-dark) .edu-filter-count { color: #9ca3af; }
+:where(.site-dark) .edu-filter-count--empty { color: #4b5563; }
+:where(.site-dark) .edu-catalog .course-grid__left { scrollbar-color: #374151 transparent; }
+:where(.site-dark) .edu-catalog .course-grid__left::-webkit-scrollbar-thumb { background: #374151; }
+/* The sidebar is a third the height of the results, so on desktop the filter column used to run out
+   after the first row and leave blank space beside rows 2 and 3. Sticky keeps it beside the results,
+   and it only scrolls internally when the viewport is too short for the whole panel. */
+@media (min-width: 992px) {
+  .edu-catalog .course-grid__left { position: sticky; top: 104px; max-height: calc(100vh - 128px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #bbf7d0 transparent; }
+  .edu-catalog .course-grid__left::-webkit-scrollbar { width: 6px; }
+  .edu-catalog .course-grid__left::-webkit-scrollbar-thumb { background: #bbf7d0; border-radius: 3px; }
+  .edu-catalog .course-grid__left::-webkit-scrollbar-track { background: transparent; }
+}
+/* Filter counts: quieter than the label, and visibly "nothing here" at zero. */
+.edu-filter-count { color: #9ca3af; font-weight: 400; }
+.edu-catalog .course-grid__list-item a.edu-filter-active .edu-filter-count { color: inherit; }
+.edu-filter-count--empty { color: #d1d5db; }
+@media (max-width: 991px) { .edu-catalog .course-grid__left { margin: 0 0 36px; } .edu-catalog .course-grid__sidebar { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; } .edu-catalog .course-grid__single + .course-grid__single { margin: 0; } }
+@media (max-width: 767px) { .edu-catalog, .edu-pricing, .edu-verify, .edu-pricing__faq { padding: 65px 0; } .edu-catalog .course-grid__sidebar { grid-template-columns: 1fr; } .edu-catalog__column { width: 100%; } .edu-catalog-cta__inner { flex-direction: column; align-items: flex-start; padding: 25px; } .edu-detail__nav a { padding: 8px; font-size: 13px; } .edu-verify__form-row { flex-direction: column; } .edu-verify__form-row .contact-three__input-box, .edu-verify__form-row .contact-three__btn-box, .edu-verify__form-row button { width: 100%; } .edu-verify__result dl { grid-template-columns: 1fr; } }
+@media (max-width: 390px) { .edu-pricing__card { padding: 22px; } .edu-verify__card { padding: 20px; } }
+:where(.site-dark) .edu-enroll__price { border-color: #374151; }
+:where(.site-dark) .edu-enroll__note, :where(.site-dark) .edu-enroll__price p { color: #9CA3AF; }
+:where(.site-dark) .edu-enroll__actions .edu-apply-btn:hover { color: #fff; }

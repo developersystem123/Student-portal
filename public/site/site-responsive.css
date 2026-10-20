@@ -1,0 +1,150 @@
+/* Phone and tablet fixes for the public site. Loaded after the page CSS and before site-dark.css,
+   so it can override the template's desktop-first layouts without touching the generated bundle. */
+
+/* ---------- FAQ chevron (all widths) ----------
+   The chevron sits at right: 0 of the question, so a long question ran its last word under it. */
+.faq-page .faq-one-accrodion .accrodion-title h4 { padding-right: 28px; }
+
+/* ---------- Back to top ----------
+   The template's rotated "GO BACK TOP" bar lives in the right gutter. Below 1200px there is no
+   gutter, so it sat on top of body text on every screen. Use a compact round button instead. */
+.scroll-to-top__icon { display: none; }
+@media (max-width: 1199px) {
+  .site-page .scroll-to-top {
+    right: 16px;
+    bottom: -64px;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--edu-action);
+    color: #fff;
+    transform: none;
+    box-shadow: 0 6px 16px rgba(21, 128, 61, .28);
+    transition: opacity 180ms ease-out, visibility 180ms ease-out, bottom 180ms ease-out, background-color 160ms ease-out;
+  }
+  .site-page .scroll-to-top.show { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+  .site-page .scroll-to-top:hover { background: var(--edu-action-hover); color: #fff; }
+  .site-page .scroll-to-top:focus-visible { outline: 2px solid var(--edu-action); outline-offset: 3px; }
+  .site-page .scroll-to-top__wrapper { display: none; }
+  .site-page .scroll-to-top__icon { display: block; width: 20px; height: 20px; }
+  /* Visually hidden but still the link's accessible name. */
+  .site-page .scroll-to-top .scroll-to-top__text {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-page .scroll-to-top { transition: none; }
+}
+
+/* ---------- Tablet and below ---------- */
+@media (max-width: 991px) {
+  /* Course filters: on a stacked layout a tall checkbox list pushed every course two screens
+     down. Show categories and levels as wrapping chips instead. */
+  .edu-catalog .course-grid__list-item { display: flex; flex-wrap: wrap; gap: 8px; }
+  .edu-catalog .course-grid__list-item li + li { margin-top: 0; }
+  .edu-catalog .course-grid__list-item li { gap: 0; }
+  .edu-catalog .course-grid__list-check { display: none; }
+  .edu-catalog .course-grid__list-item a {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 36px;
+    padding: 6px 14px;
+    border: 1px solid #BBF7D0;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.2;
+    transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out;
+  }
+  .edu-catalog .course-grid__list-item a:hover { border-color: var(--edu-action); }
+  .edu-catalog .course-grid__list-item a.edu-filter-active { background: #DCFCE7; border-color: var(--edu-action); }
+  .edu-catalog .course-grid__list-item a:focus-visible { outline: 2px solid var(--edu-action); outline-offset: 2px; }
+
+  /* Newsletter: the envelope art and its badges slid under the intro text and email field. */
+  .newsletter-one__img,
+  .newsletter-one__shape-1,
+  .newsletter-one__shape-2 { display: none; }
+
+  /* Live classes: the template parks the arrows in a 60px left gutter beside the card. */
+  .live-class-one__right { margin-left: 0; }
+  .live-class-one__carousel.owl-theme .owl-nav {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .live-class-one__carousel.owl-theme .owl-nav .owl-prev,
+  .live-class-one__carousel.owl-theme .owl-nav .owl-next {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    border-radius: 50%;
+  }
+  /* The arrows point up/down for the vertical desktop rail; turn them sideways for the row. */
+  .live-class-one__carousel.owl-theme .owl-nav .owl-prev span,
+  .live-class-one__carousel.owl-theme .owl-nav .owl-next span { height: 100%; transform: rotate(-90deg); }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 767px) {
+  /* Footer: one 360px-wide column per link group made the footer six screens tall. */
+  .site-footer__top-right > .row > [class*="col-"] { flex: 0 0 50%; max-width: 50%; }
+  .site-footer__top-right > .row > [class*="col-"] > * { margin-top: 0; }
+  .site-footer__contact-info-list li { margin-bottom: 20px; }
+  .site-footer__contact-info-icon-text { font-size: 16px; }
+  .site-footer__contact-info-text { font-size: 17px; line-height: 26px; }
+  .site-footer__title { font-size: 20px; line-height: 1.2; margin-bottom: 18px; }
+  .site-footer__links-list li + li { margin-top: 12px; }
+  .site-footer__links-list li a { font-size: 15px; line-height: 1.35; gap: 6px; flex-wrap: nowrap; align-items: flex-start; }
+  .site-footer__links-list li a span { margin-top: 4px; }
+  .site-footer__newsletter-box { margin-top: 32px; }
+
+  /* Stats: three stacked 270px-tall blocks of 80px numbers; keep them as one row. */
+  .counter-one__list li { flex: 0 0 33.333%; max-width: 33.333%; padding: 32px 4px; }
+  .site-page .counter-one__count h3,
+  .site-page .counter-one__count span { font-size: clamp(26px, 9vw, 40px); line-height: 1.1; }
+  .counter-one__list li p { font-size: 14px; line-height: 1.35; margin-top: 6px; }
+
+  /* Testimonials: the floating squiggle covered the social links. */
+  .testimonial-one__shape-1 { display: none; }
+
+  /* Why choose: the scattered shapes hang off the screen edge on a single column. */
+  .why-choose-one__shape-1,
+  .why-choose-one__shape-3,
+  .why-choose-one__shape-5,
+  .why-choose-one__shape-7 { display: none; }
+  .why-choose-one__img-box { margin-left: auto; margin-right: auto; }
+  /* The desktop heading reaches 50px into the gutter, which on a phone is past the screen edge. */
+  .why-choose-one .section-title { margin-right: 0; }
+
+  /* Business plan table: 540px minimum width hid the Business column behind a sideways scroll. */
+  .edu-company-table { min-width: 0; table-layout: fixed; }
+  .edu-company-table th, .edu-company-table td { padding: 12px 10px; font-size: 14px; line-height: 1.35; overflow-wrap: anywhere; }
+  .edu-company-table th[scope="row"], .edu-company-table thead th:first-child { width: 40%; }
+
+  /* Eyebrows that wrap: keep the icon next to the text instead of floating at the far left. */
+  .section-title-two__tagline-box { max-width: 100%; }
+  .section-title-two__tagline { font-size: 16px; line-height: 1.35; text-align: left; }
+}
+
+@media (max-width: 479px) {
+  /* Course detail tabs: four tabs with icons didn't fit, so "Reviews" was cut off. */
+  .edu-detail__nav { justify-content: space-between; }
+  .edu-detail__nav a { padding: 10px 4px; gap: 0; }
+  .edu-detail__nav a > span[aria-hidden="true"] { display: none; }
+  .edu-detail__nav a:first-child { padding-left: 0; }
+}
+
+/* ---------- Dark mode ---------- */
+@media (max-width: 991px) {
+  :where(.site-dark) .edu-catalog .course-grid__list-item a { background: #1f2937; border-color: #374151; }
+  :where(.site-dark) .edu-catalog .course-grid__list-item a.edu-filter-active { background: #14532d; border-color: #4ade80; color: #f0fdf4; }
+}
+@media (max-width: 1199px) {
+  .site-dark .scroll-to-top .scroll-to-top__icon { color: #fff; }
+}

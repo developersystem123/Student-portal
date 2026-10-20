@@ -113,7 +113,7 @@ export default function SupportPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardBody className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-lg bg-violet-500/10 text-violet-500 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-lg bg-[var(--info-soft)] text-[var(--info)] flex items-center justify-center">
               <Icon.Help size={18} />
             </div>
             <div>
@@ -124,7 +124,7 @@ export default function SupportPage() {
         </Card>
         <Card>
           <CardBody className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-lg bg-sky-500/10 text-sky-500 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-lg bg-[var(--info-soft)] text-[var(--info)] flex items-center justify-center">
               <Icon.Mail size={18} />
             </div>
             <div>
@@ -135,7 +135,7 @@ export default function SupportPage() {
         </Card>
         <Card>
           <CardBody className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+            <div className="h-10 w-10 rounded-lg bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center">
               <Icon.MessageSquare size={18} />
             </div>
             <div>

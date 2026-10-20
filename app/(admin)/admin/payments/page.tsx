@@ -233,7 +233,7 @@ export default function AdminPaymentsPage() {
   const currency = summary?.currency ?? "USD";
 
   const pillBase = "text-xs px-3 py-1.5 rounded-full font-medium transition whitespace-nowrap cursor-pointer";
-  const pillActive = "bg-[var(--primary)] text-white";
+  const pillActive = "bg-[var(--primary)] text-[var(--primary-foreground)]";
   const pillInactive = "border border-border text-muted hover:border-[var(--primary)] hover:text-[var(--primary)]";
 
   return (
@@ -259,7 +259,7 @@ export default function AdminPaymentsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardBody className="flex items-center gap-3 !py-3">
-            <div className="w-9 h-9 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[var(--primary-soft)] flex items-center justify-center text-[var(--primary)] shrink-0">
               <Icon.DollarSign size={18} />
             </div>
             <div>
@@ -273,7 +273,7 @@ export default function AdminPaymentsPage() {
         </Card>
         <Card>
           <CardBody className="flex items-center gap-3 !py-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[var(--amber-soft)] flex items-center justify-center text-[var(--amber)] shrink-0">
               <Icon.ArrowLeft size={18} />
             </div>
             <div>
@@ -297,7 +297,7 @@ export default function AdminPaymentsPage() {
         </Card>
         <Card>
           <CardBody className="flex items-center gap-3 !py-3">
-            <div className="w-9 h-9 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[var(--danger-soft)] flex items-center justify-center text-[var(--danger)] shrink-0">
               <Icon.AlertCircle size={18} />
             </div>
             <div>
@@ -321,7 +321,7 @@ export default function AdminPaymentsPage() {
               >
                 {f === "all" ? "All" : STATUS_LABEL[f as PaymentStatus]}
                 {" "}
-                <span className="opacity-70">
+                <span className="tabular-nums font-normal">
                   {f === "all" ? counts.all : counts[f as keyof typeof counts]}
                 </span>
               </button>
@@ -480,7 +480,7 @@ export default function AdminPaymentsPage() {
                     onClick={() => setPage(pg as number)}
                     className={`min-w-[32px] h-8 text-xs rounded-lg font-medium transition ${
                       currentPage === pg
-                        ? "bg-[var(--primary)] text-white"
+                        ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                         : "border border-border text-muted hover:border-[var(--primary)] hover:text-[var(--primary)]"
                     }`}
                   >
@@ -530,7 +530,7 @@ export default function AdminPaymentsPage() {
                 <option value="refunded">Refunded</option>
               </Select>
               {nextStatus === "refunded" && managing.status !== "refunded" && (
-                <p className="text-xs text-amber-500 dark:text-amber-400 mt-1.5">
+                <p className="text-xs text-[var(--amber)] mt-1.5">
                   Marking this payment as refunded removes its amount from gross revenue.
                 </p>
               )}

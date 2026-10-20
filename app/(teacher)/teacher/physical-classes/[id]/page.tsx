@@ -40,10 +40,10 @@ const STATUS_BADGE: Record<PhysicalClassStatus, "info" | "success" | "default" |
 };
 
 const MARK_STYLES: Record<AttendanceStatus, string> = {
-  present: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/40",
-  late: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40",
-  absent: "bg-red-500/15 text-red-500 border-red-500/40",
-  excused: "bg-sky-500/15 text-sky-500 border-sky-500/40",
+  present: "bg-[var(--primary-soft)] text-[var(--primary)] border-[var(--primary)]/40",
+  late: "bg-[var(--amber-soft)] text-[var(--amber)] border-[var(--amber)]/40",
+  absent: "bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger)]/40",
+  excused: "bg-[var(--info-soft)] text-[var(--info)] border-[var(--info)]/40",
 };
 
 // Tap a cell to cycle through the states.
@@ -269,7 +269,7 @@ export default function TeacherPhysicalClassDetailPage() {
                           onClick={() => setSessionDate(day)}
                           className={`text-xs px-2.5 py-1 rounded-full border transition ${
                             day === sessionDate
-                              ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                              ? "bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]"
                               : "border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"
                           }`}
                         >
@@ -303,7 +303,7 @@ export default function TeacherPhysicalClassDetailPage() {
                         >
                           <td className="py-2.5 px-3">
                             <div className="flex items-center gap-2.5">
-                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white text-xs font-semibold flex items-center justify-center shrink-0">
+                              <div className="h-8 w-8 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold flex items-center justify-center shrink-0">
                                 {s.studentName.slice(0, 1).toUpperCase()}
                               </div>
                               <div className="min-w-0">
@@ -331,7 +331,7 @@ export default function TeacherPhysicalClassDetailPage() {
                             <div className="flex items-center gap-2 max-w-[14rem]">
                               <div className="flex-1 h-1.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
                                 <div
-                                  className="h-full bg-gradient-to-r from-emerald-500 to-teal-500"
+                                  className="h-full bg-[var(--primary)]"
                                   style={{ width: `${s.attendanceRate}%` }}
                                 />
                               </div>

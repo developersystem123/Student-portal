@@ -23,12 +23,13 @@ const TOPIC_CHIPS = [
   "Human Anatomy", "French Revolution",
 ];
 
-const GRADE: Record<string, { label: string; emoji: string; bg: string }> = {
-  S: { label: "Perfect Score!", emoji: "🏆", bg: "from-yellow-400 to-amber-500" },
-  A: { label: "Excellent!", emoji: "🎉", bg: "from-emerald-500 to-teal-500" },
-  B: { label: "Great Job!", emoji: "👍", bg: "from-blue-500 to-cyan-500" },
-  C: { label: "Good Effort", emoji: "📚", bg: "from-yellow-500 to-orange-400" },
-  D: { label: "Keep Studying!", emoji: "💪", bg: "from-red-500 to-rose-400" },
+// Grade styling: `chip` tints the grade badge, `text` colours the label, `bar` fills the score bar.
+const GRADE: Record<string, { label: string; icon: React.ReactNode; chip: string; text: string; bar: string }> = {
+  S: { label: "Perfect score!", icon: <Icon.Crown size={28} />, chip: "bg-[var(--amber-soft)] text-[var(--amber)]", text: "text-[var(--amber)]", bar: "bg-[var(--amber)]" },
+  A: { label: "Excellent!", icon: <Icon.Award size={28} />, chip: "bg-[var(--primary-soft)] text-[var(--primary)]", text: "text-[var(--primary)]", bar: "bg-[var(--primary)]" },
+  B: { label: "Great job!", icon: <Icon.ThumbsUp size={28} />, chip: "bg-[var(--primary-soft)] text-[var(--primary)]", text: "text-[var(--primary)]", bar: "bg-[var(--primary)]" },
+  C: { label: "Good effort", icon: <Icon.Book size={28} />, chip: "bg-[var(--amber-soft)] text-[var(--amber)]", text: "text-[var(--amber)]", bar: "bg-[var(--amber)]" },
+  D: { label: "Keep studying!", icon: <Icon.TrendingUp size={28} />, chip: "bg-[var(--danger-soft)] text-[var(--danger)]", text: "text-[var(--danger)]", bar: "bg-[var(--danger)]" },
 };
 
 function getGrade(pct: number) {
@@ -59,14 +60,14 @@ function TimerCircle({ remaining, total }: { remaining: number; total: number })
         <circle
           cx="22" cy="22" r={r} strokeWidth="3" fill="none"
           strokeLinecap="round"
-          className={cn("transition-all duration-500", urgent ? "stroke-red-500" : "stroke-[var(--primary)]")}
+          className={cn("transition-all duration-500", urgent ? "stroke-[var(--danger)]" : "stroke-[var(--primary)]")}
           strokeDasharray={circ}
           strokeDashoffset={circ - circ * pct}
         />
       </svg>
       <span className={cn(
         "absolute inset-0 flex items-center justify-center text-sm font-bold tabular-nums",
-        urgent ? "text-red-500" : "text-[var(--foreground)]",
+        urgent ? "text-[var(--danger)]" : "text-[var(--foreground)]",
       )}>
         {remaining}
       </span>
@@ -222,7 +223,7 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white flex items-center justify-center shrink-0">
+        <div className="h-11 w-11 rounded-xl brand-fill text-white flex items-center justify-center shrink-0">
           <Icon.ListChecks size={22} />
         </div>
         <div>
@@ -249,7 +250,7 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                       className={cn(
                         "text-xs px-3 py-1.5 rounded-full border transition-all",
                         topic === chip
-                          ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                          ? "bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]"
                           : "border-[var(--border)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]",
                       )}
                     >
@@ -327,7 +328,7 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                     const gi = GRADE[g];
                     return (
                       <li key={r.id} className="px-5 py-3 flex items-center gap-3 hover:bg-[var(--surface-2)] transition">
-                        <div className={cn("h-9 w-9 rounded-xl bg-gradient-to-br text-white flex items-center justify-center text-xs font-bold shrink-0", gi.bg)}>
+                        <div className={cn("h-9 w-9 rounded-xl flex items-center justify-center text-xs font-bold shrink-0", gi.chip)}>
                           {g}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -372,7 +373,7 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                 )}
                 {timerSec > 0 && picked !== null && (
                   <div className="h-12 w-12 flex items-center justify-center">
-                    <Icon.CheckCircle size={24} className="text-emerald-500" />
+                    <Icon.CheckCircle size={24} className="text-[var(--primary)]" />
                   </div>
                 )}
                 <button
@@ -387,7 +388,7 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
             {/* Progress bar */}
             <div className="h-1.5 bg-[var(--surface-2)] rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-300"
+                className="h-full bg-[var(--primary)] transition-all duration-300"
                 style={{ width: `${((idx + (picked !== null ? 1 : 0)) / questions.length) * 100}%` }}
               />
             </div>
@@ -395,11 +396,11 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
             {/* Running score */}
             {answers.length > 0 && (
               <div className="flex items-center gap-3 text-xs">
-                <span className="text-emerald-500 font-semibold">
+                <span className="text-[var(--primary)] font-semibold">
                   ✓ {answers.filter((a, i) => a === questions[i]?.answerIndex).length} correct
                 </span>
                 <span className="text-[var(--border)]">·</span>
-                <span className="text-red-500 font-semibold">
+                <span className="text-[var(--danger)] font-semibold">
                   ✗ {answers.filter((a, i) => a !== questions[i]?.answerIndex && a !== -1).length} wrong
                 </span>
                 {answers.filter(a => a === -1).length > 0 && (
@@ -431,9 +432,9 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                       picked === null
                         ? "border-[var(--border)] hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]/40"
                         : isCorrect
-                          ? "border-emerald-500 bg-emerald-500/10"
+                          ? "border-[var(--primary)]/40 bg-[var(--primary-soft)]"
                           : isWrongPick
-                            ? "border-red-500 bg-red-500/10"
+                            ? "border-[var(--danger)]/40 bg-[var(--danger-soft)]"
                             : "border-[var(--border)] opacity-50",
                     )}
                   >
@@ -441,15 +442,15 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                       "h-7 w-7 rounded-full text-xs font-semibold flex items-center justify-center shrink-0",
                       picked === null
                         ? "bg-[var(--surface-2)] text-[var(--muted)]"
-                        : isCorrect ? "bg-emerald-500 text-white"
-                        : isWrongPick ? "bg-red-500 text-white"
+                        : isCorrect ? "bg-[var(--primary)] text-[var(--solid-fg)]"
+                        : isWrongPick ? "bg-[var(--danger)] text-[var(--solid-fg)]"
                         : "bg-[var(--surface-2)] text-[var(--muted)]",
                     )}>
                       {String.fromCharCode(65 + i)}
                     </span>
                     <span className="text-sm flex-1 text-left">{opt}</span>
-                    {picked !== null && isCorrect && <Icon.Check size={16} className="ml-auto text-emerald-500 shrink-0 mt-0.5" />}
-                    {isWrongPick && <Icon.X size={16} className="ml-auto text-red-500 shrink-0 mt-0.5" />}
+                    {picked !== null && isCorrect && <Icon.Check size={16} className="ml-auto text-[var(--primary)] shrink-0 mt-0.5" />}
+                    {isWrongPick && <Icon.X size={16} className="ml-auto text-[var(--danger)] shrink-0 mt-0.5" />}
                   </button>
                 );
               })}
@@ -481,23 +482,32 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
         <div className="space-y-5">
           {/* Score hero card */}
           <Card className="overflow-hidden">
-            <div className={cn("p-6 sm:p-10 bg-gradient-to-br text-white text-center", gradeInfo.bg)}>
-              <p className="text-5xl mb-2">{gradeInfo.emoji}</p>
-              <h2 className="text-5xl font-bold tabular-nums">{scorePct}%</h2>
-              <p className="text-white/90 text-lg font-semibold mt-1">{gradeInfo.label}</p>
-              <p className="text-white/75 text-sm mt-1">
+            <div className="relative overflow-hidden p-6 sm:p-10 bg-[var(--hero-bg)] border-b border-[var(--hero-border)] text-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/site/assets/images/edu/page-header-ring.svg"
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute -right-20 -top-24 w-72 dark:opacity-[0.07]"
+              />
+              <div className={cn("relative mx-auto mb-4 h-16 w-16 rounded-2xl flex items-center justify-center ring-8 ring-[var(--surface)]", gradeInfo.chip)}>
+                {gradeInfo.icon}
+              </div>
+              <h2 className="relative text-5xl font-bold tracking-tight tabular-nums text-[var(--heading)]">{scorePct}%</h2>
+              <p className={cn("relative text-lg font-semibold mt-1", gradeInfo.text)}>{gradeInfo.label}</p>
+              <p className="relative text-[var(--muted)] text-sm mt-1">
                 {correctCount} correct out of {questions.length} questions
               </p>
             </div>
             <CardBody>
               {/* Stats row */}
               <div className="grid grid-cols-3 gap-3 mb-5">
-                <div className="rounded-xl bg-emerald-500/10 p-3 text-center">
-                  <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{correctCount}</p>
+                <div className="rounded-xl bg-[var(--primary-soft)] p-3 text-center">
+                  <p className="text-2xl font-bold text-[var(--primary)]">{correctCount}</p>
                   <p className="text-xs text-[var(--muted)] mt-0.5">Correct</p>
                 </div>
-                <div className="rounded-xl bg-red-500/10 p-3 text-center">
-                  <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+                <div className="rounded-xl bg-[var(--danger-soft)] p-3 text-center">
+                  <p className="text-2xl font-bold text-[var(--danger)]">
                     {answers.filter((a, i) => a !== questions[i]?.answerIndex && a !== -1).length}
                   </p>
                   <p className="text-xs text-[var(--muted)] mt-0.5">Wrong</p>
@@ -515,7 +525,7 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                   <p className="text-xs text-[var(--muted)]">{difficulty} difficulty · {questions.length} questions</p>
                   <div className="h-1.5 bg-[var(--border)] rounded-full mt-1 overflow-hidden">
                     <div
-                      className={cn("h-full bg-gradient-to-r", gradeInfo.bg)}
+                      className={cn("h-full", gradeInfo.bar)}
                       style={{ width: `${scorePct}%` }}
                     />
                   </div>
@@ -551,10 +561,10 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                     className={cn(
                       "rounded-xl border p-4",
                       correct
-                        ? "border-emerald-500/30 bg-emerald-500/5"
+                        ? "border-[var(--primary)]/30 bg-[var(--primary-soft)]"
                         : skipped
                           ? "border-[var(--border)]"
-                          : "border-red-500/30 bg-red-500/5",
+                          : "border-[var(--danger)]/30 bg-[var(--danger-soft)]",
                     )}
                   >
                     <p className="font-semibold text-sm mb-2 flex items-start gap-2">
@@ -569,8 +579,8 @@ ${questions.map((q, i) => `<div class="q"><b>Q${i + 1}. ${q.q}</b>
                           key={j}
                           className={cn(
                             "px-2.5 py-1 rounded",
-                            j === q.answerIndex && "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium",
-                            j === answers[i] && j !== q.answerIndex && "bg-red-500/10 text-red-700 dark:text-red-400 line-through",
+                            j === q.answerIndex && "bg-[var(--primary-soft)] text-[var(--primary)] font-medium",
+                            j === answers[i] && j !== q.answerIndex && "bg-[var(--danger-soft)] text-[var(--danger)] line-through",
                           )}
                         >
                           {String.fromCharCode(65 + j)}. {opt}

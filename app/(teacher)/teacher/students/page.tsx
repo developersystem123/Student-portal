@@ -136,9 +136,9 @@ export default function TeacherStudentsPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Total enrolled", value: counts.all, icon: <Icon.Users size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-            { label: "In progress", value: counts["in-progress"], icon: <Icon.PlayCircle size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-            { label: "Completed", value: counts.completed, icon: <Icon.CheckCircle size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-            { label: "Avg progress", value: `${avgProgress}%`, icon: <Icon.TrendingUp size={16} />, tint: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
+            { label: "In progress", value: counts["in-progress"], icon: <Icon.PlayCircle size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+            { label: "Completed", value: counts.completed, icon: <Icon.CheckCircle size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
+            { label: "Avg progress", value: `${avgProgress}%`, icon: <Icon.TrendingUp size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
           ].map((s) => (
             <Card key={s.label}>
               <CardBody className="flex items-center gap-3 !py-3">
@@ -225,7 +225,7 @@ export default function TeacherStudentsPage() {
                     <tr key={`${r.userId}-${r.courseId}`} className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--surface-2)]/50 transition">
                       <td className="py-3 px-3">
                         <div className="flex items-center gap-3">
-                          <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-semibold inline-flex items-center justify-center text-sm shrink-0">
+                          <div className="h-9 w-9 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold inline-flex items-center justify-center text-sm shrink-0">
                             {r.userName.slice(0, 1).toUpperCase()}
                           </div>
                           <div className="min-w-0">
@@ -244,7 +244,7 @@ export default function TeacherStudentsPage() {
                         <div className="flex items-center gap-2">
                           <div className="flex-1 h-1.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
                             <div
-                              className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                              className="h-full bg-[var(--primary)]"
                               style={{ width: `${r.progress}%` }}
                             />
                           </div>
@@ -303,7 +303,7 @@ export default function TeacherStudentsPage() {
                           onClick={() => setPage(p as number)}
                           className={`h-8 w-8 rounded-lg text-xs font-semibold transition ${
                             safePage === p
-                              ? "bg-[var(--primary)] text-white"
+                              ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                               : "text-[var(--muted)] hover:bg-[var(--surface-2)]"
                           }`}
                         >

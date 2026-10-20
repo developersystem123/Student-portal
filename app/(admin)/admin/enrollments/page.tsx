@@ -13,6 +13,7 @@ import {
   Modal,
   Tabs,
   useToast,
+  Drawer,
 } from "@/components/ui";
 import { useAdmin, type EnrollmentRow } from "@/lib/store";
 import { relativeTime, formatDate } from "@/lib/utils";
@@ -253,7 +254,7 @@ export default function AdminEnrollmentsPage() {
     return (
       <div className="h-1.5 w-full rounded-full bg-[var(--surface-2)] overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all ${value >= 90 ? "bg-emerald-500" : value >= 60 ? "bg-[var(--primary)]" : "bg-red-400"}`}
+          className={`h-full rounded-full transition-all ${value >= 90 ? "bg-[var(--primary)]" : value >= 60 ? "bg-[var(--primary)]" : "bg-[var(--danger)]"}`}
           style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
         />
       </div>
@@ -300,9 +301,9 @@ export default function AdminEnrollmentsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total", value: counts.all, tint: "bg-[var(--primary-soft)] text-[var(--primary)]", icon: <Icon.ListChecks size={16} /> },
-          { label: "In progress", value: counts["in-progress"], tint: "bg-sky-500/10 text-sky-600", icon: <Icon.PlayCircle size={16} /> },
-          { label: "Completed", value: counts.completed, tint: "bg-emerald-500/10 text-emerald-600", icon: <Icon.CheckCircle size={16} /> },
-          { label: "Certified", value: counts.certified, tint: "bg-amber-500/10 text-amber-600", icon: <Icon.Award size={16} /> },
+          { label: "In progress", value: counts["in-progress"], tint: "bg-[var(--info-soft)] text-[var(--info)]", icon: <Icon.PlayCircle size={16} /> },
+          { label: "Completed", value: counts.completed, tint: "bg-[var(--primary-soft)] text-[var(--primary)]", icon: <Icon.CheckCircle size={16} /> },
+          { label: "Certified", value: counts.certified, tint: "bg-[var(--amber-soft)] text-[var(--amber)]", icon: <Icon.Award size={16} /> },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 !py-3">
@@ -346,7 +347,7 @@ export default function AdminEnrollmentsPage() {
                 <Icon.Filter size={15} />
                 Filters
                 {activeFiltersCount > 0 && (
-                  <span className="h-4 w-4 rounded-full bg-[var(--primary)] text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="h-4 w-4 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold flex items-center justify-center">
                     {activeFiltersCount}
                   </span>
                 )}
@@ -370,7 +371,7 @@ export default function AdminEnrollmentsPage() {
                         className="flex items-center gap-2 w-full px-2 py-1.5 rounded-lg hover:bg-[var(--surface-2)] text-sm transition"
                       >
                         <span className={`h-4 w-4 rounded flex items-center justify-center border transition-all ${visibleCols.has(col) ? "bg-[var(--primary)] border-[var(--primary)]" : "border-[var(--border)]"}`}>
-                          {visibleCols.has(col) && <Icon.Check size={10} className="text-white" strokeWidth={3} />}
+                          {visibleCols.has(col) && <Icon.Check size={10} className="text-[var(--primary-foreground)]" strokeWidth={3} />}
                         </span>
                         {COL_LABELS[col]}
                       </button>
@@ -399,7 +400,7 @@ export default function AdminEnrollmentsPage() {
                       <button
                         key={d}
                         onClick={() => setDateRange(d)}
-                        className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${dateRange === d ? "bg-[var(--primary)] text-white border-[var(--primary)]" : "border-[var(--border)] hover:border-[var(--border-strong)]"}`}
+                        className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${dateRange === d ? "bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]" : "border-[var(--border)] hover:border-[var(--border-strong)]"}`}
                       >
                         {d === "all" ? "All time" : d === "7d" ? "Last 7 days" : d === "30d" ? "Last 30 days" : "Last 90 days"}
                       </button>
@@ -527,7 +528,7 @@ export default function AdminEnrollmentsPage() {
                           <td className="py-3 px-3 w-40">
                             <div className="flex items-center gap-2">
                               <div className="flex-1 h-1.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]" style={{ width: `${r.progress}%` }} />
+                                <div className="h-full bg-[var(--primary)]" style={{ width: `${r.progress}%` }} />
                               </div>
                               <span className="text-xs text-[var(--muted)] w-8 text-right tabular-nums">{r.progress}%</span>
                             </div>
@@ -578,7 +579,7 @@ export default function AdminEnrollmentsPage() {
                   <span>Per page:</span>
                   {PAGE_SIZES.map((n) => (
                     <button key={n} onClick={() => setPageSize(n)}
-                      className={`h-6 px-2 rounded-md transition-all ${pageSize === n ? "bg-[var(--primary)] text-white font-medium" : "hover:bg-[var(--surface-2)]"}`}>
+                      className={`h-6 px-2 rounded-md transition-all ${pageSize === n ? "bg-[var(--primary)] text-[var(--primary-foreground)] font-medium" : "hover:bg-[var(--surface-2)]"}`}>
                       {n}
                     </button>
                   ))}
@@ -598,7 +599,7 @@ export default function AdminEnrollmentsPage() {
                     .map((p, idx) => p === "…"
                       ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span>
                       : <button key={p} onClick={() => setPage(p as number)}
-                          className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>
+                          className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>
                           {p}
                         </button>
                     )}
@@ -614,61 +615,49 @@ export default function AdminEnrollmentsPage() {
 
       {/* ── Student detail drawer ── */}
       {detailRow && (
-        <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setDetailRow(null)}>
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
-          <div
-            className="relative w-full max-w-sm bg-[var(--surface)] h-full shadow-2xl flex flex-col overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)]">
-              <p className="font-semibold">Enrollment detail</p>
-              <button onClick={() => setDetailRow(null)} className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface-2)] transition">
-                <Icon.X size={16} />
-              </button>
+        <Drawer open onClose={() => setDetailRow(null)} title="Enrollment detail">
+          <div className="p-5 space-y-5 flex-1">
+            {/* Student info */}
+            <div className="flex items-center gap-3">
+              <Avatar name={detailRow.userName} src={null} size={48} />
+              <div>
+                <p className="font-semibold">{detailRow.userName}</p>
+                <p className="text-xs text-[var(--muted)]">{detailRow.userEmail}</p>
+              </div>
             </div>
-            <div className="p-5 space-y-5 flex-1">
-              {/* Student info */}
-              <div className="flex items-center gap-3">
-                <Avatar name={detailRow.userName} src={null} size={48} />
-                <div>
-                  <p className="font-semibold">{detailRow.userName}</p>
-                  <p className="text-xs text-[var(--muted)]">{detailRow.userEmail}</p>
+            <div className="space-y-3 text-sm">
+              <div className="rounded-xl bg-[var(--surface-2)] p-3 space-y-2">
+                <Row label="Course" value={detailRow.courseTitle} />
+                <Row label="Enrolled" value={relativeTime(detailRow.enrolledAt)} />
+                <Row label="Status" value={statusLabel(detailRow)} />
+                <Row label="Certificate" value={detailRow.certificateId ? "Yes — " + detailRow.certificateId.slice(0, 8) + "…" : "Not issued"} />
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[var(--muted)]">Progress</span>
+                  <span className="font-semibold tabular-nums">{detailRow.progress}%</span>
+                </div>
+                <div className="h-2.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
+                  <div className="h-full bg-[var(--primary)] rounded-full" style={{ width: `${detailRow.progress}%` }} />
                 </div>
               </div>
-              <div className="space-y-3 text-sm">
-                <div className="rounded-xl bg-[var(--surface-2)] p-3 space-y-2">
-                  <Row label="Course" value={detailRow.courseTitle} />
-                  <Row label="Enrolled" value={relativeTime(detailRow.enrolledAt)} />
-                  <Row label="Status" value={statusLabel(detailRow)} />
-                  <Row label="Certificate" value={detailRow.certificateId ? "Yes — " + detailRow.certificateId.slice(0, 8) + "…" : "Not issued"} />
-                </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-[var(--muted)]">Progress</span>
-                    <span className="font-semibold tabular-nums">{detailRow.progress}%</span>
-                  </div>
-                  <div className="h-2.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full" style={{ width: `${detailRow.progress}%` }} />
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-2 pt-2">
-                {detailRow.certificateId ? (
-                  <Button className="w-full" variant="ghost" onClick={() => { setRevokeRow(detailRow); setDetailRow(null); }}>
-                    <Icon.Trash size={15} /> Revoke certificate
-                  </Button>
-                ) : (
-                  <Button className="w-full" disabled={!detailRow.completed}
-                    onClick={() => { setScore("90"); setAwardRow(detailRow); setDetailRow(null); }}
-                    title={detailRow.completed ? "Award certificate" : "Complete course first"}
-                  >
-                    <Icon.Award size={15} /> Award certificate
-                  </Button>
-                )}
-              </div>
+            </div>
+            <div className="space-y-2 pt-2">
+              {detailRow.certificateId ? (
+                <Button className="w-full" variant="ghost" onClick={() => { setRevokeRow(detailRow); setDetailRow(null); }}>
+                  <Icon.Trash size={15} /> Revoke certificate
+                </Button>
+              ) : (
+                <Button className="w-full" disabled={!detailRow.completed}
+                  onClick={() => { setScore("90"); setAwardRow(detailRow); setDetailRow(null); }}
+                  title={detailRow.completed ? "Award certificate" : "Complete course first"}
+                >
+                  <Icon.Award size={15} /> Award certificate
+                </Button>
+              )}
             </div>
           </div>
-        </div>
+        </Drawer>
       )}
 
       {/* Award modal */}
@@ -683,7 +672,7 @@ export default function AdminEnrollmentsPage() {
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label htmlFor="score" className="text-sm font-medium">Score (0–100)</label>
-                <span className={`text-xs font-semibold ${Number(score) >= 60 ? "text-emerald-600" : "text-red-500"}`}>{score}%</span>
+                <span className={`text-xs font-semibold ${Number(score) >= 60 ? "text-[var(--primary)]" : "text-[var(--danger)]"}`}>{score}%</span>
               </div>
               <Input id="score" type="number" min="0" max="100" value={score} onChange={(e) => setScore(e.target.value)} />
               <ScoreBar value={Number(score)} />
@@ -707,7 +696,7 @@ export default function AdminEnrollmentsPage() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium">Score for all (0–100)</label>
-              <span className={`text-xs font-semibold ${Number(bulkScore) >= 60 ? "text-emerald-600" : "text-red-500"}`}>{bulkScore}%</span>
+              <span className={`text-xs font-semibold ${Number(bulkScore) >= 60 ? "text-[var(--primary)]" : "text-[var(--danger)]"}`}>{bulkScore}%</span>
             </div>
             <Input type="number" min="0" max="100" value={bulkScore} onChange={(e) => setBulkScore(e.target.value)} />
             <ScoreBar value={Number(bulkScore)} />

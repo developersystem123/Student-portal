@@ -29,30 +29,30 @@ const TYPE_INFO: Record<NType, { label: string; color: string; bg: string; borde
   },
   submission: {
     label: "Submissions",
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
+    color: "text-[var(--amber)]",
+    bg: "bg-[var(--amber-soft)]",
+    border: "border-[var(--amber)]/20",
     icon: <Icon.FilePen size={16} />,
   },
   quiz: {
     label: "Quizzes",
-    color: "text-sky-500",
-    bg: "bg-sky-500/10",
-    border: "border-sky-500/20",
+    color: "text-[var(--info)]",
+    bg: "bg-[var(--info-soft)]",
+    border: "border-[var(--info)]/20",
     icon: <Icon.ListChecks size={16} />,
   },
   review: {
     label: "Reviews",
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
+    color: "text-[var(--primary)]",
+    bg: "bg-[var(--primary-soft)]",
+    border: "border-[var(--primary)]/20",
     icon: <Icon.Star size={16} />,
   },
   system: {
     label: "System",
-    color: "text-purple-500",
-    bg: "bg-purple-500/10",
-    border: "border-purple-500/20",
+    color: "text-[var(--info)]",
+    bg: "bg-[var(--info-soft)]",
+    border: "border-[var(--info)]/20",
     icon: <Icon.Bell size={16} />,
   },
 };
@@ -451,7 +451,7 @@ export default function TeacherNotificationsPage() {
                         <button
                           onClick={() => dismiss(n.id)}
                           title="Dismiss"
-                          className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--danger)] hover:bg-red-500/10 transition"
+                          className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-soft)] transition"
                         >
                           <Icon.Trash size={15} />
                         </button>

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Progress, StatCard } from "@/components/ui";
+import { Badge, Card, CardBody, CardHeader, CardTitle, Progress, StatCard } from "@/components/ui";
+import { HeroFact, HeroLink, PageHero } from "@/components/layout/PageHero";
 import Icon from "@/components/icons";
 import { BarChart, Donut, Heatmap, LineChart, ProgressBar, RadialBars, Sparkline } from "@/components/charts";
 import { useAuth, useData } from "@/lib/store";
@@ -55,21 +56,35 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-        <div>
-          <p className="text-sm text-[var(--muted)]">Hello, {user?.name?.split(" ")[0]} 👋</p>
-          <h1 className="text-2xl sm:text-3xl font-bold mt-1">Your learning dashboard</h1>
-          <p className="text-xs text-[var(--muted-2)] mt-1">
-            You&apos;re on a {STUDY_STREAK.current}-day streak — best yet was {STUDY_STREAK.longest}.
-          </p>
+      <PageHero
+        art="student"
+        eyebrow="Student dashboard"
+        eyebrowIcon={<Icon.Sparkles size={12} />}
+        title="Welcome back,"
+        highlight={user?.name?.split(" ")[0] ?? "learner"}
+        description={
+          <>
+            You&apos;re on a {STUDY_STREAK.current}-day streak — your best yet is {STUDY_STREAK.longest}. Pick
+            up where you left off or find something new to learn.
+          </>
+        }
+        actions={
+          <>
+            <HeroLink href="/my-courses">
+              <Icon.PlayCircle size={16} /> Continue learning
+            </HeroLink>
+            <HeroLink href="/explore" variant="secondary">
+              <Icon.Compass size={16} /> Browse courses
+            </HeroLink>
+          </>
+        }
+      >
+        <div className="flex flex-wrap gap-x-8 gap-y-3">
+          <HeroFact value={`${STUDY_STREAK.current} days`} label="Current streak" />
+          <HeroFact value={`${WEEKLY_GOAL.doneHours.toFixed(1)}h / ${WEEKLY_GOAL.goalHours}h`} label="Weekly goal" />
+          <HeroFact value={`Level ${XP_DATA.level}`} label={XP_DATA.rank} />
         </div>
-        <Link href="/explore">
-          <Button>
-            <Icon.Plus size={16} /> Browse new courses
-          </Button>
-        </Link>
-      </div>
+      </PageHero>
 
       {/* Stat tiles */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -117,10 +132,42 @@ export default function DashboardPage() {
             </Badge>
           </CardHeader>
           <CardBody>
-            <div className="overflow-x-auto scrollbar-thin">
-              <div className="min-w-[560px] h-44">
-                <Heatmap cells={ACTIVITY_HEATMAP} weeks={heatmapWeeks} />
+            <div className="flex flex-col md:flex-row md:items-stretch gap-6">
+              <div className="md:flex-1 min-w-0">
+                <div className="overflow-x-auto scrollbar-thin">
+                  <div className="min-w-[300px] h-44">
+                    <Heatmap cells={ACTIVITY_HEATMAP} weeks={heatmapWeeks} />
+                  </div>
+                </div>
+                <div className="mt-3 flex items-center gap-1.5 text-[11px] text-[var(--muted-2)]" aria-hidden>
+                  Less
+                  <span className="h-2.5 w-2.5 rounded-[3px] bg-[var(--surface-3)]" />
+                  {[0.3, 0.55, 0.8, 1].map((o) => (
+                    <span key={o} className="h-2.5 w-2.5 rounded-[3px] bg-[var(--primary)]" style={{ opacity: o }} />
+                  ))}
+                  More
+                </div>
               </div>
+              <dl className="grid grid-cols-3 md:grid-cols-1 gap-4 md:w-44 md:pl-6 md:border-l border-[var(--border)] content-center">
+                <div>
+                  <dt className="text-xs text-[var(--muted)]">This week</dt>
+                  <dd className="mt-0.5 text-lg font-bold tracking-tight text-[var(--heading)] tabular-nums">
+                    {STUDY_STREAK.thisWeekSessions} sessions
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-[var(--muted)]">Longest streak</dt>
+                  <dd className="mt-0.5 text-lg font-bold tracking-tight text-[var(--heading)] tabular-nums">
+                    {STUDY_STREAK.longest} days
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-[var(--muted)]">Active this year</dt>
+                  <dd className="mt-0.5 text-lg font-bold tracking-tight text-[var(--heading)] tabular-nums">
+                    {STUDY_STREAK.daysActiveThisYear} days
+                  </dd>
+                </div>
+              </dl>
             </div>
           </CardBody>
         </Card>
@@ -137,7 +184,7 @@ export default function DashboardPage() {
                 <p className="text-xs text-[var(--muted)] mt-0.5">
                   {XP_DATA.xp.toLocaleString()} / {XP_DATA.xpForNext.toLocaleString()} XP
                 </p>
-                <p className="text-xs text-emerald-500 mt-0.5">+{XP_DATA.weeklyXp} XP this week</p>
+                <p className="text-xs font-medium text-[var(--primary)] mt-0.5">+{XP_DATA.weeklyXp} XP this week</p>
               </div>
             </div>
             <div>
@@ -254,7 +301,7 @@ export default function DashboardPage() {
                     <span className="text-xs text-[var(--muted)] w-10 shrink-0 tabular-nums">{b.bucket}</span>
                     <div className="flex-1 h-2.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                        className="h-full rounded-full bg-[var(--primary)]"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
@@ -276,14 +323,14 @@ export default function DashboardPage() {
           <CardBody className="space-y-3">
             {DEFAULT_DEADLINES.map((d) => (
               <div key={d.id} className="flex items-start gap-3 p-3 rounded-xl bg-[var(--surface-2)]/60">
-                <div className="h-9 w-9 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
+                <div className="h-9 w-9 rounded-lg bg-[var(--amber-soft)] text-[var(--amber)] flex items-center justify-center shrink-0">
                   <Icon.Calendar size={16} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium truncate">{d.title}</p>
                   <p className="text-xs text-[var(--muted)]">{d.course}</p>
                 </div>
-                <span className="text-xs text-amber-500 font-semibold whitespace-nowrap self-center">{d.due}</span>
+                <span className="text-xs text-[var(--amber)] font-semibold whitespace-nowrap self-center">{d.due}</span>
               </div>
             ))}
           </CardBody>
@@ -309,7 +356,7 @@ export default function DashboardPage() {
                 const course = COURSES.find((c) => c.id === e.courseId)!;
                 return (
                   <Link key={e.courseId} href={`/my-courses/${course.id}`} className="group">
-                    <div className="rounded-xl border border-[var(--border)] overflow-hidden hover:shadow-md transition">
+                    <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)] transition">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={course.thumbnail} alt="" className="w-full h-28 object-cover" />
                       <div className="p-4">
@@ -369,7 +416,7 @@ export default function DashboardPage() {
                 className="rounded-xl border border-[var(--border)] p-3 hover:shadow-md transition"
                 title={b.description}
               >
-                <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-pink-500/20 text-amber-500 flex items-center justify-center">
+                <div className="h-10 w-10 rounded-xl bg-[var(--amber-soft)] text-[var(--amber)] flex items-center justify-center">
                   {BADGE_ICONS[b.icon as keyof typeof BADGE_ICONS] ?? <Icon.Award size={20} />}
                 </div>
                 <p className="text-xs font-semibold mt-2 line-clamp-1">{b.name}</p>
@@ -407,7 +454,7 @@ export default function DashboardPage() {
                       className={
                         "h-full rounded-full " +
                         (row.you
-                          ? "bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                          ? "bg-[var(--primary)]"
                           : "bg-[var(--muted-2)]/60")
                       }
                       style={{ width: `${pct}%` }}

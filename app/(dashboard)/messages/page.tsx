@@ -191,7 +191,7 @@ export default function MessagesPage() {
           <p className="text-sm text-[var(--muted)] mt-1 flex items-center gap-2">
             Chat with teachers and admins.
             {totalUnread > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-semibold">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--primary-soft)] text-[var(--primary)] text-xs font-semibold">
                 {totalUnread} unread
               </span>
             )}
@@ -242,7 +242,7 @@ export default function MessagesPage() {
                       <div className="relative shrink-0">
                         <Avatar name={c.other.name} src={c.other.avatar} size={42} />
                         {c.other.role === "Instructor" && (
-                          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 border-2 border-[var(--surface)]" />
+                          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-[var(--primary)] border-2 border-[var(--surface)]" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -257,7 +257,7 @@ export default function MessagesPage() {
                             {c.lastMessage}
                           </p>
                           {c.unread > 0 && (
-                            <span className="shrink-0 h-5 min-w-5 px-1 rounded-full bg-[var(--primary)] text-white text-[10px] font-bold flex items-center justify-center">
+                            <span className="shrink-0 h-5 min-w-5 px-1 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] text-[10px] font-bold flex items-center justify-center">
                               {c.unread > 9 ? "9+" : c.unread}
                             </span>
                           )}
@@ -300,14 +300,14 @@ export default function MessagesPage() {
                 <div className="relative">
                   <Avatar name={active.other.name} src={active.other.avatar} size={38} />
                   {active.other.role === "Instructor" && (
-                    <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 border-2 border-[var(--surface)]" />
+                    <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-[var(--primary)] border-2 border-[var(--surface)]" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold leading-tight">{active.other.name}</p>
                   <p className="text-xs text-[var(--muted)] mt-0.5">
                     {active.other.role === "Instructor" ? (
-                      <span className="text-emerald-500 font-medium">● Online</span>
+                      <span className="text-[var(--primary)] font-medium">● Online</span>
                     ) : (
                       active.other.role
                     )}
@@ -323,7 +323,7 @@ export default function MessagesPage() {
               <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-0.5">
                 {groups.length === 0 ? (
                   <div className="h-full flex items-center justify-center">
-                    <p className="text-sm text-[var(--muted)]">No messages yet — say hello! 👋</p>
+                    <p className="text-sm text-[var(--muted)]">No messages yet — say hello!</p>
                   </div>
                 ) : (
                   groups.map((group) => (
@@ -394,7 +394,7 @@ export default function MessagesPage() {
                       rows={1}
                     />
                     {draft.length > 0 && (
-                      <span className={cn("absolute right-3 bottom-2.5 text-[10px] font-medium pointer-events-none", draft.length > 480 ? "text-red-500" : "text-[var(--muted-2)]")}>
+                      <span className={cn("absolute right-3 bottom-2.5 text-[10px] font-medium pointer-events-none", draft.length > 480 ? "text-[var(--danger)]" : "text-[var(--muted-2)]")}>
                         {draft.length}/500
                       </span>
                     )}
@@ -482,7 +482,7 @@ export default function MessagesPage() {
                       placeholder="Write your message…"
                       className="!min-h-[100px]"
                     />
-                    <span className={cn("absolute right-3 bottom-3 text-[10px]", modalDraft.length > 480 ? "text-red-500" : "text-[var(--muted-2)]")}>
+                    <span className={cn("absolute right-3 bottom-3 text-[10px]", modalDraft.length > 480 ? "text-[var(--danger)]" : "text-[var(--muted-2)]")}>
                       {modalDraft.length}/500
                     </span>
                   </div>

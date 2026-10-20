@@ -15,6 +15,7 @@ import {
   Select,
   Textarea,
   useToast,
+  Drawer,
 } from "@/components/ui";
 import { useData } from "@/lib/store";
 import type { CourseCategory, CourseLevel } from "@/lib/mockData";
@@ -258,9 +259,9 @@ export default function AdminLearningPathsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total paths", value: pathStats.total, icon: <Icon.Route size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-          { label: "Featured", value: pathStats.featured, icon: <Icon.Star size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-          { label: "Total learners", value: pathStats.totalLearners, icon: <Icon.Users size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-          { label: "Avg courses / path", value: pathStats.avgCourses, icon: <Icon.Book size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
+          { label: "Featured", value: pathStats.featured, icon: <Icon.Star size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
+          { label: "Total learners", value: pathStats.totalLearners, icon: <Icon.Users size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
+          { label: "Avg courses / path", value: pathStats.avgCourses, icon: <Icon.Book size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 !py-3">
@@ -313,14 +314,14 @@ export default function AdminLearningPathsPage() {
                 <div className="flex rounded-xl border border-[var(--border)] overflow-hidden shrink-0">
                   <button
                     onClick={() => setViewMode("grid")}
-                    className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "grid" ? "bg-[var(--primary)] text-white" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
+                    className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "grid" ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
                     title="Grid view"
                   >
                     <Icon.LayoutGrid size={15} />
                   </button>
                   <button
                     onClick={() => setViewMode("list")}
-                    className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "list" ? "bg-[var(--primary)] text-white" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
+                    className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "list" ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
                     title="List view"
                   >
                     <Icon.LayoutList size={15} />
@@ -336,7 +337,7 @@ export default function AdminLearningPathsPage() {
                 <button
                   key={cat}
                   onClick={() => setCategoryFilter(cat)}
-                  className={`px-3 h-7 rounded-lg text-xs font-medium transition ${categoryFilter === cat ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}
+                  className={`px-3 h-7 rounded-lg text-xs font-medium transition ${categoryFilter === cat ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}
                 >
                   {cat === "all" ? "All" : cat}
                 </button>
@@ -346,14 +347,14 @@ export default function AdminLearningPathsPage() {
                 <button
                   key={lvl}
                   onClick={() => setLevelFilter(lvl)}
-                  className={`px-3 h-7 rounded-lg text-xs font-medium transition ${levelFilter === lvl ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}
+                  className={`px-3 h-7 rounded-lg text-xs font-medium transition ${levelFilter === lvl ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}
                 >
                   {lvl === "all" ? "All levels" : lvl}
                 </button>
               ))}
               <button
                 onClick={() => setFeaturedOnly((v) => !v)}
-                className={`ml-2 px-3 h-7 rounded-lg text-xs font-medium transition flex items-center gap-1 ${featuredOnly ? "bg-amber-500 text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}
+                className={`ml-2 px-3 h-7 rounded-lg text-xs font-medium transition flex items-center gap-1 ${featuredOnly ? "bg-[var(--amber)] text-[var(--solid-fg)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}
               >
                 <Icon.Star size={11} /> Featured only
               </button>
@@ -432,7 +433,7 @@ export default function AdminLearningPathsPage() {
                       <button
                         onClick={(e) => { e.stopPropagation(); toggleFeatured(p); }}
                         disabled={busyFeatureId === p.id}
-                        className={`absolute top-2 right-2 h-8 w-8 rounded-full flex items-center justify-center transition-all shadow-md ${p.featured ? "bg-amber-500 text-white" : "bg-black/40 text-white/70 hover:bg-amber-500 hover:text-white"}`}
+                        className={`absolute top-2 right-2 h-8 w-8 rounded-full flex items-center justify-center transition-all shadow-md ${p.featured ? "bg-[var(--amber)] text-[var(--solid-fg)]" : "bg-black/40 text-white/70 hover:bg-[var(--amber)] hover:text-white"}`}
                         title={p.featured ? "Remove from featured" : "Mark as featured"}
                       >
                         <Icon.Star size={14} />
@@ -541,7 +542,7 @@ export default function AdminLearningPathsPage() {
                         <button
                           onClick={() => toggleFeatured(p)}
                           disabled={busyFeatureId === p.id}
-                          className={`transition ${p.featured ? "text-amber-500" : "text-[var(--muted-2)] hover:text-amber-400"}`}
+                          className={`transition ${p.featured ? "text-[var(--amber)]" : "text-[var(--muted-2)] hover:text-[var(--amber)]"}`}
                           title={p.featured ? "Remove from featured" : "Mark as featured"}
                         >
                           <Icon.Star size={16} />
@@ -595,7 +596,7 @@ export default function AdminLearningPathsPage() {
                       <button
                         key={p}
                         onClick={() => setPage(p as number)}
-                        className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}
+                        className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}
                       >
                         {p}
                       </button>
@@ -612,97 +613,82 @@ export default function AdminLearningPathsPage() {
 
       {/* Detail side drawer */}
       {detailPath && (
-        <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setDetailPath(null)}>
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
-          <div
-            className="relative w-full max-w-sm bg-[var(--surface)] h-full shadow-2xl flex flex-col overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] shrink-0">
-              <p className="font-semibold">Path details</p>
-              <button
-                onClick={() => setDetailPath(null)}
-                className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface-2)] transition"
-              >
-                <Icon.X size={16} />
-              </button>
-            </div>
-            <div className="aspect-video shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={detailPath.thumbnail} alt={detailPath.title} className="w-full h-full object-cover" />
-            </div>
-            <div className="p-5 space-y-4 flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant="primary">{detailPath.category}</Badge>
-                <Badge variant="default">{detailPath.level}</Badge>
-                {detailPath.featured && (
-                  <Badge variant="warning"><Icon.Star size={11} /> Featured</Badge>
-                )}
-              </div>
-              <h2 className="text-lg font-bold leading-snug">{detailPath.title}</h2>
-              <p className="text-sm text-[var(--muted)] leading-relaxed">{detailPath.description}</p>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
-                  <p className="text-2xl font-bold">{detailPath.courseIds.length}</p>
-                  <p className="text-xs text-[var(--muted)] mt-0.5">Courses</p>
-                </div>
-                <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
-                  <p className="text-2xl font-bold">{detailPath.learners}</p>
-                  <p className="text-xs text-[var(--muted)] mt-0.5">Learners</p>
-                </div>
-              </div>
-
-              {detailPath.courseTitles.length > 0 && (
-                <div className="space-y-2">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Courses in this path</p>
-                  <ol className="space-y-1.5">
-                    {detailPath.courseTitles.map((title, i) => (
-                      <li key={i} className="flex items-start gap-2.5 text-sm">
-                        <span className="h-5 w-5 rounded-md bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">
-                          {i + 1}
-                        </span>
-                        <span className="leading-snug">{title}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
+        <Drawer open onClose={() => setDetailPath(null)} title="Path details">
+          <div className="aspect-video shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={detailPath.thumbnail} alt={detailPath.title} className="w-full h-full object-cover" />
+          </div>
+          <div className="p-5 space-y-4 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge variant="primary">{detailPath.category}</Badge>
+              <Badge variant="default">{detailPath.level}</Badge>
+              {detailPath.featured && (
+                <Badge variant="warning"><Icon.Star size={11} /> Featured</Badge>
               )}
+            </div>
+            <h2 className="text-lg font-bold leading-snug">{detailPath.title}</h2>
+            <p className="text-sm text-[var(--muted)] leading-relaxed">{detailPath.description}</p>
 
-              <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
-                <Button
-                  className="w-full"
-                  onClick={() => { setEditing(detailPath); setMode("edit"); setDetailPath(null); }}
-                >
-                  <Icon.FilePen size={15} /> Edit path
-                </Button>
-                <Button
-                  className="w-full"
-                  variant="outline"
-                  onClick={() => toggleFeatured(detailPath)}
-                  disabled={busyFeatureId === detailPath.id}
-                >
-                  <Icon.Star size={15} />
-                  {detailPath.featured ? "Remove from featured" : "Mark as featured"}
-                </Button>
-                <Button
-                  className="w-full"
-                  variant="ghost"
-                  onClick={() => { duplicatePath(detailPath); setDetailPath(null); }}
-                >
-                  <Icon.Copy size={15} /> Duplicate path
-                </Button>
-                <Button
-                  className="w-full"
-                  variant="ghost"
-                  onClick={() => { setConfirmDeleteId(detailPath.id); setDetailPath(null); }}
-                >
-                  <Icon.Trash size={15} /> Delete path
-                </Button>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
+                <p className="text-2xl font-bold">{detailPath.courseIds.length}</p>
+                <p className="text-xs text-[var(--muted)] mt-0.5">Courses</p>
               </div>
+              <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
+                <p className="text-2xl font-bold">{detailPath.learners}</p>
+                <p className="text-xs text-[var(--muted)] mt-0.5">Learners</p>
+              </div>
+            </div>
+
+            {detailPath.courseTitles.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Courses in this path</p>
+                <ol className="space-y-1.5">
+                  {detailPath.courseTitles.map((title, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm">
+                      <span className="h-5 w-5 rounded-md bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">
+                        {i + 1}
+                      </span>
+                      <span className="leading-snug">{title}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
+              <Button
+                className="w-full"
+                onClick={() => { setEditing(detailPath); setMode("edit"); setDetailPath(null); }}
+              >
+                <Icon.FilePen size={15} /> Edit path
+              </Button>
+              <Button
+                className="w-full"
+                variant="outline"
+                onClick={() => toggleFeatured(detailPath)}
+                disabled={busyFeatureId === detailPath.id}
+              >
+                <Icon.Star size={15} />
+                {detailPath.featured ? "Remove from featured" : "Mark as featured"}
+              </Button>
+              <Button
+                className="w-full"
+                variant="ghost"
+                onClick={() => { duplicatePath(detailPath); setDetailPath(null); }}
+              >
+                <Icon.Copy size={15} /> Duplicate path
+              </Button>
+              <Button
+                className="w-full"
+                variant="ghost"
+                onClick={() => { setConfirmDeleteId(detailPath.id); setDetailPath(null); }}
+              >
+                <Icon.Trash size={15} /> Delete path
+              </Button>
             </div>
           </div>
-        </div>
+        </Drawer>
       )}
 
       <PathFormModal
@@ -956,7 +942,7 @@ function PathFormModal({
                       className={
                         "h-5 w-5 shrink-0 rounded-md border flex items-center justify-center text-[10px] font-bold " +
                         (idx >= 0
-                          ? "bg-[var(--primary)] border-[var(--primary)] text-white"
+                          ? "bg-[var(--primary)] border-[var(--primary)] text-[var(--primary-foreground)]"
                           : "border-[var(--border-strong)]")
                       }
                     >
@@ -976,7 +962,7 @@ function PathFormModal({
         </div>
 
         {err && (
-          <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">
+          <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">
             {err}
           </p>
         )}

@@ -40,7 +40,7 @@ export function SectionHeader({
 }) {
   const cls =
     tone === "danger"
-      ? "bg-red-500/10 text-[var(--danger)]"
+      ? "bg-[var(--danger-soft)] text-[var(--danger)]"
       : "bg-[var(--primary-soft)] text-[var(--primary)]";
   return (
     <div className="flex items-start gap-3">
@@ -161,7 +161,7 @@ export function ProfileHero({
 
   return (
     <Card className="overflow-hidden">
-      <div className="relative h-32 sm:h-40 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)]">
+      <div className="relative h-32 sm:h-40 brand-fill">
         {user.banner ? (
           <>
             <img
@@ -612,11 +612,11 @@ function scorePassword(p: string) {
   if (/[^A-Za-z0-9]/.test(p)) s++;
   const score = Math.min(s, 4);
   const meta = [
-    { label: "Too weak", color: "bg-red-500", textColor: "text-red-500" },
-    { label: "Weak", color: "bg-red-500", textColor: "text-red-500" },
-    { label: "Okay", color: "bg-amber-500", textColor: "text-amber-500" },
-    { label: "Strong", color: "bg-emerald-500", textColor: "text-emerald-500" },
-    { label: "Excellent", color: "bg-emerald-600", textColor: "text-emerald-600" },
+    { label: "Too weak", color: "bg-[var(--danger)]", textColor: "text-[var(--danger)]" },
+    { label: "Weak", color: "bg-[var(--danger)]", textColor: "text-[var(--danger)]" },
+    { label: "Okay", color: "bg-[var(--amber)]", textColor: "text-[var(--amber)]" },
+    { label: "Strong", color: "bg-[var(--primary)]", textColor: "text-[var(--primary)]" },
+    { label: "Excellent", color: "bg-[var(--primary)]", textColor: "text-[var(--primary)]" },
   ];
   return { score, ...meta[score] };
 }

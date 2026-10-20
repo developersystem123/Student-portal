@@ -166,7 +166,7 @@ export default function AdminSettingsPage() {
                   onClick={() => setTheme("light")}
                   label="Light"
                   preview={
-                    <div className="h-16 rounded-lg bg-gradient-to-br from-white to-emerald-50 border border-emerald-200" />
+                    <div className="h-16 rounded-lg border border-[#e4e9e6] bg-[linear-gradient(90deg,#111827_24%,#f6f8f7_24%)]" />
                   }
                 />
                 <ThemeCard
@@ -174,7 +174,7 @@ export default function AdminSettingsPage() {
                   onClick={() => setTheme("dark")}
                   label="Dark"
                   preview={
-                    <div className="h-16 rounded-lg bg-gradient-to-br from-emerald-950 to-green-900 border border-emerald-800" />
+                    <div className="h-16 rounded-lg border border-[#2d3a4b] bg-[linear-gradient(90deg,#0c121d_24%,#111827_24%)]" />
                   }
                 />
               </div>
@@ -333,7 +333,7 @@ function SectionHeader({
 }) {
   const cls =
     tone === "danger"
-      ? "bg-red-500/10 text-[var(--danger)]"
+      ? "bg-[var(--danger-soft)] text-[var(--danger)]"
       : "bg-[var(--primary-soft)] text-[var(--primary)]";
   return (
     <div className="flex items-start gap-3">
@@ -392,7 +392,7 @@ function ThemeCard({
       {preview}
       <p className={`mt-2 text-sm font-semibold ${active ? "text-[var(--primary)]" : ""}`}>{label}</p>
       {active && (
-        <span className="absolute top-2 right-2 h-5 w-5 rounded-full bg-[var(--primary)] text-white flex items-center justify-center">
+        <span className="absolute top-2 right-2 h-5 w-5 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center">
           <Icon.Check size={12} strokeWidth={3} />
         </span>
       )}

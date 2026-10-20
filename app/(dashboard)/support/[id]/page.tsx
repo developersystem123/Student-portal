@@ -120,7 +120,7 @@ export default function TicketDetailPage() {
 
       <div className="space-y-3">
         {ticket.replies.map((r) => (
-          <Card key={r.id} className={cn(r.isStaff && "ring-1 ring-emerald-500/30")}>
+          <Card key={r.id} className={cn(r.isStaff && "ring-1 ring-[var(--primary)]/30")}>
             <CardBody className="flex gap-3">
               <Avatar name={r.author.name} src={r.author.avatar} size={36} />
               <div className="flex-1 min-w-0">

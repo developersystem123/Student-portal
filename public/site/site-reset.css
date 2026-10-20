@@ -1,0 +1,48 @@
+/*
+ * Site page isolation.
+ *
+ * The portal's root layout ships Tailwind (preflight + utilities) and app/globals.css. This file
+ * loads right before the template CSS and rolls every element of the site page back to browser
+ * defaults, so Bootstrap + the template styles render exactly as in the original index.html.
+ *
+ * - Unlayered, so it beats everything Tailwind puts in @layer base/utilities.
+ * - Zero (or element-level) specificity and loaded before the template CSS, so every
+ *   Bootstrap/template rule still wins over it.
+ * - Scoped with :has(.site-page), so it is inert on every other route.
+ */
+
+/* (0,0,1) — same weight as the `html, body {}` rules in globals.css and the template; order decides. */
+html:where(:has(.site-page)),
+:where(html:has(.site-page)) body {
+  all: revert;
+}
+
+/* Zero specificity for everything inside the page. Inline SVGs are skipped: reverting them would also
+   drop their presentation attributes (fill, stroke, width, d, cx, r… are all CSS properties). */
+:where(.site-page),
+:where(.site-page) :where(:not(svg, svg *)),
+:where(.site-page) ::before,
+:where(.site-page) ::after,
+:where(.site-page) ::placeholder,
+:where(.site-page) ::backdrop,
+:where(.site-page) ::file-selector-button {
+  all: revert;
+}
+
+/* Undo Tailwind preflight's `svg { display: block }` for the inline SVGs the reset skips. */
+:where(.site-page svg) {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* The portal's dark theme toggles `.dark` on <html>; this page has its own (site-dark.css). */
+html:has(.site-page) {
+  color-scheme: light;
+}
+
+/* Drop the portal's thin custom scrollbars so the browser default shows, as in the original. */
+html:has(.site-page)::-webkit-scrollbar,
+html:has(.site-page) *::-webkit-scrollbar {
+  width: auto;
+  height: auto;
+}

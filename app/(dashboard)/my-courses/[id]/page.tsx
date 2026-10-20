@@ -109,8 +109,8 @@ export default function CourseDetailPage() {
   if (user && !isProfileComplete(user)) {
     return (
       <div className="max-w-lg mx-auto py-16 px-4 text-center space-y-6">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto">
-          <Icon.AlertCircle size={30} className="text-amber-500" />
+        <div className="w-16 h-16 rounded-2xl bg-[var(--amber-soft)] flex items-center justify-center mx-auto">
+          <Icon.AlertCircle size={30} className="text-[var(--amber)]" />
         </div>
         <div className="space-y-2">
           <h2 className="text-xl font-bold">Profile incomplete</h2>
@@ -166,7 +166,7 @@ export default function CourseDetailPage() {
         message: `You earned a certificate for ${c.title} (Score ${score}%).`,
       });
       toast.push({
-        title: "🎉 Course completed!",
+        title: "Course completed!",
         description: `Certificate ${newCert.verifyCode} earned.`,
         tone: "success",
       });
@@ -189,13 +189,13 @@ export default function CourseDetailPage() {
 
       {/* Course completion banner */}
       {enrollment?.completed && (
-        <div className="rounded-2xl bg-gradient-to-r from-emerald-500/10 to-teal-500/5 border border-emerald-500/20 px-5 py-4 flex flex-wrap items-center gap-4">
-          <div className="h-10 w-10 rounded-xl bg-emerald-500/15 flex items-center justify-center shrink-0">
-            <Icon.Award size={22} className="text-emerald-500" />
+        <div className="rounded-2xl bg-[var(--primary-tint)] border border-[var(--hero-border)] px-5 py-4 flex flex-wrap items-center gap-4">
+          <div className="h-10 w-10 rounded-xl bg-[var(--primary-soft)] flex items-center justify-center shrink-0">
+            <Icon.Award size={22} className="text-[var(--primary)]" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-              Course completed — well done! 🎉
+            <p className="text-sm font-semibold text-[var(--primary)]">
+              Course completed — well done!
             </p>
             <p className="text-xs text-[var(--muted)] mt-0.5 truncate">
               {c.title} · All {c.chapters.length} chapters finished
@@ -252,7 +252,7 @@ export default function CourseDetailPage() {
               <Button variant={isCompleted ? "soft" : "primary"} onClick={handleMarkComplete}>
                 {isCompleted ? (
                   <>
-                    <Icon.CheckCircle size={14} className="text-emerald-500" /> Completed
+                    <Icon.CheckCircle size={14} className="text-[var(--primary)]" /> Completed
                   </>
                 ) : (
                   <>
@@ -340,9 +340,9 @@ export default function CourseDetailPage() {
                         className={cn(
                           "h-7 w-7 rounded-full flex items-center justify-center text-xs shrink-0",
                           done
-                            ? "bg-emerald-500 text-white"
+                            ? "bg-[var(--primary)] text-[var(--solid-fg)]"
                             : active
-                              ? "bg-[var(--primary)] text-white"
+                              ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                               : "bg-[var(--surface-2)] text-[var(--muted)]",
                         )}
                       >
@@ -371,8 +371,8 @@ export default function CourseDetailPage() {
 
             {/* Certificate footer */}
             {enrollment?.completed && cert && (
-              <div className="p-4 border-t border-[var(--border)] bg-emerald-500/5">
-                <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 mb-1">
+              <div className="p-4 border-t border-[var(--border)] bg-[var(--primary-soft)]">
+                <div className="flex items-center gap-2 text-[var(--primary)] mb-1">
                   <Icon.Award size={15} />
                   <p className="text-xs font-semibold">Certificate earned</p>
                 </div>
@@ -465,12 +465,12 @@ function chapterResources(ch: Chapter, idx: number): ResourceItem[] {
 
 function FileIcon({ type }: { type: ResourceItem["type"] }) {
   if (type === "pdf")
-    return <Icon.FilePen size={15} className="text-red-400 shrink-0" />;
+    return <Icon.FilePen size={15} className="text-[var(--danger)] shrink-0" />;
   if (type === "video")
-    return <Icon.Play size={15} className="text-blue-400 shrink-0" />;
+    return <Icon.Play size={15} className="text-[var(--info)] shrink-0" />;
   if (type === "code")
-    return <Icon.Save size={15} className="text-green-400 shrink-0" />;
-  return <Icon.Download size={15} className="text-purple-400 shrink-0" />;
+    return <Icon.Save size={15} className="text-[var(--primary)] shrink-0" />;
+  return <Icon.Download size={15} className="text-[var(--info)] shrink-0" />;
 }
 
 function ResourcesTab({
@@ -511,7 +511,7 @@ function ResourcesTab({
                 className={cn(
                   "h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0",
                   isActive
-                    ? "bg-[var(--primary)] text-white"
+                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                     : "bg-[var(--surface-2)] text-[var(--muted)]",
                 )}
               >
@@ -690,7 +690,7 @@ function QATab({ courseId }: { courseId: string }) {
                   A: {item.answer}
                 </p>
               ) : (
-                <p className="text-xs text-amber-500 flex items-center gap-1">
+                <p className="text-xs text-[var(--amber)] flex items-center gap-1">
                   <Icon.Clock size={12} /> Awaiting instructor reply
                 </p>
               )}

@@ -29,9 +29,9 @@ function letterGrade(total: number): string {
 
 function gradeCellColor(score: number | null): string {
   if (score === null) return "";
-  if (score >= 85) return "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30";
-  if (score >= 70) return "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30";
-  return "bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/30";
+  if (score >= 85) return "bg-[var(--primary-soft)] text-[var(--primary)] border-[var(--primary)]/30";
+  if (score >= 70) return "bg-[var(--amber-soft)] text-[var(--amber)] border-[var(--amber)]/30";
+  return "bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger)]/30";
 }
 
 export default function TeacherGradesPage() {
@@ -221,7 +221,7 @@ export default function TeacherGradesPage() {
                       <tr key={s.userId} className="border-b border-[var(--border)] last:border-0">
                         <td className="py-2 px-3 sticky left-0 bg-[var(--surface)]">
                           <div className="flex items-center gap-2.5 min-w-0">
-                            <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-semibold flex items-center justify-center text-xs">
+                            <div className="h-7 w-7 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold flex items-center justify-center text-xs">
                               {s.userName.slice(0, 1).toUpperCase()}
                             </div>
                             <span className="font-medium truncate max-w-[180px]">
@@ -272,7 +272,7 @@ export default function TeacherGradesPage() {
                           );
                         })}
                         <td className="py-2.5 px-3">
-                          <span className={`text-sm font-bold ${classAvg >= 80 ? "text-emerald-600 dark:text-emerald-400" : classAvg >= 60 ? "text-amber-600 dark:text-amber-400" : "text-red-500"}`}>
+                          <span className={`text-sm font-bold ${classAvg >= 80 ? "text-[var(--primary)]" : classAvg >= 60 ? "text-[var(--amber)]" : "text-[var(--danger)]"}`}>
                             {classAvg}%
                           </span>
                         </td>
@@ -401,7 +401,7 @@ function ColumnEditor({
             <Icon.Plus size={14} /> Add column
           </Button>
           <p className="text-xs text-[var(--muted-2)]">
-            Total weight: <b className={totalWeight === 100 ? "text-emerald-500" : ""}>{totalWeight}%</b>
+            Total weight: <b className={totalWeight === 100 ? "text-[var(--primary)]" : ""}>{totalWeight}%</b>
           </p>
         </div>
         <div className="flex justify-end pt-1 border-t border-[var(--border)]">

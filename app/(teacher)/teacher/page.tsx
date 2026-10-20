@@ -6,6 +6,15 @@ import { Badge, Card, CardBody } from "@/components/ui";
 import { BarChart, Donut, LineChart, ProgressBar, Sparkline } from "@/components/charts";
 import { useAuth, useTeacher } from "@/lib/store";
 import { relativeTime } from "@/lib/utils";
+import {
+  HeroFact,
+  HeroLink,
+  IconChip,
+  LivePulse,
+  PageHero,
+  QuickActions,
+  type QuickAction,
+} from "@/components/layout/PageHero";
 
 const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -148,81 +157,55 @@ export default function TeacherOverviewPage() {
     },
   ];
 
-  const quickActions = [
-    { icon: <Icon.FilePen size={18} />, label: "New assignment", href: "/teacher/assignments", tint: "bg-violet-500/10 text-violet-600 dark:text-violet-400" },
-    { icon: <Icon.Calendar size={18} />, label: "Add schedule event", href: "/teacher/schedule", tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-    { icon: <Icon.ListChecks size={18} />, label: "Gradebook", href: "/teacher/grades", tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-    { icon: <Icon.BarChart3 size={18} />, label: "Analytics", href: "/teacher/analytics", tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-    { icon: <Icon.Video size={18} />, label: "Live classes", href: "/teacher/live", tint: "bg-rose-500/10 text-rose-500" },
-    { icon: <Icon.Megaphone size={18} />, label: "Announce", href: "/teacher/announcements", tint: "bg-orange-500/10 text-orange-500" },
+  const quickActions: QuickAction[] = [
+    { icon: <Icon.FilePen size={18} />, label: "New assignment", href: "/teacher/assignments" },
+    { icon: <Icon.Calendar size={18} />, label: "Add schedule event", href: "/teacher/schedule", tone: "amber" },
+    { icon: <Icon.ListChecks size={18} />, label: "Gradebook", href: "/teacher/grades", tone: "info" },
+    { icon: <Icon.BarChart3 size={18} />, label: "Analytics", href: "/teacher/analytics" },
+    { icon: <Icon.Video size={18} />, label: "Live classes", href: "/teacher/live", tone: "amber" },
+    { icon: <Icon.Megaphone size={18} />, label: "Announce", href: "/teacher/announcements", tone: "info" },
   ];
 
   return (
     <div className="space-y-6 fade-in">
-      {/* Hero banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white p-6 sm:p-8 card-shadow">
-        <TeacherHeroDecor />
-        <div className="relative flex items-start justify-between gap-6 flex-wrap">
-          <div>
-            <span className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full bg-white/15 backdrop-blur border border-white/20 uppercase tracking-wider font-semibold">
-              <Icon.Sparkles size={11} /> Teacher portal
-            </span>
-            <h1 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">
-              Welcome back, {user?.name?.split(" ")[0] ?? "Teacher"}
-            </h1>
-            <p className="mt-2 text-white/85 max-w-xl">
-              A quick look at your courses and the students learning from you. Jump in below to manage content or track progress.
-            </p>
-          </div>
-          <div className="hidden sm:flex items-center gap-2 shrink-0">
-            <Link
-              href="/teacher/students"
-              className="inline-flex h-10 items-center gap-2 px-4 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur text-sm font-semibold transition"
-            >
-              <Icon.User size={16} /> View students
-            </Link>
-            <Link
-              href="/teacher/courses"
-              className="inline-flex h-10 items-center gap-2 px-4 rounded-xl bg-white text-[var(--primary)] hover:brightness-95 text-sm font-semibold transition"
-            >
+      <PageHero
+        art="teacher"
+        eyebrow="Teacher studio"
+        eyebrowIcon={<Icon.Sparkles size={12} />}
+        title="Welcome back,"
+        highlight={user?.name?.split(" ")[0] ?? "Teacher"}
+        description="A quick look at your courses and the students learning from you. Jump in below to manage content or track progress."
+        actions={
+          <>
+            <HeroLink href="/teacher/courses">
               <Icon.Book size={16} /> My courses
-            </Link>
-          </div>
+            </HeroLink>
+            <HeroLink href="/teacher/students" variant="secondary">
+              <Icon.Users size={16} /> View students
+            </HeroLink>
+          </>
+        }
+      >
+        <div className="flex flex-wrap gap-x-8 gap-y-3">
+          <HeroFact value={stats.courses} label="Courses taught" />
+          <HeroFact value={isDemo ? 55 : stats.students} label="Students" />
+          <HeroFact value={`${completionRate}%`} label="Completion rate" />
         </div>
-      </div>
+      </PageHero>
 
-      {/* Quick actions */}
-      <div>
-        <p className="text-xs uppercase tracking-wider text-[var(--muted-2)] font-semibold mb-2">Quick actions</p>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-          {quickActions.map((a) => (
-            <Link
-              key={a.label}
-              href={a.href}
-              className="group flex flex-col items-center gap-2 p-3 rounded-xl border border-[var(--border)] hover:border-[var(--primary)]/30 hover:bg-[var(--primary-soft)]/20 transition text-center"
-            >
-              <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${a.tint}`}>
-                {a.icon}
-              </div>
-              <p className="text-[11px] font-medium text-[var(--muted)] group-hover:text-[var(--foreground)] leading-tight">{a.label}</p>
-            </Link>
-          ))}
-        </div>
-      </div>
+      <QuickActions actions={quickActions} />
 
       {/* Stat cards with sparklines */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {cards.map((c) => (
           <Link key={c.label} href={c.href} className="block group">
-            <Card className="h-full hover:shadow-lg transition-all hover:-translate-y-0.5 hover:border-[var(--primary)]/30">
+            <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)] hover:border-[color-mix(in_oklab,var(--primary)_40%,var(--border))]">
               <CardBody className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="h-10 w-10 rounded-xl bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center ring-1 ring-[var(--primary)]/15">
-                    {c.icon}
-                  </div>
+                  <IconChip>{c.icon}</IconChip>
                   <Icon.ChevronRight size={16} className="text-[var(--muted-2)] group-hover:text-[var(--primary)] group-hover:translate-x-0.5 transition" />
                 </div>
-                <p className="text-3xl font-bold tracking-tight">{c.value}</p>
+                <p className="text-3xl font-bold tracking-tight text-[var(--heading)] tabular-nums">{c.value}</p>
                 <p className="text-xs font-medium text-[var(--foreground)]">{c.label}</p>
                 <div className="flex items-end justify-between gap-2 pt-1">
                   <p className="text-[11px] text-[var(--muted-2)]">{c.hint}</p>
@@ -405,7 +388,7 @@ export default function TeacherOverviewPage() {
               <ul className="space-y-3">
                 {recentStudents.map((s) => (
                   <li key={`${s.userId}-${s.courseId}`} className="flex items-start gap-3">
-                    <div className="h-9 w-9 shrink-0 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-semibold inline-flex items-center justify-center text-sm">
+                    <div className="h-9 w-9 shrink-0 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold inline-flex items-center justify-center text-sm">
                       {s.userName.slice(0, 1).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -426,54 +409,6 @@ export default function TeacherOverviewPage() {
           </CardBody>
         </Card>
       </div>
-    </div>
-  );
-}
-
-function LivePulse() {
-  return (
-    <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-      <span className="relative flex h-1.5 w-1.5">
-        <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
-        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-      </span>
-      Live
-    </span>
-  );
-}
-
-function TeacherHeroDecor() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      <svg viewBox="0 0 800 220" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <pattern id="teacher-dots" width="22" height="22" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1.4" fill="white" />
-          </pattern>
-          <linearGradient id="teacher-wave" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="white" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#teacher-dots)" opacity="0.25" />
-        <path d="M0 170 Q 220 100 440 150 T 800 120 L 800 220 L 0 220 Z" fill="url(#teacher-wave)" />
-        {/* Floating chart bars */}
-        <g opacity="0.18">
-          <rect x="560" y="80" width="14" height="36" rx="3" fill="white" />
-          <rect x="582" y="60" width="14" height="56" rx="3" fill="white" />
-          <rect x="604" y="40" width="14" height="76" rx="3" fill="white" />
-          <rect x="626" y="70" width="14" height="46" rx="3" fill="white" />
-        </g>
-        {/* Floating book */}
-        <g opacity="0.15" transform="translate(680 130)">
-          <rect x="0" y="0" width="60" height="42" rx="6" fill="white" />
-          <rect x="8" y="10" width="28" height="4" rx="2" fill="rgba(0,0,0,0.25)" />
-          <rect x="8" y="20" width="40" height="3" rx="1.5" fill="rgba(0,0,0,0.25)" />
-          <rect x="8" y="28" width="34" height="3" rx="1.5" fill="rgba(0,0,0,0.25)" />
-        </g>
-        <circle cx="120" cy="40" r="44" fill="white" opacity="0.07" />
-        <circle cx="80" cy="60" r="18" fill="white" opacity="0.10" />
-      </svg>
     </div>
   );
 }

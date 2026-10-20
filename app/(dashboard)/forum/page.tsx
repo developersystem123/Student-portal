@@ -221,9 +221,9 @@ export default function ForumPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total posts", value: stats.total, icon: <Icon.MessageSquare size={16} />, color: "text-[var(--primary)]" },
-          { label: "Questions", value: stats.questions, icon: <Icon.Help size={16} />, color: "text-blue-500" },
-          { label: "Discussions", value: stats.discussions, icon: <Icon.Users size={16} />, color: "text-green-500" },
-          { label: "Announcements", value: stats.announcements, icon: <Icon.Bell size={16} />, color: "text-amber-500" },
+          { label: "Questions", value: stats.questions, icon: <Icon.Help size={16} />, color: "text-[var(--info)]" },
+          { label: "Discussions", value: stats.discussions, icon: <Icon.Users size={16} />, color: "text-[var(--primary)]" },
+          { label: "Announcements", value: stats.announcements, icon: <Icon.Bell size={16} />, color: "text-[var(--amber)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="py-3 px-4">
@@ -271,7 +271,7 @@ export default function ForumPage() {
               onClick={() => setSort(k)}
               className={`text-xs px-3 py-1.5 rounded-lg font-medium transition ${
                 sort === k
-                  ? "bg-[var(--primary)] text-white"
+                  ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                   : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"
               }`}
             >
@@ -281,7 +281,7 @@ export default function ForumPage() {
           {bookmarks.size > 0 && (
             <button
               onClick={() => setSort("newest")}
-              className="ml-auto text-xs px-3 py-1.5 rounded-lg font-medium bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 flex items-center gap-1"
+              className="ml-auto text-xs px-3 py-1.5 rounded-lg font-medium bg-[var(--amber-soft)] text-[var(--amber)] flex items-center gap-1"
             >
               <Icon.Bookmark size={11} />
               {bookmarks.size} saved
@@ -322,7 +322,7 @@ export default function ForumPage() {
                 <li
                   key={p.id}
                   className={`relative transition hover:bg-[var(--surface-2)] ${
-                    p.pinned ? "bg-amber-50/60 dark:bg-amber-900/10 border-l-2 border-amber-400" : ""
+                    p.pinned ? "bg-[var(--amber-soft)] border-l-2 border-[var(--amber)]/40" : ""
                   }`}
                 >
                   <Link href={`/forum/${p.id}`} className="flex gap-3 p-4 pr-2">
@@ -330,7 +330,7 @@ export default function ForumPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         {p.pinned && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-600 bg-amber-100 dark:bg-amber-900/30 px-1.5 py-0.5 rounded">
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[var(--amber)] bg-[var(--amber-soft)] px-1.5 py-0.5 rounded">
                             <Icon.Pin size={10} /> Pinned
                           </span>
                         )}
@@ -379,8 +379,8 @@ export default function ForumPage() {
                           onClick={(e) => toggleLike(p.id, e)}
                           className={`flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition ${
                             liked[p.id]
-                              ? "bg-red-50 text-red-500 dark:bg-red-900/20"
-                              : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-red-500"
+                              ? "bg-[var(--danger-soft)] text-[var(--danger)]"
+                              : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--danger)]"
                           }`}
                           title="Like"
                         >
@@ -391,8 +391,8 @@ export default function ForumPage() {
                           onClick={(e) => toggleBookmark(p.id, e)}
                           className={`p-1.5 rounded-lg transition ${
                             bookmarks.has(p.id)
-                              ? "bg-amber-50 text-amber-500 dark:bg-amber-900/20"
-                              : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-amber-500"
+                              ? "bg-[var(--amber-soft)] text-[var(--amber)]"
+                              : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--amber)]"
                           }`}
                           title={bookmarks.has(p.id) ? "Remove bookmark" : "Bookmark"}
                         >
@@ -434,7 +434,7 @@ export default function ForumPage() {
           <div>
             <div className="flex items-center justify-between mb-1">
               <Label className="mb-0">Body</Label>
-              <span className={`text-xs ${bodyOver ? "text-red-500 font-semibold" : "text-[var(--muted)]"}`}>
+              <span className={`text-xs ${bodyOver ? "text-[var(--danger)] font-semibold" : "text-[var(--muted)]"}`}>
                 {bodyLen}/1000
               </span>
             </div>
@@ -443,10 +443,10 @@ export default function ForumPage() {
               onChange={(e) => setForm({ ...form, body: e.target.value })}
               rows={6}
               placeholder="Add details, code, links…"
-              className={bodyOver ? "border-red-400 focus:ring-red-400" : ""}
+              className={bodyOver ? "border-[var(--danger)]/40 focus:ring-[var(--danger)]/40" : ""}
             />
             {bodyOver && (
-              <p className="text-xs text-red-500 mt-1">Body exceeds 1000 character limit.</p>
+              <p className="text-xs text-[var(--danger)] mt-1">Body exceeds 1000 character limit.</p>
             )}
           </div>
           <div className="flex justify-end gap-2">

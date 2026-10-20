@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Avatar, Badge, Button, Card, CardBody, Modal, useToast } from "@/components/ui";
 import Icon from "@/components/icons";
 import { useAuth, useTeacher } from "@/lib/store";
@@ -16,7 +15,6 @@ import {
 export default function TeacherProfilePage() {
   const { user, deleteAccount } = useAuth();
   const teacher = useTeacher();
-  const router = useRouter();
   const toast = useToast();
   const [confirmDelete, setConfirmDelete] = React.useState(false);
 
@@ -181,7 +179,7 @@ export default function TeacherProfilePage() {
               onClick={() => {
                 deleteAccount();
                 toast.push({ title: "Account deleted", tone: "success" });
-                router.replace("/login");
+                window.location.replace("/login");
               }}
             >
               <Icon.Trash size={16} /> Yes, delete my account

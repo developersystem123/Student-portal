@@ -192,7 +192,7 @@ export default function SubscriptionPage() {
           {/* Current plan banner */}
           <Card className="overflow-hidden">
             <CardBody className="p-0">
-              <div className="p-5 sm:p-6 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white">
+              <div className="p-5 sm:p-6 brand-fill text-white">
                 <div className="flex items-start gap-3 flex-wrap">
                   <Icon.Crown size={28} />
                   <div className="flex-1 min-w-[14rem]">
@@ -233,7 +233,7 @@ export default function SubscriptionPage() {
           </Card>
 
           {subscription?.cancelAtPeriodEnd && (
-            <div className="flex items-center gap-2 text-sm rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-4 py-3">
+            <div className="flex items-center gap-2 text-sm rounded-xl bg-[var(--amber-soft)] text-[var(--amber)] border border-[var(--amber)]/20 px-4 py-3">
               <Icon.AlertCircle size={16} />
               Your subscription is set to cancel. You&rsquo;ll move to the Free plan on{" "}
               {formatDate(subscription.currentPeriodEnd)}.
@@ -280,8 +280,8 @@ export default function SubscriptionPage() {
                   )}
                 >
                   {p.highlight && (
-                    <div className="bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white text-center py-1.5 text-xs font-semibold">
-                      ⭐ MOST POPULAR
+                    <div className="bg-[var(--primary)] text-[var(--primary-foreground)] text-center py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] inline-flex items-center justify-center gap-1.5 w-full">
+                      <Icon.StarFill size={12} /> Most popular
                     </div>
                   )}
                   <CardBody className="flex-1 flex flex-col p-6">
@@ -302,7 +302,7 @@ export default function SubscriptionPage() {
                     <ul className="mt-6 space-y-2.5 flex-1">
                       {p.features.map((f) => (
                         <li key={f} className="flex items-start gap-2 text-sm">
-                          <Icon.CheckCircle size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                          <Icon.CheckCircle size={16} className="text-[var(--primary)] shrink-0 mt-0.5" />
                           <span>{f}</span>
                         </li>
                       ))}
@@ -363,7 +363,7 @@ export default function SubscriptionPage() {
                   {coupon && base !== final && (
                     <p className="text-xs mt-1">
                       <span className="line-through text-[var(--muted-2)]">{money(base)}</span>{" "}
-                      <span className="text-emerald-500 font-medium">{coupon.label}</span>
+                      <span className="text-[var(--primary)] font-medium">{coupon.label}</span>
                     </p>
                   )}
                   <p className="text-xs text-[var(--muted)] mt-1">
@@ -389,7 +389,7 @@ export default function SubscriptionPage() {
                 <p
                   className={cn(
                     "mt-1.5 text-xs",
-                    coupon ? "text-emerald-500" : "text-[var(--danger)]",
+                    coupon ? "text-[var(--primary)]" : "text-[var(--danger)]",
                   )}
                 >
                   {couponMsg}

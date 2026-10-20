@@ -95,7 +95,7 @@ export default function TakeQuizPage() {
           <CardBody className="text-center py-10">
             <div className={cn(
               "h-20 w-20 rounded-full mx-auto flex items-center justify-center mb-4",
-              result.passed ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"
+              result.passed ? "bg-[var(--primary-soft)] text-[var(--primary)]" : "bg-[var(--amber-soft)] text-[var(--amber)]"
             )}>
               {result.passed ? <Icon.CheckCircle size={40} /> : <Icon.AlertCircle size={40} />}
             </div>
@@ -154,7 +154,7 @@ export default function TakeQuizPage() {
                 >
                   <span className={cn(
                     "h-6 w-6 rounded-full border-2 flex items-center justify-center text-xs font-semibold",
-                    selected ? "border-[var(--primary)] bg-[var(--primary)] text-white" : "border-[var(--border-strong)]"
+                    selected ? "border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)]" : "border-[var(--border-strong)]"
                   )}>
                     {String.fromCharCode(65 + oi)}
                   </span>

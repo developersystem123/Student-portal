@@ -24,23 +24,23 @@ const TYPE_INFO: Record<Notification["type"], {
     label: "Assignment",
   },
   announcement: {
-    color: "text-sky-500",
-    bg: "bg-sky-500/10",
-    border: "border-sky-500/20",
+    color: "text-[var(--info)]",
+    bg: "bg-[var(--info-soft)]",
+    border: "border-[var(--info)]/20",
     icon: <Icon.Megaphone size={16} />,
     label: "Announcement",
   },
   reminder: {
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
+    color: "text-[var(--amber)]",
+    bg: "bg-[var(--amber-soft)]",
+    border: "border-[var(--amber)]/20",
     icon: <Icon.Clock size={16} />,
     label: "Reminder",
   },
   achievement: {
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
+    color: "text-[var(--primary)]",
+    bg: "bg-[var(--primary-soft)]",
+    border: "border-[var(--primary)]/20",
     icon: <Icon.Award size={16} />,
     label: "Achievement",
   },
@@ -268,7 +268,7 @@ export default function NotificationsPage() {
                         <button
                           onClick={() => deleteNotification(n.id)}
                           title="Delete"
-                          className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--danger)] hover:bg-red-500/10 transition"
+                          className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-soft)] transition"
                         >
                           <Icon.Trash size={15} />
                         </button>

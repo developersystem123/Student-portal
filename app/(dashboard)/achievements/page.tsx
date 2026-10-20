@@ -97,7 +97,12 @@ function SkeletonGrid({ count = 4 }: { count?: number }) {
   );
 }
 
-const RANK_MEDAL: Record<number, string> = { 1: "🥇", 2: "🥈", 3: "🥉" };
+// Podium tints for the top three places.
+const RANK_TONE: Record<number, string> = {
+  1: "bg-[var(--amber-soft)] text-[var(--amber)] ring-1 ring-[var(--amber)]/30",
+  2: "bg-[var(--surface-3)] text-[var(--heading)] ring-1 ring-[var(--border-strong)]",
+  3: "bg-[var(--primary-soft)] text-[var(--primary)] ring-1 ring-[var(--primary)]/25",
+};
 
 export default function AchievementsPage() {
   const [data, setData] = React.useState<Gamification | null>(null);
@@ -115,9 +120,10 @@ export default function AchievementsPage() {
 
   function shareAchievements() {
     const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      toast.push({ title: "Profile link copied!", tone: "success" });
-    });
+    navigator.clipboard.writeText(url).then(
+      () => toast.push({ title: "Profile link copied!", tone: "success" }),
+      () => toast.push({ title: "Couldn't copy the link", description: url, tone: "danger" }),
+    );
   }
 
   if (loading) {
@@ -183,7 +189,7 @@ export default function AchievementsPage() {
 
       {/* Level + XP card */}
       <Card className="overflow-hidden">
-        <div className="bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white p-6">
+        <div className="brand-fill text-white p-6">
           <div className="flex items-center gap-5 flex-wrap">
             <div className="h-16 w-16 rounded-2xl bg-white/15 backdrop-blur flex flex-col items-center justify-center shrink-0 shadow-lg shadow-black/20">
               <span className="text-[10px] uppercase tracking-wider opacity-80">Level</span>
@@ -275,7 +281,7 @@ export default function AchievementsPage() {
                   onClick={() => setBadgeFilter(f)}
                   className={`text-xs px-3 py-1.5 rounded-lg font-medium transition capitalize ${
                     badgeFilter === f
-                      ? "bg-[var(--primary)] text-white"
+                      ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                       : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
@@ -288,7 +294,7 @@ export default function AchievementsPage() {
         <CardBody>
           {filteredBadges.length === 0 ? (
             <p className="text-sm text-[var(--muted)] text-center py-6">
-              {badgeFilter === "earned" ? "No badges earned yet. Keep learning!" : "All badges earned! 🎉"}
+              {badgeFilter === "earned" ? "No badges earned yet. Keep learning!" : "All badges earned!"}
             </p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -358,12 +364,12 @@ export default function AchievementsPage() {
                     r.isMe ? "bg-[var(--primary-soft)]/30 -mx-5 px-5 rounded-lg" : ""
                   }`}
                 >
-                  <span className="text-xl w-8 text-center shrink-0">
-                    {RANK_MEDAL[r.rank] ?? (
-                      <span className="h-8 w-8 rounded-full bg-[var(--surface-2)] text-[var(--muted)] text-sm font-bold inline-flex items-center justify-center">
-                        {r.rank}
-                      </span>
-                    )}
+                  <span
+                    className={`h-8 w-8 shrink-0 rounded-full text-sm font-bold tabular-nums inline-flex items-center justify-center ${
+                      RANK_TONE[r.rank] ?? "bg-[var(--surface-2)] text-[var(--muted)]"
+                    }`}
+                  >
+                    {r.rank}
                   </span>
                   <div className="h-8 w-8 rounded-full bg-[var(--primary-soft)] text-[var(--primary)] text-xs font-bold flex items-center justify-center shrink-0">
                     {r.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}

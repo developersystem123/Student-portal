@@ -7,6 +7,7 @@ import { Card, CardBody, Badge } from "@/components/ui";
 import { BarChart, Donut, LineChart, ProgressBar, Sparkline } from "@/components/charts";
 import { useAdmin, useAuth, useData } from "@/lib/store";
 import { relativeTime } from "@/lib/utils";
+import { HeroLink, IconChip, LivePulse, PageHero, QuickActions } from "@/components/layout/PageHero";
 
 const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -209,104 +210,73 @@ export default function AdminOverviewPage() {
 
   return (
     <div className="space-y-6 fade-in">
-      {/* Hero banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white p-6 sm:p-8 card-shadow">
-        <AdminHeroDecor />
-        <div className="relative flex items-start justify-between gap-6 flex-wrap">
-          <div>
-            <span className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full bg-white/15 backdrop-blur border border-white/20 uppercase tracking-wider font-semibold">
-              <Icon.Settings size={11} /> Admin console
-            </span>
-            <h1 className="mt-3 text-3xl sm:text-4xl font-bold tracking-tight">
-              Welcome back, {user?.name?.split(" ")[0] ?? "Admin"}
-            </h1>
-            <p className="mt-2 text-white/85 max-w-xl">
-              A live snapshot of your students, teachers, courses, and recent activity. Use the quick links below to manage everything.
-            </p>
-          </div>
-          <div className="hidden sm:flex items-center gap-2 shrink-0">
-            <Link
-              href="/admin/students"
-              className="inline-flex h-10 items-center gap-2 px-4 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur text-sm font-semibold transition"
-            >
-              <Icon.Plus size={16} /> Add student
-            </Link>
-            <Link
-              href="/admin/courses"
-              className="inline-flex h-10 items-center gap-2 px-4 rounded-xl bg-white text-[var(--primary)] hover:brightness-95 text-sm font-semibold transition"
-            >
+      <PageHero
+        art="admin"
+        eyebrow="Admin console"
+        eyebrowIcon={<Icon.Settings size={12} />}
+        title="Welcome back,"
+        highlight={user?.name?.split(" ")[0] ?? "Admin"}
+        description="A live snapshot of your students, teachers, courses and recent activity. Use the shortcuts below to manage everything."
+        actions={
+          <>
+            <HeroLink href="/admin/courses">
               <Icon.Book size={16} /> New course
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Live status bar */}
-      <div className="flex items-center justify-between gap-3 flex-wrap rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5">
-        <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
+            </HeroLink>
+            <HeroLink href="/admin/students" variant="secondary">
+              <Icon.Plus size={16} /> Add student
+            </HeroLink>
+          </>
+        }
+      >
+        <div className="inline-flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-[var(--hero-border)] bg-[var(--surface)] pl-3.5 pr-1.5 py-1.5 text-xs text-[var(--muted)]">
           <LivePulse />
           <span>
             Auto-refreshes every {REFRESH_MS / 1000}s · Updated{" "}
-            <span className="font-medium text-[var(--foreground)]">{relativeTime(lastUpdated)}</span>
+            <span className="font-semibold text-[var(--heading)]">{relativeTime(lastUpdated)}</span>
           </span>
+          <button
+            type="button"
+            onClick={doRefresh}
+            disabled={refreshing}
+            className="inline-flex h-8 items-center gap-1.5 px-3 rounded-lg bg-[var(--surface-2)] hover:bg-[var(--primary-soft)] hover:text-[var(--primary)] text-[var(--heading)] text-xs font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {refreshing ? <Icon.Loader size={14} /> : <RefreshIcon size={14} />}
+            {refreshing ? "Updating…" : "Refresh"}
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={doRefresh}
-          disabled={refreshing}
-          className="inline-flex h-8 items-center gap-1.5 px-3 rounded-lg border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-2)] text-xs font-semibold transition disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          {refreshing ? <Icon.Loader size={14} /> : <RefreshIcon size={14} />}
-          {refreshing ? "Updating…" : "Refresh"}
-        </button>
-      </div>
+      </PageHero>
 
-      {/* Quick actions */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {[
-          { href: "/admin/students", label: "Add student", icon: <Icon.User size={18} />, tint: "from-violet-600 to-indigo-500" },
-          { href: "/admin/teachers", label: "Add teacher", icon: <Icon.Sparkles size={18} />, tint: "from-emerald-600 to-teal-500" },
-          { href: "/admin/courses", label: "New course", icon: <Icon.Book size={18} />, tint: "from-sky-500 to-blue-500" },
-          { href: "/admin/live-classes", label: "Live class", icon: <Icon.Video size={18} />, tint: "from-rose-500 to-pink-500" },
-          { href: "/admin/applications", label: "Applications", icon: <Icon.Inbox size={18} />, tint: "from-amber-500 to-orange-500", alert: stats.pendingApplications > 0, badge: stats.pendingApplications || undefined },
-          { href: "/admin/reports", label: "Reports", icon: <Icon.BarChart3 size={18} />, tint: "from-fuchsia-500 to-purple-500" },
-        ].map((a) => (
-          <Link key={a.href} href={a.href} className="relative block group">
-            <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${a.tint} text-white p-4 flex flex-col gap-2 hover:shadow-lg transition-all hover:-translate-y-0.5`}>
-              {a.icon}
-              <p className="text-xs font-semibold leading-tight">{a.label}</p>
-              {a.badge !== undefined && a.badge > 0 && (
-                <span className="absolute top-2 right-2 h-5 min-w-[20px] px-1 rounded-full bg-white text-[var(--primary)] text-[10px] font-bold flex items-center justify-center">
-                  {a.badge}
-                </span>
-              )}
-            </div>
-          </Link>
-        ))}
-      </div>
+      <QuickActions
+        actions={[
+          { href: "/admin/students", label: "Add student", icon: <Icon.User size={18} /> },
+          { href: "/admin/teachers", label: "Add teacher", icon: <Icon.Sparkles size={18} />, tone: "info" },
+          { href: "/admin/courses", label: "New course", icon: <Icon.Book size={18} /> },
+          { href: "/admin/live-classes", label: "Live class", icon: <Icon.Video size={18} />, tone: "info" },
+          {
+            href: "/admin/applications",
+            label: "Applications",
+            icon: <Icon.Inbox size={18} />,
+            tone: "amber",
+            badge: stats.pendingApplications,
+          },
+          { href: "/admin/reports", label: "Reports", icon: <Icon.BarChart3 size={18} />, tone: "neutral" },
+        ]}
+      />
 
       {/* Stat cards with live sparklines */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {cards.map((c) => (
           <Link key={c.label} href={c.href} className="block group">
-            <Card className="h-full hover:shadow-lg transition-all hover:-translate-y-0.5 hover:border-[var(--primary)]/30">
+            <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)] hover:border-[color-mix(in_oklab,var(--primary)_40%,var(--border))]">
               <CardBody className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <div
-                    className={`h-10 w-10 rounded-xl flex items-center justify-center ring-1 ${
-                      c.alert
-                        ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 ring-amber-500/25"
-                        : "bg-[var(--primary-soft)] text-[var(--primary)] ring-[var(--primary)]/15"
-                    }`}
-                  >
-                    {c.icon}
-                  </div>
+                  <IconChip tone={c.alert ? "amber" : "primary"}>{c.icon}</IconChip>
                   <Icon.ChevronRight
                     size={16}
                     className="text-[var(--muted-2)] group-hover:text-[var(--primary)] group-hover:translate-x-0.5 transition"
                   />
                 </div>
-                <p className="text-3xl font-bold tracking-tight">{c.value}</p>
+                <p className="text-3xl font-bold tracking-tight text-[var(--heading)] tabular-nums">{c.value}</p>
                 <p className="text-xs font-medium text-[var(--foreground)]">{c.label}</p>
                 <div className="flex items-end justify-between gap-2 pt-1">
                   <p className="text-[11px] text-[var(--muted-2)]">{c.hint}</p>
@@ -443,7 +413,7 @@ export default function AdminOverviewPage() {
               <ul className="space-y-3">
                 {recentStudents.map((s) => (
                   <li key={s.id} className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-semibold inline-flex items-center justify-center text-sm">
+                    <div className="h-9 w-9 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold inline-flex items-center justify-center text-sm">
                       {s.name.slice(0, 1).toUpperCase()}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -547,44 +517,5 @@ function RefreshIcon({ size = 14 }: { size?: number }) {
       <path d="M21 12a9 9 0 1 1-2.64-6.36" />
       <path d="M21 3v6h-6" />
     </svg>
-  );
-}
-
-function LivePulse() {
-  return (
-    <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-      <span className="relative flex h-1.5 w-1.5">
-        <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
-        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-      </span>
-      Live
-    </span>
-  );
-}
-
-function AdminHeroDecor() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      <svg viewBox="0 0 800 220" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <pattern id="admin-dots" width="22" height="22" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1.4" fill="white" />
-          </pattern>
-          <linearGradient id="admin-wave" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="white" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#admin-dots)" opacity="0.25" />
-        <path d="M0 160 Q 200 110 400 150 T 800 130 L 800 220 L 0 220 Z" fill="url(#admin-wave)" />
-        <circle cx="700" cy="50" r="60" fill="white" opacity="0.07" />
-        <circle cx="640" cy="40" r="28" fill="white" opacity="0.10" />
-        <g opacity="0.18">
-          <rect x="540" y="120" width="40" height="40" rx="8" fill="white" transform="rotate(12 560 140)" />
-          <circle cx="610" cy="170" r="10" fill="white" />
-          <path d="M460 70 l8 -14 l8 14 z" fill="white" />
-        </g>
-      </svg>
-    </div>
   );
 }

@@ -163,7 +163,7 @@ export default function LearningPathDetailPage() {
                 {path.level}
               </span>
               {path.featured && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-400 text-amber-950">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--amber)] text-[var(--amber)]">
                   <Icon.Star size={11} /> Featured
                 </span>
               )}
@@ -240,7 +240,7 @@ export default function LearningPathDetailPage() {
                         className={cn(
                           "shrink-0 h-10 w-10 rounded-full flex items-center justify-center text-sm font-bold",
                           c.completed
-                            ? "bg-emerald-500 text-white"
+                            ? "bg-[var(--primary)] text-[var(--solid-fg)]"
                             : "bg-[var(--primary-soft)] text-[var(--primary)]",
                         )}
                       >

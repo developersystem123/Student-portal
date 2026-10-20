@@ -129,7 +129,7 @@ export default function TeacherPhysicalClassesPage() {
 
                   <div className="mt-auto pt-2 border-t border-[var(--border)] flex items-center justify-between gap-3">
                     <span
-                      className={`text-sm font-medium ${full ? "text-amber-500" : "text-[var(--muted)]"}`}
+                      className={`text-sm font-medium ${full ? "text-[var(--amber)]" : "text-[var(--muted)]"}`}
                     >
                       <Icon.Users size={14} className="inline -mt-0.5 mr-1" />
                       {c.enrolledCount} / {c.capacity}

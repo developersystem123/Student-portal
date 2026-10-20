@@ -490,12 +490,12 @@ export const WEEKLY_GOAL = {
 };
 
 export const SKILL_MASTERY: { category: CourseCategory; mastery: number; color: string }[] = [
-  { category: "Web Dev",      mastery: 78, color: "#8b5cf6" },
-  { category: "Data Science", mastery: 62, color: "#06b6d4" },
-  { category: "Design",       mastery: 41, color: "#ec4899" },
+  { category: "Web Dev",      mastery: 78, color: "#15803d" },
+  { category: "Data Science", mastery: 62, color: "#22c55e" },
+  { category: "Design",       mastery: 41, color: "#86efac" },
   { category: "Business",     mastery: 55, color: "#f59e0b" },
-  { category: "Languages",    mastery: 30, color: "#10b981" },
-  { category: "Math",         mastery: 84, color: "#3b82f6" },
+  { category: "Languages",    mastery: 30, color: "#fcd34d" },
+  { category: "Math",         mastery: 84, color: "#94a3b8" },
 ];
 
 export const HOURS_BY_CATEGORY = [

@@ -199,9 +199,9 @@ export default function AdminCouponsPage() {
       {coupons.length > 0 && (
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: "Active coupons", value: couponStats.active, icon: <Icon.Tag size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+            { label: "Active coupons", value: couponStats.active, icon: <Icon.Tag size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
             { label: "Total uses", value: couponStats.totalUses, icon: <Icon.TrendingUp size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-            { label: "Expired", value: couponStats.expired, icon: <Icon.Clock size={16} />, tint: couponStats.expired > 0 ? "bg-red-500/10 text-red-500" : "bg-[var(--surface-2)] text-[var(--muted)]" },
+            { label: "Expired", value: couponStats.expired, icon: <Icon.Clock size={16} />, tint: couponStats.expired > 0 ? "bg-[var(--danger-soft)] text-[var(--danger)]" : "bg-[var(--surface-2)] text-[var(--muted)]" },
           ].map((s) => (
             <Card key={s.label}>
               <CardBody className="flex items-center gap-3 !py-3">
@@ -237,13 +237,13 @@ export default function AdminCouponsPage() {
           <div className="h-4 w-px bg-border mx-1" />
           <span className="text-xs text-muted font-medium mr-1">Type:</span>
           {(["all", "percent", "fixed"] as TypeFilter[]).map((f) => (
-            <button key={f} onClick={() => setTypeFilter(f)} className={`h-8 px-3 rounded-lg text-xs font-medium transition ${typeFilter === f ? "bg-primary text-white" : "border border-border text-muted hover:bg-surface-2"}`}>
+            <button key={f} onClick={() => setTypeFilter(f)} className={`h-8 px-3 rounded-lg text-xs font-medium transition ${typeFilter === f ? "bg-primary text-primary-foreground" : "border border-border text-muted hover:bg-surface-2"}`}>
               {f === "all" ? "All" : f === "percent" ? "% Off" : "$ Off"}
             </button>
           ))}
           <span className="text-xs text-muted font-medium ml-3 mr-1">Status:</span>
           {(["all", "active", "expired", "used"] as StatusFilter[]).map((f) => (
-            <button key={f} onClick={() => setStatusFilter(f)} className={`h-8 px-3 rounded-lg text-xs font-medium transition capitalize ${statusFilter === f ? "bg-primary text-white" : "border border-border text-muted hover:bg-surface-2"}`}>
+            <button key={f} onClick={() => setStatusFilter(f)} className={`h-8 px-3 rounded-lg text-xs font-medium transition capitalize ${statusFilter === f ? "bg-primary text-primary-foreground" : "border border-border text-muted hover:bg-surface-2"}`}>
               {f === "all" ? "All" : f}
             </button>
           ))}
@@ -255,7 +255,7 @@ export default function AdminCouponsPage() {
             { key: "value-low", label: "Value ↑" },
             { key: "most-used", label: "Most used" },
           ] as { key: CouponSortKey; label: string }[]).map((o) => (
-            <button key={o.key} onClick={() => setSortKey(o.key)} className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-primary text-white" : "border border-border text-muted hover:bg-surface-2"}`}>
+            <button key={o.key} onClick={() => setSortKey(o.key)} className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-primary text-primary-foreground" : "border border-border text-muted hover:bg-surface-2"}`}>
               {o.label}
             </button>
           ))}
@@ -347,7 +347,7 @@ export default function AdminCouponsPage() {
                   .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
                   .map((p, idx) => p === "…"
                     ? <span key={`e-${idx}`} className="px-2 text-muted text-sm">…</span>
-                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-primary text-white" : "border border-border hover:bg-surface-2"}`}>{p}</button>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-primary text-primary-foreground" : "border border-border hover:bg-surface-2"}`}>{p}</button>
                   )}
                 <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
               </div>

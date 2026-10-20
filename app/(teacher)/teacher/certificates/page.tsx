@@ -287,7 +287,7 @@ export default function TeacherCertificatesPage() {
                       <button
                         onClick={() => revoke(c.id)}
                         title="Revoke certificate"
-                        className="p-1.5 rounded-lg text-[var(--muted-2)] hover:text-red-500 hover:bg-red-500/10 transition"
+                        className="p-1.5 rounded-lg text-[var(--muted-2)] hover:text-[var(--danger)] hover:bg-[var(--danger-soft)] transition"
                       >
                         <Icon.Trash size={15} />
                       </button>

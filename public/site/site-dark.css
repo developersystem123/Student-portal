@@ -1,0 +1,530 @@
+/*
+ * EduPortal dark theme for the site page — the template's assets/css/dark.css in brand colours.
+ *
+ * Active only while .site-page also has .site-dark (see ThemeToggle / ThemeSwitcher).
+ * Every rule is prefixed with :where(.site-dark), which adds no specificity: each selector
+ * weighs exactly what it did in dark.css, so the template's hover states still win as they did
+ * there. Loaded after site-brand.css, so on equal specificity the dark value wins.
+ *
+ * Template navy → brand charcoal: page #111827, raised surfaces #1F2937.
+ */
+
+/* (0,2,1) beats the light brand values on html:has(.site-page). */
+html:has(.site-page.site-dark) {
+  --site-black: #111827;
+  --site-black-rgb: 17, 24, 39;
+  /* Body copy: #6B7280 is too dim on #111827 — gray-400 keeps AA (7:1). */
+  --site-gray: #9CA3AF;
+  --site-gray-rgb: 156, 163, 175;
+  --site-bdr-color: #374151;
+  --site-bdr-color-rgb: 55, 65, 81;
+  --edu-surface: #1F2937;
+  --edu-text-green: #4ADE80;
+  --edu-search-surface: #1F2937;
+  --edu-search-text: #F9FAFB;
+  --edu-search-muted: #D1D5DB;
+  --edu-search-border: #6B7280;
+  color-scheme: dark;
+}
+
+/* ---------- dark.css, rule for rule ---------- */
+
+:where(html:has(.site-dark)) body,
+body :where(.site-dark) .courses-one__single,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-prev,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-next,
+:where(.site-dark) .owl-theme .owl-dots .owl-dot span {
+  background-color: var(--site-black);
+}
+
+:where(.site-dark) .testimonial-one__social a,
+:where(.site-dark) .testimonial-one__ratting,
+:where(.site-dark) .why-choose-one__points-icon,
+:where(.site-dark) .why-choose-one__shape-2,
+:where(.site-dark) .about-one__awards-box,
+:where(.site-dark) .about-one__experience-box-inner,
+:where(.site-dark) .banner-one__student-trained,
+:where(.site-dark) .banner-one__udemy-review,
+:where(.site-dark) .banner-one__category-select-box .select-box .nice-select,
+:where(.site-dark) .banner-one__category-input input[type="search"],
+:where(.site-dark) .main-menu__category-sub-menu {
+  background-color: var(--edu-surface);
+}
+
+:where(.site-dark) .blog-one,
+:where(.site-dark) .why-choose-one__client-box,
+:where(.site-dark) .courses-one {
+  background: var(--edu-surface);
+}
+
+:where(.site-dark) .blog-one__user-name,
+:where(.site-dark) .blog-one__title a,
+:where(.site-dark) .blog-one__meta li a,
+:where(.site-dark) .live-class-one__class-time-text,
+:where(.site-dark) .live-class-one__title a,
+:where(.site-dark) .live-class-one__carousel.owl-theme .owl-nav .owl-prev,
+:where(.site-dark) .live-class-one__carousel.owl-theme .owl-nav .owl-next,
+:where(.site-dark) .testimonial-one__social a,
+:where(.site-dark) .testimonial-one__text,
+:where(.site-dark) .testimonial-one__client-sub-title,
+:where(.site-dark) .testimonial-one__client-name a,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-prev,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-next,
+:where(.site-dark) .courses-one__title a,
+:where(.site-dark) .about-one__icon-and-title h3,
+:where(.site-dark) .section-title__title,
+:where(.site-dark) .section-title__tagline,
+:where(.site-dark) .about-one__awards-count-box h3,
+:where(.site-dark) .about-one__awards-count-box span,
+:where(.site-dark) .about-one__awards-box p,
+:where(.site-dark) .about-one__experience-count h3,
+:where(.site-dark) .about-one__experience-count span,
+:where(.site-dark) .about-one__experience-count-box > p,
+:where(.site-dark) .about-one__experience-count > p,
+:where(.site-dark) .owl-theme .owl-dots .owl-dot span::before,
+:where(.site-dark) .team-one__title a,
+:where(.site-dark) .banner-one__title,
+:where(.site-dark) .banner-one__student-trained-count-box-inner p,
+:where(.site-dark) .banner-one__student-trained-count-box-inner span,
+:where(.site-dark) .banner-one__student-trained-text,
+:where(.site-dark) .main-menu__category-btn i,
+:where(.site-dark) .main-menu__category-btn p,
+:where(.site-dark) .main-menu__category-btn span,
+:where(.site-dark) .main-menu__category-content h5,
+:where(.site-dark) .main-menu .main-menu__list > li > a,
+:where(.site-dark) .stricky-header .main-menu__list > li > a {
+  color: var(--site-white);
+}
+
+:where(.site-dark) .about-one__awards-box::before {
+  border: 1px dashed var(--site-black);
+}
+
+:where(.site-dark) .team-one__single,
+:where(.site-dark) .blog-one__single,
+:where(.site-dark) .live-class-one__carousel.owl-theme .owl-nav .owl-prev,
+:where(.site-dark) .live-class-one__carousel.owl-theme .owl-nav .owl-next,
+:where(.site-dark) .testimonial-one__social a,
+:where(.site-dark) .testimonial-one__ratting,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-prev,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-next,
+:where(.site-dark) .owl-theme .owl-dots .owl-dot span,
+:where(.site-dark) .courses-one__heart a,
+:where(.site-dark) .courses-one__single {
+  border: 1px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .blog-one__meta,
+:where(.site-dark) .courses-one__ratting-and-heart-box {
+  border-bottom: 1px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .why-choose-one__client-box {
+  border: 3px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .video-one__img-box > img {
+  border: 3px solid rgba(var(--site-white-rgb), 0.3);
+}
+
+:where(.site-dark) .testimonial-one__img-inner {
+  border: 1px dashed rgba(var(--site-white-rgb), 0.2);
+}
+
+:where(.site-dark) .why-choose-one__points-list::before,
+:where(.site-dark) .why-choose-one__points-icon-inner {
+  background-color: rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .owl-carousel .owl-nav button.owl-prev:hover,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-next:hover,
+:where(.site-dark) .about-one .thm-btn:hover::before,
+:where(.site-dark) .why-choose-one .thm-btn:hover::before,
+:where(.site-dark) .blog-one .thm-btn:hover::before,
+:where(.site-dark) .courses-one .thm-btn:hover::before {
+  background-color: var(--site-white);
+}
+
+:where(.site-dark) .owl-carousel .owl-nav button.owl-prev:hover,
+:where(.site-dark) .owl-carousel .owl-nav button.owl-next:hover,
+:where(.site-dark) .why-choose-one .thm-btn:hover,
+:where(.site-dark) .blog-one .thm-btn:hover,
+:where(.site-dark) .about-one .thm-btn:hover,
+:where(.site-dark) .courses-one .thm-btn:hover {
+  color: var(--site-base);
+}
+
+:where(.site-dark) .why-choose-one__shape-7 img,
+:where(.site-dark) .why-choose-one__shape-5 img,
+:where(.site-dark) .why-choose-one__shape-6 img,
+:where(.site-dark) .about-one__shape-2 img,
+:where(.site-dark) .about-one__shape-1 img {
+  filter: brightness(0.5);
+  opacity: 0.5;
+}
+
+:where(.site-dark) .video-one__shape-4 img,
+:where(.site-dark) .video-one__shape-3 img,
+:where(.site-dark) .team-one__shape-4,
+:where(.site-dark) .team-one__shape-2 img {
+  filter: brightness(0.5);
+}
+
+:where(.site-dark) .testimonial-one__shape-2 img {
+  filter: invert(1);
+  opacity: 0.05;
+}
+
+:where(.site-dark) .newsletter-one__bg-shape {
+  mix-blend-mode: darken;
+}
+
+:where(.site-dark) .newsletter-one__inner {
+  background: none;
+  background-color: var(--edu-surface);
+}
+
+:where(.site-dark) .newsletter-one__contact-input-box input[type="email"] {
+  background-color: var(--site-black);
+  border: 3px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .team-one__content-shape-2 img {
+  opacity: 0.25;
+}
+
+/* The hero texture: the template paints it with banner-one-bg-shape-1.png (a near-white mint hex
+   grid) and, in dark.css, blends it in with `multiply`. That blend is what makes it disappear —
+   multiply against #111827 drives a near-white layer down to the backdrop, so the hero loses its
+   texture entirely in dark mode. The raster grid has almost no internal contrast (a few percent
+   between hexagon and ground), so no opacity or blend mode can lift it out of a dark surface
+   either. The same idea is painted here as a dot grid in the brand green instead, sized to the
+   hexagon pitch of the original so the hero keeps its rhythm. */
+:where(.site-dark) .banner-one {
+  background-color: var(--site-black);
+  background-image: radial-gradient(rgba(74, 222, 128, 0.13) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+:where(.site-dark) .banner-one__bg-shape-1 {
+  opacity: 0;
+}
+
+:where(.site-dark) .banner-one__other-btn-1 {
+  color: var(--site-white);
+  border: 1px solid rgba(var(--site-white-rgb), 0.1);
+  background-color: var(--edu-surface);
+}
+
+:where(.site-dark) .banner-one__udemy-review-logo img {
+  filter: invert(1);
+}
+
+:where(.site-dark) .banner-one__category-input input[type="search"] {
+  border-left: 1px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .banner-one__tags a {
+  border: 1px solid rgba(var(--site-white-rgb), 0.1);
+  color: var(--site-white);
+  background-color: var(--edu-surface);
+}
+
+:where(.site-dark) .main-menu__category-btn {
+  border: 1px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .main-menu__category-sub-menu li a {
+  border: 1px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .main-menu__search,
+:where(.site-dark) .main-menu__cart a {
+  border: 1px solid var(--site-white);
+  color: var(--site-white);
+}
+
+:where(.site-dark) .main-menu__search:hover,
+:where(.site-dark) .main-menu__cart a:hover {
+  border: 1px solid var(--site-base);
+}
+
+:where(.site-dark) .main-menu__btn-box-1 .thm-btn {
+  background-color: var(--edu-surface);
+  color: var(--site-white);
+  border: 1px solid rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .main-menu__btn-box-2 .thm-btn:hover::before {
+  background-color: rgba(var(--site-white-rgb), 1);
+}
+
+:where(.site-dark) .main-menu__btn-box-2 .thm-btn:hover {
+  color: var(--site-black);
+}
+
+:where(.site-dark) .main-menu__wrapper::before {
+  border-bottom: 1px dashed rgba(var(--site-white-rgb), 0.1);
+}
+
+:where(.site-dark) .main-menu__category-sub-menu li a:hover .main-menu__category-content h5 {
+  color: var(--site-black);
+}
+
+:where(.site-dark) .stricky-header.main-menu {
+  background-color: var(--site-black);
+}
+
+/* ---------- EduPortal additions ---------- */
+
+/* Light-mode mint tints → the template's faint brand tint over the dark page. */
+:where(.site-dark) .testimonial-one {
+  background-color: rgba(var(--site-base-rgb), 0.06);
+}
+
+/* Accent words: the light end of the brand gradient reads best on charcoal. */
+:where(.site-dark) .banner-one__title-clr-2,
+:where(.site-dark) .section-title__title span,
+:where(.site-dark) .about-one__live-class {
+  color: var(--edu-green-light);
+}
+
+/* dark.css inverts the team card's white wave to black; paint it charcoal instead by using the
+   same image as a mask (!important: the image itself is set inline). */
+:where(.site-dark) .team-one__single-bg-shape {
+  background-image: none !important;
+  background-color: var(--edu-surface);
+  -webkit-mask: url(/site/assets/images/shapes/team-one-single-bg-shape.png) top center / cover no-repeat;
+  mask: url(/site/assets/images/shapes/team-one-single-bg-shape.png) top center / cover no-repeat;
+}
+
+/* Missed by dark.css: these fall back to the near-black text colour and vanish on the dark page. */
+:where(.site-dark) .main-menu .main-menu__list > li.dropdown > a::after,
+:where(.site-dark) .why-choose-one__points-content h3 {
+  color: var(--site-white);
+}
+
+/* The category hover card and the header dropdowns stay white, so they keep the light theme's AA gray. */
+:where(.site-dark) .category-one__hover-content p,
+:where(.site-dark) .main-menu .main-menu__list > li > ul > li > a,
+:where(.site-dark) .main-menu .main-menu__list > li > ul > li > ul > li > a,
+:where(.site-dark) .stricky-header .main-menu__list > li > ul > li > a,
+:where(.site-dark) .stricky-header .main-menu__list > li > ul > li > ul > li > a {
+  color: #6B7280;
+}
+
+/* dark.css inverts these to turn the template's dark swooshes white; ours are green already. */
+:where(.site-dark) .section-title__title span img,
+:where(.site-dark) .about-one__live-class img {
+  filter: none;
+}
+
+.site-dark .edu-logo__tagline {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Header switch matches the white-ringed search and cart buttons. */
+.site-dark .site-theme-toggle--icon {
+  border-color: var(--site-white);
+  color: var(--site-white);
+}
+
+.site-dark .site-theme-toggle--icon:hover {
+  border-color: var(--site-base);
+  background-color: var(--site-base);
+}
+
+.site-dark .site-theme-toggle__sun {
+  display: block;
+}
+
+.site-dark .site-theme-toggle__moon {
+  display: none;
+}
+
+.site-dark .site-theme-toggle__track {
+  background-color: var(--edu-green);
+}
+
+.site-dark .site-theme-toggle__track::after {
+  transform: translateX(18px);
+}
+
+/* ---------- EduPortal pages: text and surfaces dark.css never covered ---------- */
+/* Found by a contrast sweep of every page. Text that kept --site-black (now the page colour), light
+   cards and mint chips that stayed light, and #15803D green text, which is only 3.5:1 on #111827. */
+
+/* Headings and labels that were dark on dark. */
+.site-dark .section-title-two__title,
+.site-dark .course-details__overview-points-content h5,
+.site-dark .faq-one-accrodion .accrodion-title h4,
+.site-dark .edu-blog-cta h2,
+.site-dark .edu-status__sla h2,
+.site-dark .edu-company-fact strong {
+  color: #F9FAFB;
+}
+
+.site-dark .blog-two__meta li a,
+.site-dark .blog-details__tag > span {
+  color: #E5E7EB;
+}
+
+.site-dark .blog-two__meta li a:hover {
+  color: #4ADE80;
+}
+
+.site-dark .faq-one-accrodion .accrodion-title__count,
+.site-dark .faq-one-accrodion .accrodion-meta li p,
+.site-dark .edu-company-fact span,
+.site-dark .edu-popular > span {
+  color: #9CA3AF;
+}
+
+/* The course-detail lesson list reuses the FAQ accordion markup, but its numbers sit on a filled
+   badge rather than in the page, so the muted grey above fails contrast on them. */
+.site-dark .edu-detail__lesson .accrodion-title__count {
+  color: #86EFAC;
+}
+
+/* Light cards, bars and inputs. */
+.site-dark .faq-one-accrodion .accrodion,
+.site-dark .blog-details__tag-and-share,
+.site-dark .edu-company-fact {
+  background-color: #1F2937;
+  border-color: #374151;
+}
+
+.site-dark .course-grid__search form input {
+  background-color: #111827;
+  border-color: #374151;
+  color: #F9FAFB;
+}
+
+.site-dark .course-grid__search form input::placeholder {
+  color: #9CA3AF;
+}
+
+.site-dark .blog-details__tag a,
+.site-dark .sidebar__tag-list a {
+  background-color: #111827;
+  border-color: #374151;
+  color: #D1D5DB;
+}
+
+.site-dark .blog-details__tag a:hover,
+.site-dark .sidebar__tag-list a:hover {
+  background-color: #15803D;
+  border-color: #15803D;
+  color: #fff;
+}
+
+/* Mint chips and icon tiles: a translucent green tint instead of a bright mint block. */
+.site-dark .contact-two__single .contact-two__icon,
+.site-dark .edu-help-category-heading .contact-two__icon,
+.site-dark .edu-status__badge,
+.site-dark .edu-company-role__team,
+.site-dark .edu-company-dashboard__head > span,
+.site-dark .edu-article-tag,
+.site-dark .edu-verify__icon {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ADE80;
+}
+
+/* Green text: the light-mode greens drop below 4.5:1 on dark surfaces. */
+.site-dark .edu-map-links > a:not(.thm-btn),
+.site-dark .edu-form-actions p a,
+.site-dark .edu-pricing__more a,
+.site-dark .edu-catalog .course-grid__list-item a.edu-filter-active,
+.site-dark .courses-one__tag span,
+.site-dark .courses-one__btn-and-doller-box > span,
+.site-dark .courses-two__doller p,
+.site-dark .edu-company-mission h3,
+.site-dark .why-choose-three__ceo-speech footer,
+.site-dark .edu-process-number,
+.site-dark .edu-company-values__number,
+.site-dark .edu-company-mention__meta strong,
+.site-dark .edu-blog-details .blog-details__tag-and-share > a,
+.site-dark .section-title-two__tagline {
+  color: #4ADE80;
+}
+
+/* forms.css pins the teach tabs' green with !important. */
+.site-dark .edu-teach-tabs .tab-btn span {
+  color: #4ADE80 !important;
+}
+
+.site-dark .edu-legal__body code,
+.site-dark .edu-content-section code,
+.site-dark p code {
+  color: #F9A8D4;
+}
+
+/* The press fact-sheet band is solid green; its tagline stays white there. */
+.site-dark .edu-company-facts .section-title-two__tagline {
+  color: #fff;
+}
+
+/* Dark-mode map: the tiles are a print-bright beige; flip them to a dark basemap. */
+.site-dark .edu-map-view { background: #111827; }
+.site-dark .edu-map-view img {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9) saturate(0.75);
+}
+.site-dark .edu-map-pin { color: #4ADE80; text-shadow: 0 1px 0 #111827, 0 -1px 0 #111827, 1px 0 0 #111827, -1px 0 0 #111827, 0 0 3px #111827, 0 8px 16px rgba(0, 0, 0, .6); }
+.site-dark .edu-map-credit { background: rgba(17, 24, 39, .85); color: #D1D5DB; }
+.site-dark .edu-map-credit a { color: #4ADE80; }
+
+/* Dark footer: distinct elevated surface with a clean border separation (Fix G6) */
+.site-dark .site-footer {
+  background-color: #0F172A;
+  border-top: 1px solid #1E293B;
+}
+.site-dark .site-footer__logo-and-contact-box {
+  background-color: transparent;
+  border-bottom: 1px solid #1E293B;
+}
+.site-dark .site-footer__bottom {
+  border-top: 1px solid #1E293B;
+}
+
+/* Active navigation is text on a dark surface, not a filled action. */
+.site-dark .main-menu .main-menu__list > li.current > a,
+.site-dark .stricky-header .main-menu__list > li.current > a,
+.site-dark .main-menu .main-menu__list > li > a:hover {
+  color: var(--edu-text-green);
+}
+
+/* The mobile hamburger takes --site-black, which dark mode turns into the page colour — it
+   vanished into the header on every page. */
+.site-dark .main-menu .mobile-nav__toggler {
+  color: var(--site-white);
+}
+.site-dark .main-menu .mobile-nav__toggler:hover {
+  color: var(--edu-text-green);
+}
+
+/* "Go back top" keeps the light theme's #15803D, which is 3:1 on the dark page. */
+.site-dark .scroll-to-top .scroll-to-top__text {
+  color: #4ADE80;
+}
+
+/* "More" toggle (a <button>, so the template's dark link colours above don't reach it). */
+.site-dark .main-menu .main-menu__list > li.edu-more > .edu-more__toggle,
+.site-dark .stricky-header .main-menu__list > li.edu-more > .edu-more__toggle {
+  color: var(--site-white);
+}
+.site-dark .main-menu .main-menu__list > li.edu-more:hover > .edu-more__toggle,
+.site-dark .main-menu .main-menu__list > li.edu-more.current > .edu-more__toggle,
+.site-dark .main-menu .main-menu__list > li.edu-more.is-open > .edu-more__toggle,
+.site-dark .stricky-header .main-menu__list > li.edu-more:hover > .edu-more__toggle,
+.site-dark .stricky-header .main-menu__list > li.edu-more.current > .edu-more__toggle,
+.site-dark .stricky-header .main-menu__list > li.edu-more.is-open > .edu-more__toggle {
+  color: var(--edu-text-green);
+}
+
+/* Company/business page feature icons (pages/company.css) sit on a solid mint tile (#DCFCE7),
+   which is a light patch on a dark card. Dark mode tints the tile green instead of filling it, so
+   the icon reads as a chip on the card. */
+.site-dark .edu-company-card__icon {
+  background: rgba(74, 222, 128, 0.14);
+  color: var(--edu-text-green);
+}

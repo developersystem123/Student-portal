@@ -5,6 +5,8 @@ import { errorResponse } from "@/lib/auth-server";
 import type { EducationLevel, Role } from "@/lib/generated/prisma/client";
 import { uid } from "@/lib/utils";
 import { sendEmailAsync, welcomeEmail } from "@/lib/email";
+import { clientIp, rateLimit } from "@/lib/rateLimit";
+import { crossOriginResponse, isSameOrigin } from "@/lib/sameOrigin";
 
 type Body = {
   name?: string;
@@ -15,10 +17,11 @@ type Body = {
   education?: EducationLevel;
 };
 
-const ALLOWED_ROLES: Role[] = ["Student", "Instructor", "Admin"];
+const ALLOWED_ROLES: Role[] = ["Student", "Instructor"];
 
 export async function POST(request: Request) {
   try {
+    if (!isSameOrigin(request)) return crossOriginResponse();
     const body = (await request.json()) as Body;
     const name = (body.name ?? "").trim();
     const email = (body.email ?? "").trim().toLowerCase();
@@ -27,6 +30,14 @@ export async function POST(request: Request) {
     const role: Role = ALLOWED_ROLES.includes(body.role as Role) ? (body.role as Role) : "Student";
     const education: EducationLevel | null =
       role === "Student" ? (body.education ?? "None") : null;
+
+    const signups = rateLimit(`register:${clientIp(request)}`, { max: 5, windowMs: 60 * 60 * 1000 });
+    if (!signups.ok) {
+      return Response.json(
+        { error: "Too many sign-up attempts from this connection. Please try again later." },
+        { status: 429 },
+      );
+    }
 
     if (name.length < 2) return Response.json({ error: "Name is too short." }, { status: 400 });
     if (name.length > 60) return Response.json({ error: "Name is too long." }, { status: 400 });
@@ -71,7 +82,7 @@ export async function POST(request: Request) {
         phone,
       },
     });
-    await setSession(user.id);
+    await setSession(user.id, user.password);
 
     // Send a welcome email (no-op console log when RESEND_API_KEY is unset).
     sendEmailAsync({ to: user.email, ...welcomeEmail(user.name) });

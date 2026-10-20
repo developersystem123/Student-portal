@@ -383,7 +383,7 @@ export default function SettingsPage() {
         size="sm"
       >
         <div className="p-5 space-y-4">
-          <div className="flex items-start gap-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20">
+          <div className="flex items-start gap-3 p-3 rounded-xl bg-[var(--danger-soft)] border border-[var(--danger)]/20">
             <Icon.AlertCircle size={18} className="text-[var(--danger)] shrink-0 mt-0.5" />
             <p className="text-sm text-[var(--danger)]">
               This will permanently delete your account and all associated data. There is no way to

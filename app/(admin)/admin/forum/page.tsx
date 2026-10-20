@@ -221,9 +221,9 @@ export default function AdminForumPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total posts", value: forumStats.total, icon: <Icon.MessageSquare size={16} />, tint: "bg-primary-soft text-primary" },
-          { label: "Pinned", value: forumStats.pinned, icon: <Icon.Pin size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-          { label: "Total replies", value: forumStats.totalReplies, icon: <Icon.MessageSquare size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-          { label: "Total views", value: forumStats.totalViews, icon: <Icon.Eye size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+          { label: "Pinned", value: forumStats.pinned, icon: <Icon.Pin size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
+          { label: "Total replies", value: forumStats.totalReplies, icon: <Icon.MessageSquare size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+          { label: "Total views", value: forumStats.totalViews, icon: <Icon.Eye size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 py-3!">
@@ -269,7 +269,7 @@ export default function AdminForumPage() {
           <button
             key={o.key}
             onClick={() => setSortKey(o.key)}
-            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
           >
             {o.label}
           </button>
@@ -279,7 +279,7 @@ export default function AdminForumPage() {
           <button
             key={o.key}
             onClick={() => setPinnedFilter(o.key)}
-            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${pinnedFilter === o.key ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${pinnedFilter === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
           >
             {o.label}
           </button>
@@ -407,7 +407,7 @@ export default function AdminForumPage() {
                         onClick={() => setPage(p as number)}
                         className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${
                           safePage === p
-                            ? "bg-[var(--primary)] text-white"
+                            ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                             : "border border-border text-foreground hover:bg-surface-2"
                         }`}
                       >

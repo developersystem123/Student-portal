@@ -1,9 +1,12 @@
 import { prisma } from "@/lib/db";
 import { hashPassword, verifyPassword } from "@/lib/password";
 import { errorResponse, requireUser } from "@/lib/auth-server";
+import { setSession } from "@/lib/session";
+import { crossOriginResponse, isSameOrigin } from "@/lib/sameOrigin";
 
 export async function PUT(request: Request) {
   try {
+    if (!isSameOrigin(request)) return crossOriginResponse();
     const me = await requireUser();
     const { current, next } = (await request.json()) as { current?: string; next?: string };
     if (!current || !next)
@@ -18,10 +21,14 @@ export async function PUT(request: Request) {
     if (!verifyPassword(current, full.password))
       return Response.json({ error: "Current password is incorrect." }, { status: 401 });
 
+    const hashed = hashPassword(next);
     await prisma.user.update({
       where: { id: me.id },
-      data: { password: hashPassword(next) },
+      data: { password: hashed },
     });
+    // The change revokes every session issued before it (see lib/session.ts), so re-issue this
+    // one: the person who changed the password stays signed in, any other device does not.
+    await setSession(me.id, hashed);
     return Response.json({ ok: true });
   } catch (err) {
     return errorResponse(err);

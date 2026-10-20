@@ -121,9 +121,9 @@ export default function TeacherAssignmentsPage() {
       {assignments.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <SummaryCard label="Total" value={counts.all} icon={<Icon.FilePen size={16} />} tint="bg-[var(--primary-soft)] text-[var(--primary)]" />
-          <SummaryCard label="Submissions" value={totalSubmissions} icon={<Icon.ListChecks size={16} />} tint="bg-sky-500/10 text-sky-600 dark:text-sky-400" />
-          <SummaryCard label="Pending grades" value={pendingGrades} icon={<Icon.Clock size={16} />} tint={pendingGrades > 0 ? "bg-amber-500/10 text-amber-600 dark:text-amber-400" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"} />
-          <SummaryCard label="Overdue open" value={overdueCount} icon={<Icon.AlertCircle size={16} />} tint={overdueCount > 0 ? "bg-red-500/10 text-red-500" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"} />
+          <SummaryCard label="Submissions" value={totalSubmissions} icon={<Icon.ListChecks size={16} />} tint="bg-[var(--info-soft)] text-[var(--info)]" />
+          <SummaryCard label="Pending grades" value={pendingGrades} icon={<Icon.Clock size={16} />} tint={pendingGrades > 0 ? "bg-[var(--amber-soft)] text-[var(--amber)]" : "bg-[var(--primary-soft)] text-[var(--primary)]"} />
+          <SummaryCard label="Overdue open" value={overdueCount} icon={<Icon.AlertCircle size={16} />} tint={overdueCount > 0 ? "bg-[var(--danger-soft)] text-[var(--danger)]" : "bg-[var(--primary-soft)] text-[var(--primary)]"} />
         </div>
       )}
 
@@ -175,10 +175,10 @@ export default function TeacherAssignmentsPage() {
                 const overdue = new Date(a.dueDate) < new Date() && a.status === "open";
                 const gradePct = a.submissions.length > 0 ? Math.round((graded / a.submissions.length) * 100) : 100;
                 return (
-                  <Card key={a.id} className={overdue ? "border-red-500/40" : ""}>
+                  <Card key={a.id} className={overdue ? "border-[var(--danger)]/40" : ""}>
                     <CardBody className="space-y-3">
                       <div className="flex items-start gap-3">
-                        <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${overdue ? "bg-red-500/10 text-red-500" : "bg-[var(--primary-soft)] text-[var(--primary)]"}`}>
+                        <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${overdue ? "bg-[var(--danger-soft)] text-[var(--danger)]" : "bg-[var(--primary-soft)] text-[var(--primary)]"}`}>
                           <Icon.FilePen size={18} />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -209,7 +209,7 @@ export default function TeacherAssignmentsPage() {
                           </div>
                           <div className="h-1.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
                             <div
-                              className={`h-full rounded-full transition-all ${ungraded > 0 ? "bg-amber-400" : "bg-emerald-500"}`}
+                              className={`h-full rounded-full transition-all ${ungraded > 0 ? "bg-[var(--amber)]" : "bg-[var(--primary)]"}`}
                               style={{ width: `${gradePct}%` }}
                             />
                           </div>

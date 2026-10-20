@@ -151,10 +151,10 @@ export default function StudentPhysicalClassDetailPage() {
             <Progress value={item.attendanceRate} className="flex-1" />
           </div>
           <div className="grid grid-cols-4 gap-2">
-            <Tally label="Present" value={item.present} tone="text-emerald-500" />
-            <Tally label="Late" value={item.late} tone="text-amber-500" />
-            <Tally label="Absent" value={item.absent} tone="text-red-500" />
-            <Tally label="Excused" value={item.excused} tone="text-sky-500" />
+            <Tally label="Present" value={item.present} tone="text-[var(--primary)]" />
+            <Tally label="Late" value={item.late} tone="text-[var(--amber)]" />
+            <Tally label="Absent" value={item.absent} tone="text-[var(--danger)]" />
+            <Tally label="Excused" value={item.excused} tone="text-[var(--info)]" />
           </div>
         </CardBody>
       </Card>

@@ -76,11 +76,45 @@ export function validateName(raw: string, label = "Name"): string | undefined {
   return undefined;
 }
 
+// ---------- Safe post-auth redirect ----------
+// Guards the `?next=` value carried through sign-in / sign-up. Only same-site absolute paths are
+// allowed, so the value can never bounce a freshly authenticated user to another origin
+// (open redirect). Rejects protocol-relative ("//evil.com"), absolute URLs ("https://…"),
+// backslashes and control characters.
+export function safeNextPath(raw: string | null | undefined): string | undefined {
+  const v = (raw ?? "").trim();
+  if (!v || !v.startsWith("/") || v.startsWith("//") || v.includes("\\")) return undefined;
+  if (v.includes("://") || /[\x00-\x1f]/.test(v)) return undefined;
+  return v;
+}
+
 // ---------- Password ----------
 export function validatePassword(raw: string, min = 6): string | undefined {
   if (!raw) return "Password is required.";
   if (raw.length < min) return `Password must be at least ${min} characters.`;
   return undefined;
+}
+
+/** Password rules shared by sign-up and the reset form. */
+export const PASSWORD_MIN_LENGTH = 8;
+export const PASSWORD_MAX_LENGTH = 64;
+
+// ---------- Password strength ----------
+// 0–4, driving the four-segment meter on the sign-up and password-reset forms.
+const STRENGTH_LABELS = ["Too weak", "Weak", "Okay", "Strong", "Excellent"] as const;
+
+export function scorePassword(password: string): number {
+  let score = 0;
+  if (password.length >= 6) score++;
+  if (password.length >= 10) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+  return Math.min(score, 4);
+}
+
+export function passwordStrengthLabel(score: number): string {
+  return STRENGTH_LABELS[Math.max(0, Math.min(score, 4))];
 }
 
 // ---------- Whole-number field ----------

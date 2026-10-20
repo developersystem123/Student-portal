@@ -198,7 +198,7 @@ export default function ProgressPage() {
                     <span className="text-xs text-[var(--muted)] w-10 shrink-0 tabular-nums">{b.bucket}</span>
                     <div className="flex-1 h-2.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                        className="h-full rounded-full bg-[var(--primary)]"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
@@ -247,7 +247,7 @@ export default function ProgressPage() {
                   </div>
                   <div className="h-2 w-full bg-[var(--surface-2)] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+                      className="h-full bg-[var(--primary)]"
                       style={{ width: `${(info.minutesLearned / maxCatMinutes) * 100}%` }}
                     />
                   </div>
@@ -267,7 +267,7 @@ export default function ProgressPage() {
             <ul className="divide-y divide-[var(--border)]">
               {recentQuizzes.map((a) => (
                 <li key={a.id} className="p-4 flex items-center gap-3">
-                  <div className={`h-9 w-9 rounded-lg flex items-center justify-center ${a.passed ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"}`}>
+                  <div className={`h-9 w-9 rounded-lg flex items-center justify-center ${a.passed ? "bg-[var(--primary-soft)] text-[var(--primary)]" : "bg-[var(--amber-soft)] text-[var(--amber)]"}`}>
                     {a.passed ? <Icon.CheckCircle size={18} /> : <Icon.AlertCircle size={18} />}
                   </div>
                   <div className="flex-1 min-w-0">

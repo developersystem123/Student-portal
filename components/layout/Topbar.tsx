@@ -47,26 +47,24 @@ export function Topbar({
   const unread = notifications.filter((n) => !n.read).length;
 
   return (
-    <header className="sticky top-0 z-30 w-full glass border-b border-[var(--border)] h-16 flex items-center gap-3 px-4 sm:px-6">
+    <header className="sticky top-0 z-30 w-full glass border-b border-[var(--border)] h-16 flex items-center gap-2 sm:gap-3 px-4 sm:px-6 lg:px-8">
       {/* Sidebar toggle — works on both desktop (collapse) and mobile (drawer) */}
       <button
         onClick={onToggleSidebar}
         title={sidebarOpen ? "Collapse sidebar" : "Open sidebar"}
         aria-label="Toggle sidebar"
-        className="h-10 w-10 -ml-1 rounded-xl bg-[var(--surface-2)] hover:bg-[var(--primary-soft)] text-[var(--muted)] hover:text-[var(--primary)] flex items-center justify-center transition shrink-0"
+        className="h-10 w-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--primary)] hover:border-[color-mix(in_oklab,var(--primary)_40%,var(--border))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] flex items-center justify-center transition shrink-0"
       >
         <Icon.Menu size={20} />
       </button>
 
       {/* Search — centered on the header */}
       <div className="flex-1 flex justify-center min-w-0">
-        <div className={cn(
-          "relative transition-all w-full max-w-xl",
-          searchFocused && "scale-[1.01]",
-        )}>
+        <div className={cn("relative transition-all w-full max-w-xl", searchFocused && "max-w-2xl")}>
           <Icon.Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)] pointer-events-none" />
           <input
             type="search"
+            aria-label="Search"
             placeholder={
               isAdmin
                 ? "Search students, courses, enrollments…"
@@ -75,9 +73,9 @@ export function Topbar({
                   : "Search courses, AI tools, or anything…"
             }
             className={cn(
-              "w-full h-11 pl-11 pr-24 rounded-xl text-sm transition-all",
-              "bg-[var(--surface-2)] border border-transparent",
-              "focus:outline-none focus:bg-[var(--surface)] focus:border-[var(--border-strong)] focus:ring-2 focus:ring-[var(--ring)]/40",
+              "w-full h-11 pl-11 pr-3 md:pr-24 rounded-xl text-sm text-ellipsis transition-all",
+              "bg-[var(--surface-2)] border border-[var(--border)] text-[var(--foreground)]",
+              "focus:outline-none focus:bg-[var(--surface)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[color-mix(in_oklab,var(--primary)_15%,transparent)]",
               "placeholder:text-[var(--muted-2)]",
             )}
             onFocus={() => {
@@ -100,7 +98,7 @@ export function Topbar({
       {!isAdmin && !isTeacher && (
         <Link
           href="/ai/chat"
-          className="hidden md:inline-flex h-10 items-center gap-1.5 px-3 rounded-xl text-sm font-medium bg-gradient-to-r from-green-500/10 to-emerald-400/10 text-[var(--primary)] border border-[var(--primary)]/15 hover:border-[var(--primary)]/30 transition"
+          className="hidden md:inline-flex h-10 items-center gap-1.5 px-3.5 rounded-xl text-sm font-semibold bg-[var(--primary-soft)] text-[var(--primary)] hover:bg-[color-mix(in_oklab,var(--primary)_18%,var(--surface))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] transition"
         >
           <Icon.Sparkles size={15} />
           <span>Ask AI</span>
@@ -110,8 +108,9 @@ export function Topbar({
       {/* Theme toggle */}
       <button
         onClick={toggle}
-        title="Toggle theme"
-        className="h-10 w-10 rounded-xl bg-[var(--surface-2)] hover:bg-[var(--primary-soft)] text-[var(--muted)] hover:text-[var(--primary)] flex items-center justify-center transition shrink-0"
+        title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        className="h-10 w-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--primary)] hover:border-[color-mix(in_oklab,var(--primary)_40%,var(--border))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] flex items-center justify-center transition shrink-0"
       >
         {theme === "dark" ? <Icon.Sun size={18} /> : <Icon.Moon size={18} />}
       </button>
@@ -120,17 +119,19 @@ export function Topbar({
       <div className="relative shrink-0" ref={notifRef}>
         <button
           onClick={() => setNotifOpen((o) => !o)}
-          className="h-10 w-10 rounded-xl bg-[var(--surface-2)] hover:bg-[var(--primary-soft)] text-[var(--muted)] hover:text-[var(--primary)] flex items-center justify-center transition relative"
+          aria-label={unread > 0 ? `Notifications, ${unread} unread` : "Notifications"}
+          aria-expanded={notifOpen}
+          className="h-10 w-10 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--primary)] hover:border-[color-mix(in_oklab,var(--primary)_40%,var(--border))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] flex items-center justify-center transition shrink-0 relative"
         >
           <Icon.Bell size={18} />
           {unread > 0 && (
-            <span className="absolute top-1 right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[var(--danger)] text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-[var(--background)]">
+            <span className="absolute top-1 right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-[var(--surface)]">
               {unread > 9 ? "9+" : unread}
             </span>
           )}
         </button>
         {notifOpen && (
-          <div className="absolute right-0 top-12 w-96 max-w-[calc(100vw-2rem)] rounded-2xl bg-[var(--surface)] border border-[var(--border)] card-shadow fade-in overflow-hidden">
+          <div className="absolute right-0 top-12 w-96 max-w-[calc(100vw-2rem)] rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-lg)] fade-in overflow-hidden">
             <div className="p-4 flex items-center justify-between border-b border-[var(--border)]">
               <div>
                 <p className="font-semibold text-sm">Notifications</p>
@@ -152,7 +153,7 @@ export function Topbar({
                   key={n.id}
                   className={cn(
                     "p-3 hover:bg-[var(--surface-2)] cursor-pointer flex gap-3 border-b border-[var(--border)] last:border-b-0 transition",
-                    !n.read && "bg-[var(--primary-soft)]/40",
+                    !n.read && "bg-[var(--primary-tint)]",
                   )}
                   onClick={() => {
                     markNotificationRead(n.id);
@@ -191,17 +192,19 @@ export function Topbar({
       <div className="relative shrink-0" ref={userMenuRef}>
         <button
           onClick={() => setMenuOpen((o) => !o)}
-          className="flex items-center gap-2.5 h-10 pl-1 pr-2 sm:pr-3 rounded-xl hover:bg-[var(--surface-2)] transition"
+          aria-label="Account menu"
+          aria-expanded={menuOpen}
+          className="flex items-center gap-2.5 h-10 pl-1 pr-2 sm:pr-3 rounded-xl border border-transparent hover:border-[var(--border)] hover:bg-[var(--surface)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] transition"
         >
           <Avatar name={user?.name ?? "?"} src={user?.avatar ?? null} size={32} />
           <div className="hidden md:flex flex-col items-start leading-tight">
-            <span className="text-sm font-semibold">{user?.name?.split(" ")[0]}</span>
-            <span className="text-[10px] text-[var(--muted)] -mt-0.5">{user?.role ?? "Student"}</span>
+            <span className="text-sm font-semibold text-[var(--heading)]">{user?.name?.split(" ")[0]}</span>
+            <span className="text-[11px] text-[var(--muted)]">{user?.role === "Instructor" ? "Teacher" : user?.role ?? "Student"}</span>
           </div>
           <Icon.ChevronDown size={14} className="hidden md:block text-[var(--muted)]" />
         </button>
         {menuOpen && (
-          <div className="absolute right-0 top-12 w-64 rounded-2xl bg-[var(--surface)] border border-[var(--border)] card-shadow fade-in p-2 overflow-hidden">
+          <div className="absolute right-0 top-12 w-64 rounded-2xl bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-lg)] fade-in p-2 overflow-hidden">
             <div className="px-3 py-3 border-b border-[var(--border)] mb-1 flex items-center gap-3">
               <Avatar name={user?.name ?? "?"} src={user?.avatar ?? null} size={40} />
               <div className="min-w-0 flex-1">

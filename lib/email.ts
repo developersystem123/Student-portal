@@ -66,7 +66,7 @@ function wrap(title: string, bodyHtml: string): string {
   return `<!doctype html><html><body style="margin:0;background:#f4f4f7;font-family:Arial,Helvetica,sans-serif;color:#1e2230;">
   <div style="max-width:520px;margin:0 auto;padding:32px 20px;">
     <div style="background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e6e6ee;">
-      <div style="background:linear-gradient(135deg,#7c5cff,#22d3ee);padding:22px 28px;">
+      <div style="background:#15803D;padding:22px 28px;">
         <p style="margin:0;color:#ffffff;font-size:18px;font-weight:700;">EduPortal</p>
       </div>
       <div style="padding:28px;">
@@ -88,6 +88,27 @@ export function welcomeEmail(name: string) {
       `<p style="line-height:1.6;">Your account is ready. Explore courses, track your progress,
        earn certificates, and learn with AI-powered study tools.</p>
        <p style="line-height:1.6;">Jump in any time from your dashboard — happy learning!</p>`,
+    ),
+  };
+}
+
+export function passwordResetEmail(opts: { name: string; link: string; minutes: number }) {
+  const link = escapeHtml(opts.link);
+  return {
+    subject: "Reset your EduPortal password",
+    html: wrap(
+      "Reset your password",
+      `<p style="line-height:1.6;">Hi ${escapeHtml(opts.name)}, we got a request to reset the
+         password for your EduPortal account.</p>
+       <p style="margin:24px 0;">
+         <a href="${link}" style="display:inline-block;background:#15803D;color:#ffffff;font-weight:600;
+            padding:13px 26px;border-radius:999px;text-decoration:none;">Choose a new password</a>
+       </p>
+       <p style="line-height:1.6;color:#6b7088;font-size:13px;">This link works once and expires in
+         ${opts.minutes} minutes. If you didn&rsquo;t ask to reset your password you can ignore this
+         email &mdash; nothing has changed.</p>
+       <p style="line-height:1.6;color:#6b7088;font-size:12px;word-break:break-all;">Button not
+         working? Copy this link into your browser:<br />${link}</p>`,
     ),
   };
 }

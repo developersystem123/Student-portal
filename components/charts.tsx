@@ -44,12 +44,8 @@ export function LineChart({
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-full" preserveAspectRatio="none">
       <defs>
         <linearGradient id="lc-area" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.35" />
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.18" />
           <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="lc-stroke" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="var(--primary)" />
-          <stop offset="100%" stopColor="var(--accent)" />
         </linearGradient>
       </defs>
 
@@ -66,7 +62,7 @@ export function LineChart({
       })}
 
       <path d={areaD} fill="url(#lc-area)" />
-      <path d={pathD} fill="none" stroke="url(#lc-stroke)" strokeWidth="2.5" strokeLinecap="round" />
+      <path d={pathD} fill="none" stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" />
 
       {points.map((p, i) => (
         <g key={i}>
@@ -102,13 +98,6 @@ export function BarChart({
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-full" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="bar-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--primary)" />
-          <stop offset="100%" stopColor="var(--accent)" />
-        </linearGradient>
-      </defs>
-
       {tickVals.map((v, i) => {
         const y = pad.top + (i * innerH) / yTicks;
         return (
@@ -127,7 +116,7 @@ export function BarChart({
         const y = pad.top + innerH - barH;
         return (
           <g key={d.label}>
-            <rect x={x} y={y} width={barW} height={barH} rx="6" fill="url(#bar-fill)" />
+            <rect x={x} y={y} width={barW} height={barH} rx="6" fill="var(--primary)" opacity={d.value === maxY ? 1 : 0.55} />
             {d.value > 0 && (
               <text x={x + barW / 2} y={y - 6} textAnchor="middle" fontSize="10" fontWeight="600" fill="var(--foreground)">
                 {valueLabel ? valueLabel(d.value) : d.value}
@@ -195,7 +184,7 @@ export function ProgressBar({ value, label, hint }: { value: number; label: stri
       </div>
       <div className="mt-1.5 h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+          className="h-full rounded-full bg-[var(--primary)]"
           style={{ width: `${v}%` }}
         />
       </div>
@@ -228,13 +217,6 @@ export function Heatmap({
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-full block" preserveAspectRatio="xMinYMin meet">
-      <defs>
-        <linearGradient id="hm-cell" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="var(--primary)" />
-          <stop offset="100%" stopColor="var(--accent)" />
-        </linearGradient>
-      </defs>
-
       {/* Weekday labels (every other row) */}
       {[1, 3, 5].map((dayIdx, i) => (
         <text
@@ -252,7 +234,7 @@ export function Heatmap({
         const x = labelW + c.week * (cellSize + gap);
         const y = c.day * (cellSize + gap);
         const intensity = c.value / Math.max(1, maxValue);
-        const fill = c.value === 0 ? "var(--surface-2)" : "url(#hm-cell)";
+        const fill = c.value === 0 ? "var(--surface-3)" : "var(--primary)";
         const opacity = c.value === 0 ? 1 : 0.3 + intensity * 0.7;
         const delay = (c.week * 7 + c.day) * 6;
         return (
@@ -288,7 +270,7 @@ export function Heatmap({
               width={cellSize}
               height={cellSize}
               rx={3}
-              fill={i === 0 ? "var(--surface-2)" : "url(#hm-cell)"}
+              fill={i === 0 ? "var(--surface-2)" : "var(--primary)"}
               opacity={o}
             />
           );
@@ -333,7 +315,7 @@ export function RadialBars({
                 cy={c}
                 r={r}
                 fill="none"
-                stroke="var(--surface-2)"
+                stroke="var(--surface-3)"
                 strokeWidth={trackWidth}
               />
               <circle
@@ -373,7 +355,7 @@ export function Donut({ value, size = 96, label }: { value: number; size?: numbe
   return (
     <div className="relative inline-block" style={{ width: size, height: size }}>
       <svg width={size} height={size}>
-        <circle cx={c} cy={c} r={r} fill="none" stroke="var(--surface-2)" strokeWidth="8" />
+        <circle cx={c} cy={c} r={r} fill="none" stroke="var(--surface-3)" strokeWidth="8" />
         <circle
           cx={c}
           cy={c}
@@ -387,7 +369,7 @@ export function Donut({ value, size = 96, label }: { value: number; size?: numbe
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-lg font-bold">{Math.round(v)}%</span>
+        <span className="text-lg font-bold tracking-tight text-[var(--heading)]">{Math.round(v)}%</span>
         {label && <span className="text-[10px] text-[var(--muted)]">{label}</span>}
       </div>
     </div>

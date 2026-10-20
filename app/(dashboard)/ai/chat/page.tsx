@@ -371,36 +371,40 @@ export default function AiChatPage() {
                   />
                 </div>
               ) : (
-                <button
-                  onClick={() => { setActiveId(s.id); setSidebarOpen(false); }}
-                  className={cn(
-                    "w-full text-left px-4 py-3 hover:bg-[var(--surface-2)] flex items-start gap-2 group transition-colors",
-                    s.id === activeId && "bg-[var(--primary-soft)]",
-                  )}
-                >
-                  <Icon.MessageSquare size={15} className="mt-0.5 text-[var(--muted)] shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{s.title}</p>
-                    <p className="text-[11px] text-[var(--muted)]">{relativeTime(s.createdAt)}</p>
-                  </div>
-                  {/* Action buttons — visible on hover */}
-                  <div className="opacity-0 group-hover:opacity-100 flex items-center gap-0.5 shrink-0 transition-opacity">
+                <div className="relative group">
+                  <button
+                    onClick={() => { setActiveId(s.id); setSidebarOpen(false); }}
+                    className={cn(
+                      "w-full text-left pl-4 pr-16 py-3 hover:bg-[var(--surface-2)] flex items-start gap-2 transition-colors",
+                      s.id === activeId && "bg-[var(--primary-soft)]",
+                    )}
+                  >
+                    <Icon.MessageSquare size={15} className="mt-0.5 text-[var(--muted)] shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{s.title}</p>
+                      <p className="text-[11px] text-[var(--muted)]">{relativeTime(s.createdAt)}</p>
+                    </div>
+                  </button>
+                  {/* Action buttons — siblings of the row button, visible on hover or keyboard focus */}
+                  <div className="absolute right-3 top-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 flex items-center gap-0.5 transition-opacity">
                     <button
-                      onClick={(e) => { e.stopPropagation(); startRename(s); }}
+                      onClick={() => startRename(s)}
                       title="Rename"
+                      aria-label={`Rename ${s.title}`}
                       className="h-6 w-6 flex items-center justify-center rounded text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--border)]"
                     >
                       <Icon.Edit size={11} />
                     </button>
                     <button
-                      onClick={(e) => { e.stopPropagation(); deleteSession(s.id); }}
+                      onClick={() => deleteSession(s.id)}
                       title="Delete"
-                      className="h-6 w-6 flex items-center justify-center rounded text-[var(--muted)] hover:text-[var(--danger)] hover:bg-red-500/10"
+                      aria-label={`Delete ${s.title}`}
+                      className="h-6 w-6 flex items-center justify-center rounded text-[var(--muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-soft)]"
                     >
                       <Icon.Trash size={11} />
                     </button>
                   </div>
-                </button>
+                </div>
               )}
             </li>
           ))}
@@ -464,7 +468,7 @@ export default function AiChatPage() {
                 <button
                   onClick={clearChat}
                   title="Clear chat"
-                  className="h-8 w-8 flex items-center justify-center rounded-lg text-[var(--muted)] hover:text-[var(--danger)] hover:bg-red-500/10 transition"
+                  className="h-8 w-8 flex items-center justify-center rounded-lg text-[var(--muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-soft)] transition"
                 >
                   <Icon.Trash size={15} />
                 </button>
@@ -496,7 +500,7 @@ export default function AiChatPage() {
           {active?.messages.map((m) => (
             <div key={m.id} className={cn("flex gap-3 group", m.role === "user" ? "justify-end" : "")}>
               {m.role === "assistant" && (
-                <div className="h-8 w-8 shrink-0 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white flex items-center justify-center mt-1">
+                <div className="h-8 w-8 shrink-0 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center mt-1">
                   <Icon.Sparkles size={14} />
                 </div>
               )}
@@ -530,7 +534,7 @@ export default function AiChatPage() {
                     className="flex items-center gap-1 text-[10px] text-[var(--muted)] hover:text-[var(--foreground)] transition px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100"
                   >
                     {copiedId === m.id ? (
-                      <><Icon.Check size={11} className="text-emerald-500" /> Copied</>
+                      <><Icon.Check size={11} className="text-[var(--primary)]" /> Copied</>
                     ) : (
                       <><Icon.Copy size={11} /> Copy</>
                     )}
@@ -674,7 +678,7 @@ function Welcome({ onPick }: { onPick: (s: string) => void }) {
   return (
     <div className="py-6 max-w-2xl mx-auto">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white mb-4">
+        <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl brand-fill text-white mb-4">
           <Icon.Sparkles size={26} />
         </div>
         <h2 className="text-xl font-bold">How can I help you learn today?</h2>

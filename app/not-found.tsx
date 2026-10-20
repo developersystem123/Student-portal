@@ -1,4 +1,7 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages */
+// Most links here go to the public site, which is entered with a full page load (plain <a>) because it
+// runs its own stylesheets and scripts.
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,7 +23,7 @@ export default function NotFound() {
         : "Student dashboard";
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-[var(--background)] text-[var(--foreground)]">
+    <main className="min-h-screen flex items-center justify-center px-4 py-10 bg-[var(--background)] text-[var(--foreground)]">
       <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
         <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-[var(--primary)]/15 blur-3xl" />
         <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[var(--accent)]/15 blur-3xl" />
@@ -55,11 +58,11 @@ export default function NotFound() {
 
           <div className="p-6 sm:p-8 space-y-6">
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/" className="flex-1">
+              <a href="/" className="flex-1">
                 <Button className="w-full h-12">
                   <Icon.Home size={16} /> Go to home
                 </Button>
-              </Link>
+              </a>
               <Button variant="outline" className="h-12" onClick={() => router.back()}>
                 <Icon.ArrowLeft size={16} /> Go back
               </Button>
@@ -80,7 +83,7 @@ export default function NotFound() {
             </div>
 
             <div>
-              <p className="text-xs uppercase tracking-wider text-[var(--muted-2)] font-semibold mb-3">
+              <p className="text-xs uppercase tracking-wider text-[var(--muted)] font-semibold mb-3">
                 Or jump to
               </p>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -102,15 +105,15 @@ export default function NotFound() {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-[var(--muted-2)]">
+        <p className="mt-6 text-center text-xs text-[var(--muted)]">
           If you think this is a mistake,{" "}
-          <Link href="/contact" className="text-[var(--primary)] hover:underline font-medium">
+          <a href="/contact" className="text-[var(--foreground)] underline decoration-[var(--primary)] decoration-2 underline-offset-2 hover:text-[var(--primary)] font-medium">
             let us know
-          </Link>
+          </a>
           .
         </p>
       </div>
-    </div>
+    </main>
   );
 }
 
@@ -127,7 +130,7 @@ function SuggestionLink({
 }) {
   return (
     <li>
-      <Link
+      <a
         href={href}
         className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border)] hover:border-[var(--primary)]/30 hover:bg-[var(--primary-soft)]/30 transition group"
       >
@@ -139,7 +142,7 @@ function SuggestionLink({
           <p className="text-xs text-[var(--muted)]">{description}</p>
         </div>
         <Icon.ChevronRight size={16} className="text-[var(--muted-2)] group-hover:text-[var(--primary)] group-hover:translate-x-0.5 transition" />
-      </Link>
+      </a>
     </li>
   );
 }

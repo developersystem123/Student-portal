@@ -307,7 +307,7 @@ export default function AdminLiveClassesPage() {
             label: "Live now",
             value: liveStats.liveNow,
             icon: <Icon.Video size={16} />,
-            tint: liveStats.liveNow > 0 ? "bg-rose-500/15 text-rose-500" : "bg-surface-2 text-muted",
+            tint: liveStats.liveNow > 0 ? "bg-[var(--danger-soft)] text-[var(--danger)]" : "bg-[var(--surface-2)] text-[var(--muted)]",
           },
           {
             label: "Upcoming",
@@ -319,13 +319,13 @@ export default function AdminLiveClassesPage() {
             label: "Total attendees",
             value: liveStats.totalAttendees,
             icon: <Icon.Users size={16} />,
-            tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
+            tint: "bg-[var(--info-soft)] text-[var(--info)]",
           },
           {
             label: "Avg attendees",
             value: liveStats.avgAttendees || "—",
             icon: <Icon.BarChart3 size={16} />,
-            tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+            tint: "bg-[var(--primary-soft)] text-[var(--primary)]",
           },
         ].map((s) => (
           <Card key={s.label}>
@@ -369,7 +369,7 @@ export default function AdminLiveClassesPage() {
               <button
                 key={o.key}
                 onClick={() => setSortKey(o.key)}
-                className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+                className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
               >
                 {o.label}
               </button>
@@ -379,7 +379,7 @@ export default function AdminLiveClassesPage() {
                 <span className="text-xs text-muted font-medium ml-3 mr-1">Instructor:</span>
                 <button
                   onClick={() => setInstructorFilter("all")}
-                  className={`h-8 px-3 rounded-lg text-xs font-medium transition ${instructorFilter === "all" ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+                  className={`h-8 px-3 rounded-lg text-xs font-medium transition ${instructorFilter === "all" ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
                 >
                   All
                 </button>
@@ -387,7 +387,7 @@ export default function AdminLiveClassesPage() {
                   <button
                     key={inst}
                     onClick={() => setInstructorFilter(inst)}
-                    className={`h-8 px-3 rounded-lg text-xs font-medium transition ${instructorFilter === inst ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+                    className={`h-8 px-3 rounded-lg text-xs font-medium transition ${instructorFilter === inst ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
                   >
                     {inst}
                   </button>
@@ -535,7 +535,7 @@ export default function AdminLiveClassesPage() {
                         onClick={() => setPage(p as number)}
                         className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${
                           safePage === p
-                            ? "bg-[var(--primary)] text-white"
+                            ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                             : "border border-border text-foreground hover:bg-surface-2"
                         }`}
                       >

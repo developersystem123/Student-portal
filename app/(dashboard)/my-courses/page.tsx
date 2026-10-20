@@ -112,19 +112,19 @@ export default function MyCoursesPage() {
       label: "In progress",
       value: counts.progress,
       icon: <Icon.TrendingUp size={16} />,
-      color: "text-amber-500",
+      color: "text-[var(--amber)]",
     },
     {
       label: "Completed",
       value: counts.completed,
       icon: <Icon.CheckCircle size={16} />,
-      color: "text-emerald-500",
+      color: "text-[var(--primary)]",
     },
     {
       label: "Avg progress",
       value: `${avgProgress}%`,
       icon: <Icon.TrendingUp size={16} />,
-      color: "text-sky-500",
+      color: "text-[var(--info)]",
     },
   ];
 
@@ -260,7 +260,7 @@ export default function MyCoursesPage() {
                   className={cn(
                     "text-xs px-3 py-1.5 rounded-lg font-medium transition",
                     sort === o.key
-                      ? "bg-[var(--primary)] text-white"
+                      ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                       : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
                   )}
                 >
@@ -281,7 +281,7 @@ export default function MyCoursesPage() {
                 className={cn(
                   "text-xs px-3 py-1.5 rounded-lg font-medium transition",
                   catFilter === c
-                    ? "bg-[var(--primary)] text-white"
+                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                     : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
                 )}
               >

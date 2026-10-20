@@ -9,8 +9,10 @@ export async function GET(request: Request) {
     const code = new URL(request.url).searchParams.get("code")?.trim();
     if (!code) return Response.json({ valid: false, error: "A verification code is required." });
 
-    const cert = await prisma.certificate.findUnique({
-      where: { verifyCode: code },
+    // Codes are printed on certificates and typed by hand, so match case-insensitively —
+    // "edu-ab12cd" must verify the same certificate as "EDU-AB12CD".
+    const cert = await prisma.certificate.findFirst({
+      where: { verifyCode: { equals: code, mode: "insensitive" } },
       include: {
         course: { select: { title: true, category: true } },
         user: { select: { name: true } },

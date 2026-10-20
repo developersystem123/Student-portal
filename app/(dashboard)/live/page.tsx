@@ -158,8 +158,8 @@ export default function LiveClassesPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total sessions", value: stats.total, color: "text-[var(--primary)]", icon: <Icon.Video size={16} /> },
-          { label: "Live now", value: stats.live, color: "text-emerald-500", icon: <span className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse inline-block" /> },
-          { label: "Upcoming", value: stats.upcoming, color: "text-blue-500", icon: <Icon.Clock size={16} /> },
+          { label: "Live now", value: stats.live, color: "text-[var(--primary)]", icon: <span className="h-3 w-3 rounded-full bg-[var(--primary)] animate-pulse inline-block" /> },
+          { label: "Upcoming", value: stats.upcoming, color: "text-[var(--info)]", icon: <Icon.Clock size={16} /> },
           { label: "Past sessions", value: stats.past, color: "text-[var(--muted)]", icon: <Icon.Play size={16} /> },
         ].map((s) => (
           <Card key={s.label}>
@@ -191,7 +191,7 @@ export default function LiveClassesPage() {
             className={cn(
               "text-xs px-3 py-1.5 rounded-lg font-medium transition capitalize",
               filter === f
-                ? "bg-[var(--primary)] text-white"
+                ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                 : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
             )}
           >
@@ -226,12 +226,12 @@ export default function LiveClassesPage() {
       ) : filter === "all" ? (
         <>
           {live.length > 0 && (
-            <Card className="ring-2 ring-emerald-500/40 bg-emerald-500/5">
+            <Card className="ring-2 ring-[var(--primary)]/40 bg-[var(--primary-soft)]">
               <CardHeader className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Live now
+                  <span className="h-2 w-2 rounded-full bg-[var(--primary)] animate-pulse" /> Live now
                 </CardTitle>
-                <span className="text-xs text-emerald-600 font-medium">{live.length} session{live.length > 1 ? "s" : ""}</span>
+                <span className="text-xs text-[var(--primary)] font-medium">{live.length} session{live.length > 1 ? "s" : ""}</span>
               </CardHeader>
               <CardBody className="space-y-3">
                 {live.map((c) => (
@@ -285,7 +285,7 @@ function NextSessionBanner({ c }: { c: LiveClass }) {
   const countdown = useCountdown(c.scheduledAt);
   return (
     <div className="rounded-xl border border-[var(--primary)]/30 bg-[var(--primary-soft)]/30 px-5 py-4 flex items-center gap-4 flex-wrap">
-      <div className="h-10 w-10 rounded-xl bg-[var(--primary)] text-white flex items-center justify-center shrink-0">
+      <div className="h-10 w-10 rounded-xl bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center shrink-0">
         <Icon.Video size={18} />
       </div>
       <div className="flex-1 min-w-0">
@@ -321,7 +321,7 @@ function ClassRow({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={c.courseThumbnail} alt="" className="h-16 w-24 rounded-lg object-cover" />
         {c.status === "live" && (
-          <span className="absolute top-1 left-1 flex items-center gap-1 text-[10px] font-bold text-white bg-emerald-500 px-1.5 py-0.5 rounded-md">
+          <span className="absolute top-1 left-1 flex items-center gap-1 text-[10px] font-bold text-[var(--solid-fg)] bg-[var(--primary)] px-1.5 py-0.5 rounded-md">
             <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" /> LIVE
           </span>
         )}
@@ -354,7 +354,7 @@ function ClassRow({
           <div className="mt-1.5 flex items-center gap-2">
             <div className="flex-1 h-1 rounded-full bg-[var(--border)] overflow-hidden max-w-[120px]">
               <div
-                className={cn("h-full rounded-full transition-all", attendancePct >= 90 ? "bg-red-500" : "bg-[var(--primary)]")}
+                className={cn("h-full rounded-full transition-all", attendancePct >= 90 ? "bg-[var(--danger)]" : "bg-[var(--primary)]")}
                 style={{ width: `${attendancePct}%` }}
               />
             </div>
@@ -402,7 +402,7 @@ function ClassRow({
             <Button
               size="sm"
               disabled={!isJoinable}
-              className={c.status === "live" ? "bg-emerald-500 hover:bg-emerald-600" : ""}
+              className={c.status === "live" ? "bg-[var(--primary)] hover:bg-[var(--primary)]" : ""}
             >
               <Icon.Video size={12} />
               {c.status === "live" ? "Join now" : isJoinable ? "Join" : "Not yet open"}

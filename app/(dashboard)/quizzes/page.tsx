@@ -28,9 +28,9 @@ type SortKey = "default" | "score-high" | "score-low" | "name";
 
 function difficultyLabel(durationMinutes: number, questionCount: number): { label: string; color: string } {
   const score = durationMinutes / Math.max(1, questionCount);
-  if (score >= 6) return { label: "Hard", color: "text-red-500" };
-  if (score >= 3) return { label: "Medium", color: "text-amber-500" };
-  return { label: "Easy", color: "text-emerald-500" };
+  if (score >= 6) return { label: "Hard", color: "text-[var(--danger)]" };
+  if (score >= 3) return { label: "Medium", color: "text-[var(--amber)]" };
+  return { label: "Easy", color: "text-[var(--primary)]" };
 }
 
 function ScoreBar({ score, passing }: { score: number; passing: number }) {
@@ -44,7 +44,7 @@ function ScoreBar({ score, passing }: { score: number; passing: number }) {
           style={{ left: `${passing}%` }}
         />
         <div
-          className={cn("h-full rounded-full transition-all", passed ? "bg-emerald-500" : "bg-red-400")}
+          className={cn("h-full rounded-full transition-all", passed ? "bg-[var(--primary)]" : "bg-[var(--danger)]")}
           style={{ width: `${score}%` }}
         />
       </div>
@@ -125,7 +125,7 @@ export default function QuizzesPage() {
                 onClick={() => setSort(k)}
                 className={cn(
                   "text-xs px-2.5 py-1.5 rounded-lg font-medium transition",
-                  sort === k ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
+                  sort === k ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
                 )}
               >
                 {k === "default" ? "Default" : k === "score-high" ? "Score ↓" : k === "score-low" ? "Score ↑" : "A–Z"}
@@ -140,9 +140,9 @@ export default function QuizzesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Total quizzes", value: stats.total, color: "text-[var(--primary)]", icon: <Icon.ListChecks size={16} /> },
-            { label: "Passed", value: stats.passed, color: "text-emerald-500", icon: <Icon.CheckCircle size={16} /> },
-            { label: "Not started", value: stats.notStarted, color: "text-amber-500", icon: <Icon.Clock size={16} /> },
-            { label: "Avg score", value: stats.avgScore > 0 ? `${stats.avgScore}%` : "—", color: "text-blue-500", icon: <Icon.TrendingUp size={16} /> },
+            { label: "Passed", value: stats.passed, color: "text-[var(--primary)]", icon: <Icon.CheckCircle size={16} /> },
+            { label: "Not started", value: stats.notStarted, color: "text-[var(--amber)]", icon: <Icon.Clock size={16} /> },
+            { label: "Avg score", value: stats.avgScore > 0 ? `${stats.avgScore}%` : "—", color: "text-[var(--info)]", icon: <Icon.TrendingUp size={16} /> },
           ].map((s) => (
             <Card key={s.label}>
               <CardBody className="py-3 px-4">
@@ -174,7 +174,7 @@ export default function QuizzesPage() {
               onClick={() => setFilter(key)}
               className={cn(
                 "text-xs px-3 py-1.5 rounded-lg font-medium transition",
-                filter === key ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
+                filter === key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
               )}
             >
               {label}
@@ -219,7 +219,7 @@ export default function QuizzesPage() {
                 key={q.id}
                 className={cn(
                   "transition",
-                  passed ? "ring-1 ring-emerald-500/30" : "",
+                  passed ? "ring-1 ring-[var(--primary)]/30" : "",
                 )}
               >
                 <CardHeader>
@@ -256,7 +256,7 @@ export default function QuizzesPage() {
                   {q.lastAttempt && (
                     <div className={cn(
                       "rounded-lg px-3 py-2 text-xs flex items-center justify-between",
-                      passed ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" : "bg-red-500/10 text-red-600 dark:text-red-400",
+                      passed ? "bg-[var(--primary-soft)] text-[var(--primary)]" : "bg-[var(--danger-soft)] text-[var(--danger)]",
                     )}>
                       <span className="flex items-center gap-1.5">
                         {passed ? <Icon.CheckCircle size={13} /> : <Icon.AlertCircle size={13} />}

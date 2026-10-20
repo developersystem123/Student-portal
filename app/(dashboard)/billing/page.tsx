@@ -186,7 +186,7 @@ export default function BillingPage() {
       ) : isActiveSub ? (
         <Card className="overflow-hidden">
           <CardBody className="p-0">
-            <div className="p-5 sm:p-6 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white">
+            <div className="p-5 sm:p-6 brand-fill text-white">
               <div className="flex items-start gap-3 flex-wrap">
                 <Icon.Crown size={28} />
                 <div className="flex-1 min-w-[14rem]">
@@ -218,7 +218,7 @@ export default function BillingPage() {
               </div>
             </div>
             {isCanceling && (
-              <div className="px-5 py-3 bg-amber-50 dark:bg-amber-900/20 border-t border-amber-200/50 flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400">
+              <div className="px-5 py-3 bg-[var(--amber-soft)] border-t border-[var(--amber)]/50 flex items-center gap-2 text-sm text-[var(--amber)]">
                 <Icon.AlertCircle size={15} />
                 Your subscription is set to cancel. After {formatDate(subscription.currentPeriodEnd)} you'll
                 move to the Free plan.
@@ -229,7 +229,7 @@ export default function BillingPage() {
       ) : (
         <Card className="overflow-hidden">
           <CardBody className="p-0">
-            <div className="p-5 sm:p-6 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white">
+            <div className="p-5 sm:p-6 brand-fill text-white">
               <div className="flex items-start gap-3 flex-wrap">
                 <Icon.Sparkles size={28} />
                 <div className="flex-1 min-w-[14rem]">

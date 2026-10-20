@@ -30,12 +30,12 @@ export type MediaCardAspect = keyof typeof ASPECT;
 // A small, fixed palette so a card that has no image (or whose image fails to
 // load) still gets a pleasant, *stable* gradient instead of an empty grey box.
 const FALLBACK_GRADIENTS = [
-  "from-green-600 to-emerald-500",
-  "from-emerald-500 to-teal-500",
-  "from-green-500 to-lime-400",
-  "from-teal-600 to-emerald-400",
-  "from-lime-500 to-green-600",
-  "from-emerald-600 to-green-400",
+  "from-[#14532d] to-[#15803d]",
+  "from-[#1f2937] to-[#14532d]",
+  "from-[#166534] to-[#15803d]",
+  "from-[#111827] to-[#1f2937]",
+  "from-[#14532d] to-[#1f2937]",
+  "from-[#1f2937] to-[#166534]",
 ];
 
 function gradientFor(seed: string): string {

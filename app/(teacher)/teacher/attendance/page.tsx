@@ -20,10 +20,10 @@ type Mark = AttendanceStatus | null;
 type Record_ = { studentId: string; date: string; status: AttendanceStatus };
 
 const MARK_STYLES: Record<AttendanceStatus, string> = {
-  present: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/40",
-  late: "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40",
-  absent: "bg-red-500/15 text-red-500 border-red-500/40",
-  excused: "bg-sky-500/15 text-sky-500 border-sky-500/40",
+  present: "bg-[var(--primary-soft)] text-[var(--primary)] border-[var(--primary)]/40",
+  late: "bg-[var(--amber-soft)] text-[var(--amber)] border-[var(--amber)]/40",
+  absent: "bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger)]/40",
+  excused: "bg-[var(--info-soft)] text-[var(--info)] border-[var(--info)]/40",
 };
 
 const NEXT_MARK: Record<string, Mark> = {
@@ -212,9 +212,9 @@ export default function TeacherAttendancePage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Sessions recorded", value: courseStats.sessions, icon: <Icon.Calendar size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-            { label: "Overall rate", value: `${courseStats.rate}%`, icon: <Icon.TrendingUp size={16} />, tint: courseStats.rate >= 75 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : courseStats.rate >= 50 ? "bg-amber-500/10 text-amber-600 dark:text-amber-400" : "bg-red-500/10 text-red-500" },
-            { label: "Present marks", value: courseStats.present, icon: <Icon.CheckCircle size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-            { label: "Absent marks", value: courseStats.absent, icon: <Icon.X size={16} />, tint: courseStats.absent > 0 ? "bg-red-500/10 text-red-500" : "bg-[var(--surface-2)] text-[var(--muted)]" },
+            { label: "Overall rate", value: `${courseStats.rate}%`, icon: <Icon.TrendingUp size={16} />, tint: courseStats.rate >= 75 ? "bg-[var(--primary-soft)] text-[var(--primary)]" : courseStats.rate >= 50 ? "bg-[var(--amber-soft)] text-[var(--amber)]" : "bg-[var(--danger-soft)] text-[var(--danger)]" },
+            { label: "Present marks", value: courseStats.present, icon: <Icon.CheckCircle size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
+            { label: "Absent marks", value: courseStats.absent, icon: <Icon.X size={16} />, tint: courseStats.absent > 0 ? "bg-[var(--danger-soft)] text-[var(--danger)]" : "bg-[var(--surface-2)] text-[var(--muted)]" },
           ].map((s) => (
             <Card key={s.label}>
               <CardBody className="flex items-center gap-3 !py-3">
@@ -330,7 +330,7 @@ export default function TeacherAttendancePage() {
                         >
                           <td className="py-2.5 px-3">
                             <div className="flex items-center gap-2.5">
-                              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white text-xs font-semibold flex items-center justify-center">
+                              <div className="h-8 w-8 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold flex items-center justify-center">
                                 {s.userName.slice(0, 1).toUpperCase()}
                               </div>
                               <div className="min-w-0">
@@ -360,15 +360,15 @@ export default function TeacherAttendancePage() {
                             <div className="flex items-center gap-2">
                               <div className="flex-1 h-1.5 rounded-full bg-[var(--surface-2)] overflow-hidden">
                                 <div
-                                  className={`h-full ${sum.rate >= 75 ? "bg-gradient-to-r from-emerald-500 to-teal-500" : sum.rate >= 50 ? "bg-gradient-to-r from-amber-400 to-amber-500" : "bg-gradient-to-r from-red-500 to-red-400"}`}
+                                  className={`h-full ${sum.rate >= 75 ? "bg-[var(--primary)]" : sum.rate >= 50 ? "bg-[var(--amber)]" : "bg-[var(--danger)]"}`}
                                   style={{ width: `${sum.rate}%` }}
                                 />
                               </div>
-                              <span className={`text-xs w-9 text-right font-medium ${sum.total > 0 && sum.rate < 75 ? "text-amber-500" : "text-[var(--muted)]"}`}>
+                              <span className={`text-xs w-9 text-right font-medium ${sum.total > 0 && sum.rate < 75 ? "text-[var(--amber)]" : "text-[var(--muted)]"}`}>
                                 {sum.rate}%
                               </span>
                               {sum.total > 0 && sum.rate < 75 && (
-                                <span title="Low attendance" className="text-amber-500 shrink-0">
+                                <span title="Low attendance" className="text-[var(--amber)] shrink-0">
                                   <Icon.AlertCircle size={13} />
                                 </span>
                               )}
@@ -396,7 +396,7 @@ export default function TeacherAttendancePage() {
                           onClick={() => setSessionDate(d)}
                           className={`text-xs px-2.5 py-1 rounded-full border transition ${
                             d === sessionDate
-                              ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                              ? "bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]"
                               : "border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"
                           }`}
                         >

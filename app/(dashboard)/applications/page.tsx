@@ -33,20 +33,20 @@ const STATUS_META: Record<ApplicationStatus, { label: string; icon: React.ReactN
   pending: {
     label: "Pending review",
     icon: <Icon.Clock size={15} />,
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
+    color: "text-[var(--amber)]",
+    bg: "bg-[var(--amber-soft)]",
   },
   approved: {
     label: "Approved",
     icon: <Icon.CheckCircle size={15} />,
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
+    color: "text-[var(--primary)]",
+    bg: "bg-[var(--primary-soft)]",
   },
   rejected: {
     label: "Rejected",
     icon: <Icon.X size={15} />,
-    color: "text-red-500",
-    bg: "bg-red-500/10",
+    color: "text-[var(--danger)]",
+    bg: "bg-[var(--danger-soft)]",
   },
 };
 
@@ -175,9 +175,9 @@ export default function StudentApplicationsPage() {
       {/* Approval rate info */}
       {counts.approved > 0 && (
         <div className="flex items-center gap-2 text-xs text-[var(--muted)] bg-[var(--surface-2)] rounded-xl px-4 py-2.5">
-          <Icon.TrendingUp size={14} className="text-emerald-500 shrink-0" />
+          <Icon.TrendingUp size={14} className="text-[var(--primary)] shrink-0" />
           <span>
-            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+            <span className="font-semibold text-[var(--primary)]">
               {Math.round((counts.approved / counts.all) * 100)}% approval rate
             </span>
             {" "}· {counts.approved} of {counts.all} applications approved
@@ -225,8 +225,8 @@ export default function StudentApplicationsPage() {
             return (
               <Card key={app.id} className={cn(
                 "transition-all",
-                app.status === "approved" && "border-emerald-500/20",
-                app.status === "rejected" && "border-red-500/20",
+                app.status === "approved" && "border-[var(--primary)]/20",
+                app.status === "rejected" && "border-[var(--danger)]/20",
               )}>
                 <CardBody className="space-y-0 p-0">
                   {/* Status top bar */}
@@ -289,8 +289,8 @@ export default function StudentApplicationsPage() {
                       />
                       <div className={cn(
                         "flex-1 h-0.5 mx-1",
-                        app.status === "approved" ? "bg-emerald-500"
-                          : app.status === "rejected" ? "bg-red-500"
+                        app.status === "approved" ? "bg-[var(--primary)]"
+                          : app.status === "rejected" ? "bg-[var(--danger)]"
                             : "bg-[var(--border)]",
                       )} />
                       <TimelineStep
@@ -314,8 +314,8 @@ export default function StudentApplicationsPage() {
                     {app.reviewNote && (
                       <div className={cn(
                         "rounded-xl px-4 py-3 text-xs flex items-start gap-2",
-                        app.status === "approved" ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
-                          : app.status === "rejected" ? "bg-red-500/10 text-red-700 dark:text-red-400"
+                        app.status === "approved" ? "bg-[var(--primary-soft)] text-[var(--primary)]"
+                          : app.status === "rejected" ? "bg-[var(--danger-soft)] text-[var(--danger)]"
                             : "bg-[var(--surface-2)] text-[var(--muted)]",
                       )}>
                         <Icon.MessageSquare size={13} className="mt-0.5 shrink-0" />
@@ -333,9 +333,9 @@ export default function StudentApplicationsPage() {
 
                     {/* Withdraw confirmation */}
                     {isConfirming && (
-                      <div className="rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-800/30 p-4">
-                        <p className="text-sm font-semibold text-red-700 dark:text-red-400 mb-1">Withdraw this application?</p>
-                        <p className="text-xs text-red-600/80 dark:text-red-400/70 mb-3">
+                      <div className="rounded-xl border border-[var(--danger)]/25 bg-[var(--danger-soft)] p-4">
+                        <p className="text-sm font-semibold text-[var(--danger)] mb-1">Withdraw this application?</p>
+                        <p className="text-xs text-[var(--danger)]/80 mb-3">
                           This action cannot be undone. You&apos;ll need to re-apply if you change your mind.
                         </p>
                         <div className="flex gap-2">
@@ -454,9 +454,9 @@ function TimelineStep({
   variant?: "primary" | "success" | "danger" | "default";
 }) {
   const colorMap = {
-    primary: done ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)]",
-    success: "bg-emerald-500 text-white",
-    danger: "bg-red-500 text-white",
+    primary: done ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)]",
+    success: "bg-[var(--primary)] text-[var(--solid-fg)]",
+    danger: "bg-[var(--danger)] text-[var(--solid-fg)]",
     default: "bg-[var(--surface-2)] text-[var(--muted)]",
   };
   return (

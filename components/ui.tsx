@@ -18,7 +18,7 @@ export const Button = React.forwardRef<
   }
 >(({ className, variant = "primary", size = "md", loading, children, disabled, ...props }, ref) => {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
+    "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-150 active:translate-y-px focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap";
   const sizes: Record<BtnSize, string> = {
     sm: "h-8 px-3 text-xs",
     md: "h-10 px-4 text-sm",
@@ -26,12 +26,12 @@ export const Button = React.forwardRef<
     icon: "h-9 w-9",
   };
   const variants: Record<BtnVariant, string> = {
-    primary: "btn-primary shadow-md hover:shadow-lg",
-    secondary: "bg-[var(--surface-2)] text-[var(--foreground)] hover:bg-[color-mix(in_oklab,var(--muted)_15%,var(--surface-2))]",
-    outline: "border border-[var(--border-strong)] bg-transparent text-[var(--foreground)] hover:bg-[var(--surface-2)]",
+    primary: "btn-primary",
+    secondary: "bg-[var(--surface-2)] text-[var(--foreground)] border border-[var(--border)] hover:bg-[var(--surface-3)]",
+    outline: "border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)]",
     ghost: "bg-transparent text-[var(--foreground)] hover:bg-[var(--surface-2)]",
-    danger: "bg-[var(--danger)] text-white hover:brightness-110",
-    soft: "bg-[var(--primary-soft)] text-[var(--primary)] hover:brightness-105",
+    danger: "bg-[var(--danger)] text-[var(--solid-fg)] hover:brightness-95",
+    soft: "bg-[var(--primary-soft)] text-[var(--primary)] hover:bg-[color-mix(in_oklab,var(--primary)_18%,var(--surface))]",
   };
   return (
     <button
@@ -69,7 +69,7 @@ export function CardBody({ className, ...props }: React.HTMLAttributes<HTMLDivEl
 }
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={cn("text-base font-semibold text-[var(--foreground)]", className)} {...props} />;
+  return <h3 className={cn("text-base font-semibold tracking-tight text-[var(--heading)]", className)} {...props} />;
 }
 
 export function CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
@@ -150,15 +150,15 @@ export function Badge({
   const styles: Record<BadgeVariant, string> = {
     default: "bg-[var(--surface-2)] text-[var(--muted)]",
     primary: "bg-[var(--primary-soft)] text-[var(--primary)]",
-    success: "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400",
-    warning: "bg-amber-500/10 text-amber-500 dark:text-amber-400",
-    danger: "bg-red-500/10 text-red-500 dark:text-red-400",
-    info: "bg-sky-500/10 text-sky-500 dark:text-sky-400",
+    success: "bg-[var(--primary-soft)] text-[var(--primary)]",
+    warning: "bg-[var(--amber-soft)] text-[var(--amber)]",
+    danger: "bg-[var(--danger-soft)] text-[var(--danger)]",
+    info: "bg-[var(--info-soft)] text-[var(--info)]",
   };
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium",
+        "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold",
         styles[variant],
         className,
       )}
@@ -179,7 +179,9 @@ export function Avatar({
   size?: number;
   className?: string;
 }) {
-  if (src) {
+  // A photo that fails to load falls back to initials instead of showing its alt text.
+  const [failed, setFailed] = React.useState<string | null>(null);
+  if (src && failed !== src) {
     // eslint-disable-next-line @next/next/no-img-element
     return (
       <img
@@ -187,16 +189,17 @@ export function Avatar({
         alt={name}
         width={size}
         height={size}
+        onError={() => setFailed(src)}
         style={{ width: size, height: size }}
-        className={cn("rounded-full object-cover", className)}
+        className={cn("rounded-full object-cover bg-[var(--surface-2)]", className)}
       />
     );
   }
   return (
     <div
-      style={{ width: size, height: size, fontSize: size * 0.4 }}
+      style={{ width: size, height: size, fontSize: size * 0.38 }}
       className={cn(
-        "rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-semibold inline-flex items-center justify-center select-none",
+        "rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold inline-flex items-center justify-center select-none shrink-0",
         className,
       )}
     >
@@ -220,7 +223,7 @@ export function Progress({
     <div className={cn("w-full", className)}>
       <div className="h-2 w-full bg-[var(--surface-2)] rounded-full overflow-hidden">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] transition-all duration-500"
+          className="h-full rounded-full bg-[var(--primary)] transition-all duration-500"
           style={{ width: `${v}%` }}
         />
       </div>
@@ -246,10 +249,11 @@ export function Switch({
       disabled={disabled}
       className={cn(
         "w-10 h-6 rounded-full relative transition-colors",
-        checked ? "bg-[var(--primary)]" : "bg-[var(--surface-2)]",
+        checked ? "bg-[var(--primary)]" : "bg-[var(--border-strong)]",
         disabled && "opacity-50",
       )}
-      aria-pressed={checked}
+      role="switch"
+      aria-checked={checked}
     >
       <span
         className={cn(
@@ -471,7 +475,7 @@ export function Tabs({
   className?: string;
 }) {
   return (
-    <div className={cn("inline-flex p-1 rounded-xl bg-[var(--surface-2)] gap-1", className)}>
+    <div className={cn("inline-flex p-1 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] gap-1", className)}>
       {options.map((o) => (
         <button
           key={o.value}
@@ -479,7 +483,7 @@ export function Tabs({
           className={cn(
             "px-3 h-9 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
             value === o.value
-              ? "bg-[var(--surface)] text-[var(--foreground)] shadow-sm"
+              ? "bg-[var(--surface)] text-[var(--heading)] shadow-sm ring-1 ring-[var(--border)]"
               : "text-[var(--muted)] hover:text-[var(--foreground)]",
           )}
         >
@@ -488,7 +492,7 @@ export function Tabs({
             <span
               className={cn(
                 "text-[10px] px-1.5 py-0.5 rounded-full",
-                value === o.value ? "bg-[var(--primary-soft)] text-[var(--primary)]" : "bg-[var(--surface-2)]",
+                value === o.value ? "bg-[var(--primary-soft)] text-[var(--primary)]" : "bg-[var(--surface-3)]",
               )}
             >
               {o.count}
@@ -561,9 +565,9 @@ export function Modal({
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-start justify-between gap-3 px-5 sm:px-6 pt-5 pb-4 border-b border-[var(--border)] bg-gradient-to-b from-[var(--primary-soft)]/35 to-transparent">
+          <div className="flex items-start justify-between gap-3 px-5 sm:px-6 pt-5 pb-4 border-b border-[var(--border)]">
             <div className="min-w-0">
-              <h3 className="text-lg font-semibold text-[var(--foreground)] truncate">{title}</h3>
+              <h3 className="text-lg font-semibold tracking-tight text-[var(--heading)] truncate">{title}</h3>
               {description && (
                 <p className="mt-0.5 text-xs text-[var(--muted)]">{description}</p>
               )}
@@ -586,6 +590,74 @@ export function Modal({
   return ReactDOM.createPortal(node, document.body);
 }
 
+/* ---------- Drawer ----------
+   Right-hand detail panel. Portaled to document.body for the same reason
+   as Modal; Escape closes it unless a modal is stacked on top.
+*/
+export function Drawer({
+  open,
+  onClose,
+  title,
+  children,
+  className,
+}: {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const titleId = React.useId();
+
+  React.useEffect(() => {
+    if (!open) return;
+    const prevFocus = document.activeElement as HTMLElement | null;
+    panelRef.current?.focus();
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+      const dialogs = document.querySelectorAll('[aria-modal="true"]');
+      if (dialogs[dialogs.length - 1] === panelRef.current?.parentElement) onClose();
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      prevFocus?.focus?.();
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+  if (typeof document === "undefined") return null;
+
+  return ReactDOM.createPortal(
+    <div role="dialog" aria-modal="true" aria-labelledby={titleId} className="fixed inset-0 z-[60] flex justify-end">
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] fade-in" onClick={onClose} aria-hidden />
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        className={cn(
+          "relative w-full max-w-sm h-full bg-[var(--surface)] border-l border-[var(--border)] shadow-2xl flex flex-col outline-none drawer-in-right",
+          className,
+        )}
+      >
+        <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[var(--border)] shrink-0">
+          <h2 id={titleId} className="text-base font-semibold tracking-tight text-[var(--heading)]">{title}</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] transition"
+          >
+            <Icon.X size={16} />
+          </button>
+        </div>
+        <div className="flex-1 flex flex-col overflow-y-auto scrollbar-thin">{children}</div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 /* ---------- Empty State ---------- */
 export function EmptyState({
   icon,
@@ -601,7 +673,7 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
       {icon && (
-        <div className="h-14 w-14 rounded-2xl bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center mb-4">
+        <div className="h-14 w-14 rounded-2xl bg-[var(--primary-soft)] text-[var(--primary)] ring-8 ring-[var(--primary-tint)] flex items-center justify-center mb-5">
           {icon}
         </div>
       )}
@@ -627,22 +699,22 @@ export function StatCard({
   tone?: "primary" | "accent" | "success" | "warning";
 }) {
   const tones = {
-    primary: "from-green-500/10 to-emerald-500/10 text-[var(--primary)]",
-    accent: "from-emerald-400/10 to-green-300/10 text-emerald-500 dark:text-emerald-400",
-    success: "from-emerald-500/10 to-teal-500/10 text-emerald-500 dark:text-emerald-400",
-    warning: "from-amber-500/10 to-orange-500/10 text-amber-500 dark:text-amber-400",
+    primary: "bg-[var(--primary-soft)] text-[var(--primary)]",
+    accent: "bg-[var(--primary-tint)] text-[var(--primary)] ring-1 ring-[var(--primary-soft)]",
+    success: "bg-[var(--primary-soft)] text-[var(--primary)]",
+    warning: "bg-[var(--amber-soft)] text-[var(--amber)]",
   };
   return (
-    <Card className="overflow-hidden">
-      <CardBody className="flex items-start gap-4">
-        <div className={cn("h-12 w-12 rounded-xl bg-gradient-to-br flex items-center justify-center", tones[tone])}>
+    <Card className="overflow-hidden transition hover:shadow-[var(--shadow-lg)]">
+      <CardBody className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+        <div className={cn("h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-xl flex items-center justify-center", tones[tone])}>
           {icon}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-[var(--muted)]">{label}</p>
-          <p className="text-2xl font-bold mt-0.5">{value}</p>
+          <p className="text-sm font-medium text-[var(--muted)]">{label}</p>
+          <p className="text-xl sm:text-2xl font-bold tracking-tight whitespace-nowrap text-[var(--heading)] mt-0.5">{value}</p>
           {delta && (
-            <p className="text-xs text-emerald-500 mt-1 flex items-center gap-1">
+            <p className="text-xs font-medium text-[var(--primary)] mt-1 flex items-center gap-1">
               <Icon.TrendingUp size={12} />
               {delta}
             </p>
@@ -668,36 +740,36 @@ const TOAST_STYLES: Record<ToastTone | "default", {
   icon: React.ReactNode;
 }> = {
   success: {
-    ring: "border-emerald-500/40",
-    bar: "bg-gradient-to-b from-emerald-400 to-emerald-600",
-    iconBg: "bg-emerald-500/15",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
+    ring: "border-[var(--border)]",
+    bar: "bg-[var(--primary)]",
+    iconBg: "bg-[var(--primary-soft)]",
+    iconColor: "text-[var(--primary)]",
     icon: <Icon.CheckCircle size={18} />,
   },
   danger: {
-    ring: "border-red-500/40",
-    bar: "bg-gradient-to-b from-red-400 to-red-600",
-    iconBg: "bg-red-500/15",
-    iconColor: "text-red-600 dark:text-red-400",
+    ring: "border-[var(--border)]",
+    bar: "bg-[var(--danger)]",
+    iconBg: "bg-[var(--danger-soft)]",
+    iconColor: "text-[var(--danger)]",
     icon: <Icon.X size={18} />,
   },
   info: {
-    ring: "border-sky-500/40",
-    bar: "bg-gradient-to-b from-sky-400 to-blue-600",
-    iconBg: "bg-sky-500/15",
-    iconColor: "text-sky-600 dark:text-sky-400",
+    ring: "border-[var(--border)]",
+    bar: "bg-[var(--info)]",
+    iconBg: "bg-[var(--info-soft)]",
+    iconColor: "text-[var(--info)]",
     icon: <Icon.Bell size={18} />,
   },
   warning: {
-    ring: "border-amber-500/40",
-    bar: "bg-gradient-to-b from-amber-400 to-amber-600",
-    iconBg: "bg-amber-500/15",
-    iconColor: "text-amber-600 dark:text-amber-400",
+    ring: "border-[var(--border)]",
+    bar: "bg-[var(--amber)]",
+    iconBg: "bg-[var(--amber-soft)]",
+    iconColor: "text-[var(--amber)]",
     icon: <Icon.Sparkles size={18} />,
   },
   default: {
-    ring: "border-[var(--border-strong)]",
-    bar: "bg-gradient-to-b from-[var(--primary)] to-[var(--accent)]",
+    ring: "border-[var(--border)]",
+    bar: "bg-[var(--primary)]",
     iconBg: "bg-[var(--primary-soft)]",
     iconColor: "text-[var(--primary)]",
     icon: <Icon.Bell size={18} />,
@@ -735,7 +807,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               key={t.id}
               role="alert"
               className={cn(
-                "pointer-events-auto relative overflow-hidden flex gap-3 rounded-xl border bg-[var(--surface)] pl-3 pr-3 py-3 card-shadow toast-in",
+                "pointer-events-auto relative overflow-hidden flex gap-3 rounded-xl border bg-[var(--surface)] pl-3 pr-3 py-3 shadow-[var(--shadow-lg)] toast-in",
                 style.ring,
               )}
             >
@@ -821,7 +893,7 @@ export function Checkbox({
         className={cn(
           "h-5 w-5 rounded-md border flex items-center justify-center transition-all",
           checked
-            ? "bg-[var(--primary)] border-[var(--primary)] text-white"
+            ? "bg-[var(--primary)] border-[var(--primary)] text-[var(--primary-foreground)]"
             : "bg-[var(--surface)] border-[var(--border-strong)]",
         )}
       >

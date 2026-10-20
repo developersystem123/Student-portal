@@ -280,9 +280,9 @@ export default function AdminPhysicalClassesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Total batches", value: classStats.total, icon: <Icon.Calendar size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-            { label: "Ongoing", value: classStats.ongoing, icon: <Icon.PlayCircle size={16} />, tint: classStats.ongoing > 0 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : "bg-[var(--surface-2)] text-[var(--muted)]" },
-            { label: "Upcoming", value: classStats.upcoming, icon: <Icon.Clock size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-            { label: "Total enrolled", value: classStats.totalEnrolled, icon: <Icon.Users size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+            { label: "Ongoing", value: classStats.ongoing, icon: <Icon.PlayCircle size={16} />, tint: classStats.ongoing > 0 ? "bg-[var(--primary-soft)] text-[var(--primary)]" : "bg-[var(--surface-2)] text-[var(--muted)]" },
+            { label: "Upcoming", value: classStats.upcoming, icon: <Icon.Clock size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+            { label: "Total enrolled", value: classStats.totalEnrolled, icon: <Icon.Users size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
           ].map((s) => (
             <Card key={s.label}>
               <CardBody className="flex items-center gap-3 !py-3">
@@ -333,7 +333,7 @@ export default function AdminPhysicalClassesPage() {
           <button
             key={o.key}
             onClick={() => setSortKey(o.key)}
-            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] text-[var(--muted)] hover:bg-[var(--surface-2)]"}`}
           >
             {o.label}
           </button>
@@ -411,7 +411,7 @@ export default function AdminPhysicalClassesPage() {
                         </div>
                       </Td>
                       <Td>
-                        <span className={full ? "text-amber-500 font-medium" : ""}>
+                        <span className={full ? "text-[var(--amber)] font-medium" : ""}>
                           {c.enrolledCount} / {c.capacity}
                         </span>
                       </Td>
@@ -463,7 +463,7 @@ export default function AdminPhysicalClassesPage() {
                   .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
                   .map((p, idx) => p === "…"
                     ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span>
-                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>
                   )}
                 <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
               </div>
@@ -513,7 +513,7 @@ export default function AdminPhysicalClassesPage() {
                 ))}
               </Select>
               {teachers.length === 0 && (
-                <p className="mt-1 text-xs text-amber-500">
+                <p className="mt-1 text-xs text-[var(--amber)]">
                   No instructors found. Add a teacher first.
                 </p>
               )}

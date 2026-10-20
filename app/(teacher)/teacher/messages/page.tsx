@@ -181,7 +181,7 @@ export default function TeacherMessagesPage() {
                             <div
                               className={`max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm ${
                                 mine
-                                  ? "bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white rounded-br-md"
+                                  ? "brand-fill text-white rounded-br-md"
                                   : "bg-[var(--surface-2)] text-[var(--foreground)] rounded-bl-md"
                               }`}
                             >

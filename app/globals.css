@@ -1,58 +1,106 @@
 @import "tailwindcss";
 
+/* The site template page brings its own Bootstrap-based CSS — keep its class names out of Tailwind. */
+@source not "../components/site";
+@source not "../app/site";
+
 @custom-variant dark (&:is(.dark *));
 
+/* Portal palette — the public website's language: neutral white/charcoal surfaces, one green action
+   colour (#15803D light, #4ADE80 dark), amber as the only warm accent, and the site's charcoal night mode. */
 :root {
   color-scheme: light;
-  --background: #f0fdf4;
+  --background: #f6f8f7;
   --surface: #ffffff;
-  --surface-2: #dcfce7;
-  --border: #bbf7d0;
-  --border-strong: #86efac;
-  --foreground: #374151;
-  --muted: #6b7280;
-  --muted-2: #9ca3af;
-  --primary: #16a34a;
+  --surface-2: #f2f5f3;
+  --surface-3: #e9eeeb;
+  --border: #e4e9e6;
+  --border-strong: #cfd8d3;
+  --foreground: #1f2937;
+  --heading: #111827;
+  --muted: #4b5563;
+  --muted-2: #5f6773;
+  --primary: #15803d;
+  --primary-hover: #166534;
   --primary-foreground: #ffffff;
   --primary-soft: #dcfce7;
+  --primary-tint: #f0fdf4;
   --accent: #4ade80;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  --amber: #b45309;
+  --amber-soft: #fef3c7;
+  --info: #0e7490;
+  --info-soft: #e0f2f1;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --danger-soft: #fee2e2;
   --ring: #22c55e;
-  --shadow: 0 1px 2px rgba(22, 163, 74, 0.06), 0 6px 24px rgba(22, 163, 74, 0.09);
+  --shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 4px 16px rgba(17, 24, 39, 0.05);
+  --shadow-lg: 0 2px 4px rgba(17, 24, 39, 0.04), 0 16px 40px rgba(17, 24, 39, 0.10);
+
+  /* Sidebar: charcoal, like the site footer, in both themes. */
+  --side-bg: #111827;
+  --side-surface: #1f2937;
+  --side-border: rgba(255, 255, 255, 0.07);
+  --side-fg: #e5e7eb;
+  --side-muted: #9ca3af;
+  --side-label: #8792a2;
+  --side-hover: rgba(255, 255, 255, 0.06);
+  --side-active-bg: rgba(74, 222, 128, 0.12);
+  --side-active-fg: #4ade80;
+
+  /* Page-header band (website .page-header). */
+  --hero-bg: #f0fdf4;
+  --hero-border: #dcfce7;
+
+  /* Text on solid primary / info / amber / danger fills. */
+  --solid-fg: #ffffff;
 }
 
 .dark {
   color-scheme: dark;
-  --background: #071a0f;
-  --surface: #0e2a19;
-  --surface-2: #163823;
-  --border: #1e4d30;
-  --border-strong: #276641;
-  --foreground: #e8f5ee;
-  --muted: #86b89a;
-  --muted-2: #5f8971;
+  --background: #111827;
+  --surface: #1a2332;
+  --surface-2: #222d3d;
+  --surface-3: #2b3748;
+  --border: #2d3a4b;
+  --border-strong: #404e62;
+  --foreground: #e5e7eb;
+  --heading: #f9fafb;
+  --muted: #a3acb9;
+  --muted-2: #939dab;
   --primary: #4ade80;
-  --primary-foreground: #071a0f;
-  --primary-soft: #14532d;
+  --primary-hover: #86efac;
+  --primary-foreground: #052e16;
+  --primary-soft: #183a2b;
+  --primary-tint: #16261f;
   --accent: #86efac;
-  --success: #34d399;
+  --amber: #fbbf24;
+  --amber-soft: #3b2f15;
+  --info: #67e8f9;
+  --info-soft: #163240;
+  --success: #4ade80;
   --warning: #fbbf24;
   --danger: #f87171;
+  --danger-soft: #3d1f24;
   --ring: #4ade80;
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.40), 0 8px 24px rgba(0, 0, 0, 0.50);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.30), 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.30), 0 16px 40px rgba(0, 0, 0, 0.45);
+
+  --side-bg: #0c121d;
+  --side-surface: #172030;
+  --side-border: rgba(255, 255, 255, 0.06);
+
+  --hero-bg: #1f2937;
+  --hero-border: #2d3a4b;
+
+  --solid-fg: #0b1018;
 }
 
-/* Admin and Teacher portals share the same white + blue palette as the main
-   site for a consistent EduPortal identity. We keep the class hooks so future
-   per-role tweaks (e.g. a subtle accent shift) are easy to layer in. */
+/* Section hooks kept on the admin and teacher shells for future per-role tweaks. */
 .admin-theme,
 .teacher-theme {
   background-color: var(--background);
-  background-image:
-    radial-gradient(700px 500px at 100% -10%, color-mix(in oklab, var(--primary) 14%, transparent), transparent),
-    radial-gradient(600px 400px at -10% 100%, color-mix(in oklab, var(--accent) 14%, transparent), transparent);
 }
 
 @theme inline {
@@ -72,7 +120,8 @@
   --color-warning: var(--warning);
   --color-danger: var(--danger);
   --color-ring: var(--ring);
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --color-heading: var(--heading);
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
@@ -86,13 +135,6 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-}
-
-body {
-  background-image:
-    radial-gradient(800px 600px at 100% -10%, color-mix(in oklab, var(--primary) 14%, transparent), transparent),
-    radial-gradient(700px 500px at -10% 100%, color-mix(in oklab, var(--accent) 12%, transparent), transparent);
-  background-attachment: fixed;
 }
 
 /* Scrollbar — Firefox */
@@ -230,19 +272,19 @@ body {
   from { opacity: 0; transform: translateY(-6px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-.select-dropdown-in { animation: selectDropIn 0.18s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.select-dropdown-in { animation: selectDropIn 0.18s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
 
-.fade-in { animation: fadeIn 0.35s ease-out both; }
+.fade-in { animation: fadeIn 0.35s ease-out backwards; }
 .pulse-dot { animation: pulseDot 1.4s ease-in-out infinite; }
 .typing-dot { animation: typing 1s ease-in-out infinite; }
-.toast-in { animation: toastIn 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-.pop-in { animation: popIn 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+.toast-in { animation: toastIn 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.pop-in { animation: popIn 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) backwards; }
 .check-draw { stroke-dasharray: 24; animation: checkDraw 0.5s ease-out 0.15s both; }
 .ring-expand { animation: ringExpand 1.4s ease-out infinite; }
-.slide-up { animation: slideUp 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.slide-up { animation: slideUp 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
 .draw-stroke { animation: drawStroke 1.4s ease-out forwards; }
 .spin-slow { animation: spinSlow 22s linear infinite; }
-.chat-pop { animation: chatPop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.chat-pop { animation: chatPop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
 .accordion-down { animation: accordionDown 0.32s ease-out both; }
 .gradient-animated {
   background-size: 200% 200%;
@@ -251,7 +293,7 @@ body {
 .blob-morph { animation: blobMorph 12s ease-in-out infinite; }
 .wave-drift  { animation: waveDrift 18s linear infinite; }
 .bob         { animation: bob 4s ease-in-out infinite; }
-.reveal-up   { animation: revealUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.reveal-up   { animation: revealUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
 .pulse-ring  { animation: pulseRing 1.6s ease-out infinite; }
 .scan-line   { animation: scanLine 2s linear infinite; }
 
@@ -259,7 +301,7 @@ body {
   .fade-in, .slide-up, .chat-pop, .pop-in, .toast-in, .accordion-down,
   .pulse-dot, .typing-dot, .ring-expand, .spin-slow, .gradient-animated,
   .check-draw, .draw-stroke, .blob-morph, .wave-drift, .bob,
-  .reveal-up, .pulse-ring, .scan-line, .select-dropdown-in {
+  .reveal-up, .pulse-ring, .scan-line, .select-dropdown-in, .drawer-in-right {
     animation: none !important;
   }
 }
@@ -343,7 +385,7 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background: linear-gradient(90deg, #16a34a, #15803d);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -365,11 +407,41 @@ body {
   pointer-events: none;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary), color-mix(in oklab, var(--primary) 70%, var(--accent) 30%));
-  color: var(--primary-foreground);
+.dark .gradient-text {
+  background-image: linear-gradient(90deg, #86efac, #4ade80);
 }
-.btn-primary:hover { filter: brightness(1.06); }
+
+/* Solid action button, as on the website. */
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 1px 2px rgba(21, 128, 61, 0.25);
+}
+.btn-primary:hover { background: var(--primary-hover); }
+
+/* Portal headings take the website's heading colour and tight tracking. Layered, so any colour
+   utility still wins; headings inside white-text panels keep inheriting white. */
+@layer base {
+  #main-content :is(h1, h2, h3):not(:is(.brand-fill, [class*="text-white"]) *) {
+    color: var(--heading);
+  }
+  #main-content h1 {
+    letter-spacing: -0.02em;
+  }
+  #main-content :is(h2, h3) {
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Deep-green brand panel for white text (banners, certificate faces, plan cards). Same in both
+   themes so white text always passes AA. */
+.brand-fill {
+  background-color: #15803d;
+  background-image:
+    radial-gradient(120% 140% at 100% 0%, rgba(74, 222, 128, 0.22) 0%, transparent 55%),
+    linear-gradient(135deg, #14532d 0%, #166534 45%, #15803d 100%);
+  color: #fff;
+}
 
 /* Native <select> dropdown — make the popup match the theme.
    The closed trigger is styled by the Select component; this targets the
@@ -435,3 +507,151 @@ input[type=range].pretty::-webkit-slider-thumb {
 .prose-chat li { margin: 0.15rem 0; }
 .prose-chat h1, .prose-chat h2, .prose-chat h3 { font-weight: 600; margin: 0.5rem 0; }
 .prose-chat a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- Brand preloader (components/layout/AppPreloader.tsx) ----------
+   Covers the screen while a page first streams in. Themed from html[data-boot-theme], set by the
+   root layout before first paint, so it matches the page that replaces it. */
+.edu-preloader {
+  --pre-bg: #f0fdf4;
+  --pre-track: #dcfce7;
+  --pre-arc: #16a34a;
+  --pre-name-from: #22c55e;
+  --pre-name-to: #15803d;
+  --pre-muted: #4b5563;
+  --pre-tile-shadow: 0 8px 24px rgba(22, 163, 74, 0.18), 0 2px 6px rgba(22, 163, 74, 0.12);
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: var(--pre-bg);
+}
+
+html[data-boot-theme="dark"] .edu-preloader {
+  --pre-bg: #111827;
+  --pre-track: #1f2937;
+  --pre-arc: #4ade80;
+  --pre-name-from: #4ade80;
+  --pre-name-to: #22c55e;
+  --pre-muted: #9ca3af;
+  --pre-tile-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.edu-preloader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: edu-preloader-in 320ms ease-out 80ms both;
+}
+
+.edu-preloader__badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 24px;
+}
+
+.edu-preloader__ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: edu-preloader-spin 1.1s linear infinite;
+}
+
+.edu-preloader__track,
+.edu-preloader__arc {
+  fill: none;
+  stroke-width: 4;
+}
+
+.edu-preloader__track { stroke: var(--pre-track); }
+
+.edu-preloader__arc {
+  stroke: var(--pre-arc);
+  stroke-linecap: round;
+  stroke-dasharray: 90 340;
+  animation: edu-preloader-dash 1.6s ease-in-out infinite;
+}
+
+.edu-preloader__tile {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: var(--pre-tile-shadow);
+}
+
+.edu-preloader__tile img { display: block; width: 64px; height: 64px; }
+
+.edu-preloader__name {
+  margin: 0;
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, var(--pre-name-from), var(--pre-name-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.edu-preloader__tagline {
+  margin: 6px 0 0;
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--pre-muted);
+}
+
+.edu-preloader__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@keyframes edu-preloader-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes edu-preloader-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes edu-preloader-dash {
+  0%, 100% { stroke-dasharray: 40 340; }
+  50% { stroke-dasharray: 150 340; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edu-preloader__inner { animation: none; }
+  .edu-preloader__ring { animation-duration: 2.4s; }
+  .edu-preloader__arc { animation: none; }
+}
+
+/* ---------- Portal shell ---------- */
+/* Scrollbar for the charcoal sidebar. */
+.side-scroll { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.12) transparent; }
+.side-scroll::-webkit-scrollbar { width: 4px; }
+.side-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.10); }
+.side-scroll::-webkit-scrollbar-thumb:hover { background: rgba(74, 222, 128, 0.45); }
+
+@keyframes drawerIn { from { transform: translateX(-24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.drawer-in { animation: drawerIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+@keyframes drawerInRight { from { transform: translateX(32px); opacity: 0; } to { transform: none; opacity: 1; } }
+.drawer-in-right { animation: drawerInRight 220ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.float-slow { animation: float-slow 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer-in, .float-slow { animation: none; }
+}

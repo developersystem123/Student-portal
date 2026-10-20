@@ -54,7 +54,7 @@ export function SignedOutPopup({
             className="absolute inset-0 rounded-full bg-[var(--primary)]/20 ring-expand"
             style={{ animationDelay: "0.4s" }}
           />
-          <div className="relative h-20 w-20 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center shadow-lg shadow-[var(--primary)]/30">
+          <div className="relative h-20 w-20 rounded-full brand-fill flex items-center justify-center shadow-lg shadow-[var(--primary)]/30">
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12.5 L10 17 L19 7" className="check-draw" />
             </svg>
@@ -67,7 +67,7 @@ export function SignedOutPopup({
         {/* Progress bar */}
         <div className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-[var(--surface-2)]">
           <div
-            className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]"
+            className="h-full bg-[var(--primary)]"
             style={{
               animation: `signoutBar ${durationMs}ms linear forwards`,
             }}

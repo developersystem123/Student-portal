@@ -14,6 +14,7 @@ import {
   Select,
   Textarea,
   useToast,
+  Drawer,
 } from "@/components/ui";
 import { MediaCard } from "@/components/MediaCard";
 import { useAdmin, useData } from "@/lib/store";
@@ -129,9 +130,9 @@ export default function AdminCoursesPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total courses", value: stats.total, icon: <Icon.Book size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-          { label: "Free", value: stats.free, icon: <Icon.Sparkles size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-          { label: "Paid", value: stats.paid, icon: <Icon.DollarSign size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-          { label: "Avg price (paid)", value: stats.avgPrice ? `$${stats.avgPrice}` : "—", icon: <Icon.TrendingUp size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+          { label: "Free", value: stats.free, icon: <Icon.Sparkles size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
+          { label: "Paid", value: stats.paid, icon: <Icon.DollarSign size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+          { label: "Avg price (paid)", value: stats.avgPrice ? `$${stats.avgPrice}` : "—", icon: <Icon.TrendingUp size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 !py-3">
@@ -166,8 +167,8 @@ export default function AdminCoursesPage() {
                 <option value="duration">Longest</option>
               </Select>
               <div className="flex rounded-xl border border-[var(--border)] overflow-hidden shrink-0">
-                <button onClick={() => setViewMode("grid")} className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "grid" ? "bg-[var(--primary)] text-white" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`} title="Grid view"><Icon.LayoutGrid size={15} /></button>
-                <button onClick={() => setViewMode("list")} className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "list" ? "bg-[var(--primary)] text-white" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`} title="List view"><Icon.LayoutList size={15} /></button>
+                <button onClick={() => setViewMode("grid")} className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "grid" ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`} title="Grid view"><Icon.LayoutGrid size={15} /></button>
+                <button onClick={() => setViewMode("list")} className={`h-10 w-10 flex items-center justify-center transition ${viewMode === "list" ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "text-[var(--muted)] hover:bg-[var(--surface-2)]"}`} title="List view"><Icon.LayoutList size={15} /></button>
               </div>
             </div>
           </div>
@@ -176,15 +177,15 @@ export default function AdminCoursesPage() {
           <div className="flex flex-wrap gap-1.5 items-center">
             <span className="text-xs text-[var(--muted)] mr-1">Category:</span>
             {["all", ...CATEGORIES].map((cat) => (
-              <button key={cat} onClick={() => setCategoryFilter(cat)} className={`px-3 h-7 rounded-lg text-xs font-medium transition ${categoryFilter === cat ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{cat === "all" ? "All" : cat}</button>
+              <button key={cat} onClick={() => setCategoryFilter(cat)} className={`px-3 h-7 rounded-lg text-xs font-medium transition ${categoryFilter === cat ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{cat === "all" ? "All" : cat}</button>
             ))}
             <span className="text-xs text-[var(--muted)] ml-3 mr-1">Level:</span>
             {["all", ...LEVELS].map((lvl) => (
-              <button key={lvl} onClick={() => setLevelFilter(lvl)} className={`px-3 h-7 rounded-lg text-xs font-medium transition ${levelFilter === lvl ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{lvl === "all" ? "All levels" : lvl}</button>
+              <button key={lvl} onClick={() => setLevelFilter(lvl)} className={`px-3 h-7 rounded-lg text-xs font-medium transition ${levelFilter === lvl ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{lvl === "all" ? "All levels" : lvl}</button>
             ))}
             <span className="text-xs text-[var(--muted)] ml-3 mr-1">Price:</span>
             {(["all", "free", "paid"] as PriceFilter[]).map((p) => (
-              <button key={p} onClick={() => setPriceFilter(p)} className={`px-3 h-7 rounded-lg text-xs font-medium capitalize transition ${priceFilter === p ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{p === "all" ? "All prices" : p}</button>
+              <button key={p} onClick={() => setPriceFilter(p)} className={`px-3 h-7 rounded-lg text-xs font-medium capitalize transition ${priceFilter === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{p === "all" ? "All prices" : p}</button>
             ))}
           </div>
 
@@ -281,7 +282,7 @@ export default function AdminCoursesPage() {
               <p className="text-sm text-[var(--muted)]">Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filtered.length)} of {filtered.length}</p>
               <div className="flex items-center gap-1">
                 <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}><Icon.ChevronLeft size={16} /></Button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1).reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, []).map((p, idx) => p === "…" ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span> : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>)}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1).reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, []).map((p, idx) => p === "…" ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span> : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>)}
                 <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
               </div>
             </div>
@@ -291,56 +292,49 @@ export default function AdminCoursesPage() {
 
       {/* Detail drawer */}
       {detailCourse && (
-        <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setDetailCourse(null)}>
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
-          <div className="relative w-full max-w-sm bg-[var(--surface)] h-full shadow-2xl flex flex-col overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] shrink-0">
-              <p className="font-semibold">Course details</p>
-              <button onClick={() => setDetailCourse(null)} className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface-2)] transition"><Icon.X size={16} /></button>
+        <Drawer open onClose={() => setDetailCourse(null)} title="Course details">
+          <div className="aspect-video shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={detailCourse.thumbnail} alt={detailCourse.title} className="w-full h-full object-cover" />
+          </div>
+          <div className="p-5 space-y-4 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge variant="primary">{detailCourse.category}</Badge>
+              <Badge variant="default">{detailCourse.level}</Badge>
+              {detailCourse.price === 0 ? <Badge variant="success">Free</Badge> : <Badge variant="info">${detailCourse.price}</Badge>}
             </div>
-            <div className="aspect-video shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={detailCourse.thumbnail} alt={detailCourse.title} className="w-full h-full object-cover" />
+            <h2 className="text-lg font-bold leading-snug">{detailCourse.title}</h2>
+            <p className="text-sm text-[var(--muted)] leading-relaxed">{detailCourse.description}</p>
+            <div className="rounded-xl bg-[var(--surface-2)] p-3 space-y-2 text-sm">
+              <DRow label="Instructor" value={detailCourse.instructor} />
+              <DRow label="Chapters" value={String(detailCourse.chapters.length)} />
+              <DRow label="Duration" value={`${Math.round(detailCourse.durationMinutes / 60 * 10) / 10}h`} />
+              <DRow label="Price" value={detailCourse.price === 0 ? "Free" : `$${detailCourse.price}`} />
             </div>
-            <div className="p-5 space-y-4 flex-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant="primary">{detailCourse.category}</Badge>
-                <Badge variant="default">{detailCourse.level}</Badge>
-                {detailCourse.price === 0 ? <Badge variant="success">Free</Badge> : <Badge variant="info">${detailCourse.price}</Badge>}
+            {detailCourse.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {detailCourse.tags.map((tag) => <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--muted)]">{tag}</span>)}
               </div>
-              <h2 className="text-lg font-bold leading-snug">{detailCourse.title}</h2>
-              <p className="text-sm text-[var(--muted)] leading-relaxed">{detailCourse.description}</p>
-              <div className="rounded-xl bg-[var(--surface-2)] p-3 space-y-2 text-sm">
-                <DRow label="Instructor" value={detailCourse.instructor} />
-                <DRow label="Chapters" value={String(detailCourse.chapters.length)} />
-                <DRow label="Duration" value={`${Math.round(detailCourse.durationMinutes / 60 * 10) / 10}h`} />
-                <DRow label="Price" value={detailCourse.price === 0 ? "Free" : `$${detailCourse.price}`} />
+            )}
+            {detailCourse.chapters.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Chapters</p>
+                <ol className="space-y-1">
+                  {detailCourse.chapters.map((ch, i) => (
+                    <li key={ch.id} className="flex items-start gap-2 text-sm">
+                      <span className="h-5 w-5 rounded-md bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">{i + 1}</span>
+                      <span>{ch.title}</span>
+                    </li>
+                  ))}
+                </ol>
               </div>
-              {detailCourse.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {detailCourse.tags.map((tag) => <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-[var(--surface-2)] text-[var(--muted)]">{tag}</span>)}
-                </div>
-              )}
-              {detailCourse.chapters.length > 0 && (
-                <div className="space-y-2">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Chapters</p>
-                  <ol className="space-y-1">
-                    {detailCourse.chapters.map((ch, i) => (
-                      <li key={ch.id} className="flex items-start gap-2 text-sm">
-                        <span className="h-5 w-5 rounded-md bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">{i + 1}</span>
-                        <span>{ch.title}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              )}
-              <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
-                <Button className="w-full" onClick={() => { startEdit(detailCourse); setDetailCourse(null); }}><Icon.FilePen size={15} /> Edit course</Button>
-                <Button className="w-full" variant="ghost" onClick={() => { setConfirmDeleteId(detailCourse.id); setDetailCourse(null); }}><Icon.Trash size={15} /> Delete course</Button>
-              </div>
+            )}
+            <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
+              <Button className="w-full" onClick={() => { startEdit(detailCourse); setDetailCourse(null); }}><Icon.FilePen size={15} /> Edit course</Button>
+              <Button className="w-full text-[var(--danger)]! hover:bg-[var(--danger-soft)]!" variant="ghost" onClick={() => { setConfirmDeleteId(detailCourse.id); setDetailCourse(null); }}><Icon.Trash size={15} /> Delete course</Button>
             </div>
           </div>
-        </div>
+        </Drawer>
       )}
 
       <CourseFormModal open={mode !== null} mode={mode} course={editing} onClose={() => setMode(null)} />
@@ -423,7 +417,7 @@ function CourseFormModal({ open, mode, course, onClose }: { open: boolean; mode:
           <div><Label htmlFor="c-price">Price (USD)</Label><Input id="c-price" type="number" min="0" step="1" value={form.price} onChange={(e) => update("price", e.target.value)} /></div>
           <div><Label htmlFor="c-dur">Duration (min)</Label><Input id="c-dur" type="number" min="1" step="1" value={form.durationMinutes} onChange={(e) => update("durationMinutes", e.target.value)} /></div>
         </div>
-        {err && <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{err}</p>}
+        {err && <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">{err}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="outline" type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit">{mode === "edit" ? "Save changes" : "Create course"}</Button>

@@ -310,9 +310,9 @@ export default function AdminReviewsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Total reviews", value: counts.all, icon: <Icon.MessageSquare size={16} />, tint: "bg-primary-soft text-primary" },
-          { label: "Avg rating", value: avgRating || "—", icon: <Icon.Star size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-          { label: "Hidden", value: counts.hidden, icon: <Icon.EyeOff size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-          { label: "Low-rated (≤2★)", value: counts.low, icon: <Icon.AlertCircle size={16} />, tint: "bg-rose-500/10 text-rose-500" },
+          { label: "Avg rating", value: avgRating || "—", icon: <Icon.Star size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
+          { label: "Hidden", value: counts.hidden, icon: <Icon.EyeOff size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+          { label: "Low-rated (≤2★)", value: counts.low, icon: <Icon.AlertCircle size={16} />, tint: "bg-[var(--danger-soft)] text-[var(--danger)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 py-3!">
@@ -355,7 +355,7 @@ export default function AdminReviewsPage() {
           <button
             key={o.key}
             onClick={() => setSortKey(o.key)}
-            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
           >
             {o.label}
           </button>
@@ -365,7 +365,7 @@ export default function AdminReviewsPage() {
           <button
             key={o.key}
             onClick={() => setRatingFilter(o.key)}
-            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${ratingFilter === o.key ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${ratingFilter === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
           >
             {o.label}
           </button>
@@ -437,7 +437,7 @@ export default function AdminReviewsPage() {
           </div>
 
           {paginated.map((r) => (
-            <Card key={r.id} className={r.hidden ? "opacity-70" : ""}>
+            <Card key={r.id} className={r.hidden ? "border-dashed border-[var(--border-strong)]! bg-[var(--surface-2)]!" : ""}>
               <CardBody>
                 <div className="flex items-start gap-3">
                   <div className="pt-0.5 shrink-0">
@@ -529,7 +529,7 @@ export default function AdminReviewsPage() {
                         onClick={() => setPage(p as number)}
                         className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${
                           safePage === p
-                            ? "bg-[var(--primary)] text-white"
+                            ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                             : "border border-border text-foreground hover:bg-surface-2"
                         }`}
                       >
@@ -604,7 +604,7 @@ function Stars({ rating }: { rating: number }) {
     <span className="inline-flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((n) =>
         n <= rating ? (
-          <Icon.StarFill key={n} size={14} className="text-amber-500" />
+          <Icon.StarFill key={n} size={14} className="text-[var(--amber)]" />
         ) : (
           <Icon.Star key={n} size={14} className="text-[var(--muted-2)]" />
         ),

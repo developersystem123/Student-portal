@@ -43,7 +43,7 @@ export function VideoPlayer({ title, durationSeconds = 600 }: { title: string; d
       className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black group select-none"
     >
       {/* Fake video background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-900 via-emerald-900 to-teal-800">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0c121d] via-[#111827] to-[#14532d]">
         <div className="absolute inset-0 opacity-20 mix-blend-overlay" style={{
           backgroundImage: "radial-gradient(circle at 20% 20%, rgba(255,255,255,.4) 0px, transparent 40%), radial-gradient(circle at 80% 80%, rgba(255,255,255,.3) 0px, transparent 40%)",
         }} />
@@ -55,7 +55,7 @@ export function VideoPlayer({ title, durationSeconds = 600 }: { title: string; d
         {!playing && (
           <button
             onClick={() => setPlaying(true)}
-            className="mt-6 h-16 w-16 rounded-full bg-white/95 text-[var(--primary)] flex items-center justify-center shadow-lg hover:scale-105 transition"
+            className="mt-6 h-16 w-16 rounded-full bg-white/95 text-[#15803d] flex items-center justify-center shadow-lg hover:scale-105 transition"
           >
             <Icon.Play size={28} />
           </button>
@@ -112,7 +112,7 @@ export function VideoPlayer({ title, durationSeconds = 600 }: { title: string; d
       <div
         className={cn(
           "absolute top-3 right-3 h-2 w-2 rounded-full",
-          playing ? "bg-red-500 pulse-dot" : "bg-white/40",
+          playing ? "bg-[var(--danger)] pulse-dot" : "bg-white/40",
         )}
       />
     </div>

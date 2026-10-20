@@ -196,7 +196,7 @@ export default function TeacherReviewsPage() {
                     <li key={star} className="flex items-center gap-3 text-sm">
                       <span className="w-10 text-[var(--muted)]">{star}★</span>
                       <div className="flex-1 h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-amber-400 to-orange-500" style={{ width: `${pct}%` }} />
+                        <div className="h-full bg-[var(--amber)]" style={{ width: `${pct}%` }} />
                       </div>
                       <span className="w-12 text-right text-xs text-[var(--muted)] tabular-nums">{count}</span>
                     </li>
@@ -267,7 +267,7 @@ export default function TeacherReviewsPage() {
           ) : (
             <ul className="space-y-3">
               {filtered.map((r) => (
-                <li key={r.id} className={`rounded-xl border border-[var(--border)] p-4 ${r.hidden ? "opacity-60" : ""}`}>
+                <li key={r.id} className={`rounded-xl border p-4 ${r.hidden ? "border-dashed border-[var(--border-strong)] bg-[var(--surface-2)]" : "border-[var(--border)]"}`}>
                   <div className="flex items-start gap-3">
                     <Avatar name={r.author.name} src={r.author.avatar} size={40} />
                     <div className="flex-1 min-w-0">
@@ -344,7 +344,7 @@ function Stars({ value, className }: { value: number; className?: string }) {
   return (
     <span className={`inline-flex items-center gap-0.5 ${className ?? ""}`}>
       {Array.from({ length: 5 }, (_, i) => (
-        <Icon.StarFill key={i} size={14} className={i < v ? "text-amber-500" : "text-[var(--surface-2)]"} />
+        <Icon.StarFill key={i} size={14} className={i < v ? "text-[var(--amber)]" : "text-[var(--surface-2)]"} />
       ))}
     </span>
   );

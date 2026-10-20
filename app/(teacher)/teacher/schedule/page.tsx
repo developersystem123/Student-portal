@@ -33,19 +33,19 @@ type ScheduleEvent = {
 };
 
 const TYPE_META: Record<EventType, { label: string; icon: React.ReactNode; tint: string }> = {
-  class: { label: "Class", icon: <Icon.Video size={14} />, tint: "from-green-600 to-emerald-500" },
+  class: { label: "Class", icon: <Icon.Video size={14} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
   meeting: {
     label: "Office hours",
     icon: <Icon.User size={14} />,
-    tint: "from-teal-500 to-green-500",
+    tint: "bg-[var(--info-soft)] text-[var(--info)]",
   },
   assignment: {
     label: "Deadline",
     icon: <Icon.AlertCircle size={14} />,
-    tint: "from-rose-500 to-red-500",
+    tint: "bg-[var(--danger-soft)] text-[var(--danger)]",
   },
-  exam: { label: "Exam", icon: <Icon.FilePen size={14} />, tint: "from-amber-500 to-orange-500" },
-  event: { label: "Event", icon: <Icon.Calendar size={14} />, tint: "from-emerald-500 to-teal-500" },
+  exam: { label: "Exam", icon: <Icon.FilePen size={14} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
+  event: { label: "Event", icon: <Icon.Calendar size={14} />, tint: "bg-[var(--surface-2)] text-[var(--heading)]" },
 };
 
 type FormState = {
@@ -213,7 +213,7 @@ export default function TeacherSchedulePage() {
                 onClick={() => setView(v)}
                 className={`px-3 h-9 rounded-lg text-sm font-medium transition ${
                   view === v
-                    ? "bg-[var(--primary)] text-white"
+                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                     : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"
                 }`}
               >
@@ -255,9 +255,9 @@ export default function TeacherSchedulePage() {
                     }`}
                   >
                     <div
-                      className={`h-12 w-12 rounded-xl flex flex-col items-center justify-center text-white bg-gradient-to-br ${meta.tint} shrink-0`}
+                      className={`h-12 w-12 rounded-xl flex flex-col items-center justify-center ${meta.tint} shrink-0`}
                     >
-                      <span className="text-[10px] uppercase font-semibold opacity-90">
+                      <span className="text-[10px] uppercase font-semibold">
                         {start.toLocaleDateString(undefined, { month: "short" })}
                       </span>
                       <span className="text-lg font-bold leading-none">{start.getDate()}</span>
@@ -265,7 +265,7 @@ export default function TeacherSchedulePage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         {isToday && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--primary)] text-white font-semibold uppercase tracking-wider">Today</span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold uppercase tracking-wider">Today</span>
                         )}
                         <p className="font-medium truncate">{e.title}</p>
                         <Badge variant="default">
@@ -278,7 +278,7 @@ export default function TeacherSchedulePage() {
                         {e.location || "TBD"}
                       </p>
                     </div>
-                    <span className={`text-xs font-semibold shrink-0 ${cd.urgent ? "text-amber-600 dark:text-amber-400" : "text-[var(--muted-2)]"}`}>
+                    <span className={`text-xs font-semibold shrink-0 ${cd.urgent ? "text-[var(--amber)]" : "text-[var(--muted-2)]"}`}>
                       {cd.label}
                     </span>
                     <Button variant="ghost" size="sm" onClick={() => openEdit(e)}>

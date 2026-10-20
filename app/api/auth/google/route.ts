@@ -3,12 +3,14 @@ import { prisma } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 import { setSession } from "@/lib/session";
 import { errorResponse } from "@/lib/auth-server";
+import { crossOriginResponse, isSameOrigin } from "@/lib/sameOrigin";
 
 const GOOGLE_USER_ID = "u-google";
 const GOOGLE_EMAIL = "googleuser@gmail.com";
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
+    if (!isSameOrigin(request)) return crossOriginResponse();
     let user = await prisma.user.findUnique({ where: { id: GOOGLE_USER_ID } });
     if (!user) {
       user = await prisma.user.create({
@@ -24,7 +26,7 @@ export async function POST() {
         },
       });
     }
-    await setSession(user.id);
+    await setSession(user.id, user.password);
     const { password: _p, ...safe } = user;
     return Response.json({ user: safe });
   } catch (err) {

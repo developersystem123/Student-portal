@@ -11,6 +11,7 @@ import {
   type Notification,
   type PhysicalApplication,
 } from "./mockData";
+import { THEME_STORAGE_KEY, isTheme, resolveTheme, saveTheme, type Theme } from "./theme";
 
 export type Role = "Student" | "Instructor" | "Admin";
 
@@ -32,7 +33,11 @@ export type User = {
 type Auth = {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<{ ok: boolean; error?: string }>;
+  login: (
+    email: string,
+    password: string,
+    remember?: boolean,
+  ) => Promise<{ ok: boolean; error?: string }>;
   loginWithGoogle: () => Promise<void>;
   register: (data: {
     name: string;
@@ -176,8 +181,13 @@ type Teacher = {
   stats: () => { courses: number; students: number; completions: number };
 };
 
-type Theme = "light" | "dark";
-type ThemeCtx = { theme: Theme; toggle: () => void; setTheme: (t: Theme) => void };
+type ThemeCtx = {
+  theme: Theme;
+  /** False until the saved choice has been read; until then `theme` is only the "light" default. */
+  ready: boolean;
+  toggle: () => void;
+  setTheme: (t: Theme) => void;
+};
 
 const AuthContext = React.createContext<Auth | null>(null);
 const DataContext = React.createContext<Data | null>(null);
@@ -185,7 +195,6 @@ const AdminContext = React.createContext<Admin | null>(null);
 const TeacherContext = React.createContext<Teacher | null>(null);
 const ThemeContext = React.createContext<ThemeCtx | null>(null);
 
-const LS_THEME = "eduportal:theme";
 const SS_USER_KEY = "eduportal:user";
 
 function readCachedUser(): User | null {
@@ -236,31 +245,34 @@ async function tryApi<T = unknown>(path: string, init?: RequestInit): Promise<Ap
 
 export function Providers({ children }: { children: React.ReactNode }) {
   // ---------- Theme ----------
-  const [theme, setTheme] = React.useState<Theme>("light");
+  // null until the saved choice is read, so the sync below never paints the default over the theme the
+  // root layout's boot script already applied before first paint.
+  const [savedTheme, setTheme] = React.useState<Theme | null>(null);
+  const theme: Theme = savedTheme ?? "light";
   React.useEffect(() => {
-    try {
-      const stored = localStorage.getItem(LS_THEME) as Theme | null;
-      const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
-      setTheme(stored ?? (prefersDark ? "dark" : "light"));
-    } catch {
-      // ignore
-    }
+    setTheme(resolveTheme());
+    // A switch in another tab (site or portal) arrives as a storage event.
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === THEME_STORAGE_KEY && isTheme(event.newValue)) setTheme(event.newValue);
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
   React.useEffect(() => {
+    if (savedTheme === null) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
-    try {
-      localStorage.setItem(LS_THEME, theme);
-    } catch {
-      // ignore
-    }
-  }, [theme]);
+    document.documentElement.setAttribute("data-boot-theme", theme);
+    // Shared with the public site (lib/theme.ts), so both sides open in the same theme.
+    saveTheme(theme);
+  }, [savedTheme, theme]);
   const themeCtx: ThemeCtx = React.useMemo(
     () => ({
       theme,
+      ready: savedTheme !== null,
       toggle: () => setTheme((t) => (t === "dark" ? "light" : "dark")),
       setTheme,
     }),
-    [theme],
+    [theme, savedTheme],
   );
 
   // ---------- Auth ----------
@@ -292,10 +304,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
     () => ({
       user,
       loading: authLoading,
-      login: async (email, password) => {
+      login: async (email, password, remember) => {
         const res = await tryApi<{ user: User }>("/api/auth/login", {
           method: "POST",
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password, remember }),
         });
         if (!res.ok) return { ok: false, error: res.error };
         writeCachedUser(res.data.user);

@@ -1,0 +1,170 @@
+/* EduPortal company pages — site about, why-choose, counter, pricing, blog and testimonial blocks. */
+.edu-company-section { padding: clamp(64px, 8vw, 110px) 0; }
+.edu-company-section p { overflow-wrap: anywhere; }
+.edu-company-section .edu-company-heading { margin-bottom: 30px; }
+.edu-company-heading .section-title-two__title { max-width: 900px; }
+.edu-company-heading.text-center .section-title-two__title { margin-inline: auto; }
+.edu-company-heading .section-title-two__title span { color: var(--site-base); }
+.edu-company-intro { max-width: 720px; margin: -10px auto 35px; text-align: center; }
+.edu-company-grid { row-gap: 24px; }
+.edu-company-align { align-items: center; row-gap: 35px; }
+.edu-company-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.edu-company-actions .thm-btn { white-space: normal; text-align: center; }
+.edu-company-btn-outline { background: transparent; color: var(--site-base); border: 1px solid var(--site-base); }
+.edu-company-btn-outline:hover { color: #fff; background-color: var(--site-base); }
+.edu-company-soft { background: #f0fdf4; }
+.edu-company-card { height: 100%; padding: 27px; background: #fff; border: 1px solid var(--site-bdr-color); border-radius: 18px; display: flex; align-items: flex-start; gap: 16px; }
+.edu-company-card__icon { flex: 0 0 48px; height: 48px; width: 48px; background: #dcfce7; color: var(--site-base); border-radius: 12px; display: grid; place-items: center; }
+.edu-company-card .why-choose-three__feature-title { font-size: 20px; line-height: 1.3; margin-bottom: 9px; }
+.edu-company-card .why-choose-three__feature-text { margin: 0; }
+.edu-company-stats .edu-company-stats__list { flex-wrap: nowrap; }
+.edu-company-stats .edu-company-stats__list li { flex: 1 1 25%; max-width: none; padding: 40px 12px; }
+.edu-company-stats .counter-one__count strong { color: #fff; font: 600 clamp(32px, 4vw, 65px)/1.1 var(--site-font); }
+.edu-company-stats .counter-one__list li p { font-size: 16px; line-height: 1.4; }
+.edu-company-about .about-three__right { margin-left: 0; }
+.edu-company-about .about-three__img-one img, .edu-company-about .about-three__img-two img { object-fit: cover; }
+/* The graduate artwork sits bottom-left so the overlapping learning-path card never covers the person. */
+.edu-company-about .about-three__img-one img { aspect-ratio: 681 / 820; padding-right: 26%; object-fit: contain; object-position: left bottom; }
+.edu-company-mission { padding: 20px 24px; border-left: 4px solid var(--site-base); background: #f0fdf4; border-radius: 0 14px 14px 0; }
+.edu-company-mission h3 { color: var(--site-base); font-size: 17px; }
+.edu-company-mission h4 { font-size: 23px; margin: 8px 0; }
+.edu-company-mission p + p { margin-top: 12px; }
+.edu-company-philosophy .edu-company-quote { padding: 30px; border-radius: 18px; background: #f0fdf4; margin: 0; }
+.edu-company-quote p { font: italic 500 clamp(23px, 3vw, 34px)/1.4 var(--site-font-two); color: var(--site-black); }
+.edu-company-quote footer { margin-top: 15px; color: var(--site-base); }
+.edu-company-team .edu-company-team__card { height: 100%; text-align: center; padding: 35px 16px; background: #fff; }
+.edu-company-team .edu-company-team__img { display: grid; place-items: center; width: 104px; height: 104px; margin: auto; border-radius: 50%; background: var(--edu-gradient); color: #fff; font-size: 32px; font-weight: 700; }
+.edu-company-team .edu-company-team__content { position: static; padding: 15px 0 0; }
+.edu-company-team .team-one__title { font-size: 21px; color: var(--site-black); }
+.edu-company-cta { padding-top: 20px; }
+.edu-company-cta .edu-company-cta__inner { display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: 24px; background: var(--edu-gradient); padding: clamp(28px, 5vw, 60px); color: #fff; }
+.edu-company-cta h2 { font-size: clamp(27px, 3vw, 40px); color: #fff; line-height: 1.2; }
+.edu-company-cta p { color: #fff; max-width: 610px; margin-top: 10px; }
+.edu-company-cta .edu-company-actions { flex-shrink: 0; margin: 0; }
+.edu-company-cta .thm-btn { background: #fff; color: #15803d; }
+.edu-company-cta .edu-company-btn-outline { background: transparent; border: 1px solid #fff; color: #fff; }
+.edu-company-lead .container > p { max-width: 750px; font-size: 18px; line-height: 1.7; }
+.edu-company-lead .edu-company-intro { max-width: 720px; margin: 0 auto; text-align: center; }
+.edu-company-business-hero .edu-company-trusted { margin-top: 28px; font-weight: 600; text-transform: uppercase; font-size: 14px; letter-spacing: .08em; }
+.edu-company-dashboard { border: 1px solid var(--site-bdr-color); border-radius: 20px; padding: 28px; background: #fff; }
+.edu-company-dashboard__head, .edu-company-dashboard__label { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.edu-company-dashboard__head h3 { font-size: 21px; }
+.edu-company-dashboard small { display: block; color: var(--site-gray); }
+.edu-company-dashboard__head > span, .edu-company-role__team { color: #15803d; background: #dcfce7; border-radius: 20px; font-size: 14px; padding: 4px 12px; }
+.edu-company-dashboard__metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 22px 0; }
+.edu-company-dashboard__metrics > div { padding: 14px; border: 1px solid var(--site-bdr-color); border-radius: 12px; }
+.edu-company-dashboard__metrics strong { display: block; font-size: 23px; color: var(--site-black); }
+.edu-company-dashboard__paths > div + div { margin-top: 18px; }
+.edu-company-dashboard__label { font-size: 14px; color: var(--site-black); }
+.edu-company-dashboard__track { height: 8px; border-radius: 8px; background: #dcfce7; margin-top: 7px; overflow: hidden; }
+.edu-company-dashboard__track span { display: block; height: 100%; border-radius: inherit; background: var(--site-base); }
+.edu-company-compare { background: #f0fdf4; }
+.edu-company-table-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--site-bdr-color); border-radius: 18px; }
+.edu-company-table-wrap:focus-visible { outline: 2px solid #16A34A; outline-offset: 3px; }
+.edu-company-table { width: 100%; min-width: 540px; border-collapse: collapse; }
+.edu-company-table th, .edu-company-table td { padding: 14px 22px; border-bottom: 1px solid var(--site-bdr-color); text-align: left; }
+.edu-company-table th { color: #1f2937; }
+.edu-company-table th:last-child, .edu-company-table td:last-child { color: #15803d; font-weight: 600; }
+.edu-company-table thead { background: #dcfce7; }
+.edu-company-table tbody tr:last-child > * { border-bottom: 0; }
+.edu-company-business-stories .edu-company-story { margin-bottom: 0; }
+.edu-company-values { padding: 0; margin: 0; list-style: none; display: grid; gap: 15px; }
+.edu-company-values__number { color: var(--site-base); font-size: 24px; font-weight: 700; }
+.edu-company-roles { background: #f0fdf4; }
+.edu-company-roles__note { margin: -15px 0 25px; }
+.edu-company-roles__note a, .edu-company-text-link, .edu-company-facts__link { color: var(--site-base); text-decoration: underline; text-underline-offset: 3px; }
+.edu-company-role-list { display: grid; gap: 14px; }
+.edu-company-role { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 25px; border-radius: 16px; background: #fff; }
+.edu-company-role__info { min-width: 0; }
+.edu-company-role .courses-one__title { margin: 10px 0; font-size: 23px; color: var(--site-black); }
+.edu-company-role__meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 14px; }
+.edu-company-role__meta span { display: flex; align-items: center; gap: 6px; }
+.edu-company-facts { background: var(--site-base); }
+.edu-company-facts .section-title-two__title, .edu-company-facts .section-title-two__tagline, .edu-company-facts__link { color: #fff; }
+.edu-company-facts__link { display: inline-block; margin: -10px 0 25px; text-decoration: underline; }
+.edu-company-fact { height: 100%; background: #fff; border-radius: 14px; padding: 22px; }
+.edu-company-fact span { display: block; color: #6b7280; text-transform: uppercase; font-size: 12px; letter-spacing: .08em; }
+.edu-company-fact strong { display: block; font-size: 22px; color: #374151; margin-top: 7px; }
+.edu-company-press-blog { padding: clamp(64px, 8vw, 110px) 0; }
+.edu-company-releases { row-gap: 24px; }
+.edu-company-release { display: flex; flex-direction: column; height: 100%; }
+.edu-company-release__img { overflow: hidden; border-radius: 20px; }
+.edu-company-release__img img { display: block; width: 100%; aspect-ratio: 1.5; object-fit: cover; }
+.edu-company-release__body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding-top: 20px; }
+.edu-company-release__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 12px; font-size: 14px; color: #6b7280; }
+.edu-company-release__tag { padding: 3px 10px; border-radius: 100px; background: #dcfce7; color: #15803d; font-weight: 500; }
+.edu-company-release__title { margin: 0 0 10px; font-size: 20px; line-height: 1.35; font-weight: 600; color: var(--site-black); }
+.edu-company-release__text { margin: 0 0 16px; font-size: 16px; line-height: 1.65; }
+/* The link sits on the bottom edge of every card in a row, however long the excerpt. */
+.edu-company-release .edu-company-text-link { margin-top: auto; }
+.edu-company-release--featured { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-bottom: 24px; border-bottom: 1px solid var(--site-bdr-color); }
+.edu-company-release--featured .edu-company-release__body { padding-top: 0; }
+.edu-company-release--featured .edu-company-release__title { font-size: clamp(24px, 2.4vw, 32px); line-height: 1.2; letter-spacing: -0.01em; }
+.edu-company-release--featured .edu-company-release__text { font-size: 17px; }
+.edu-company-release--featured .edu-company-text-link { margin-top: 0; }
+@media (max-width: 991px) { .edu-company-release--featured { grid-template-columns: 1fr; gap: 20px; } }
+/* Coverage is a single list of rows: outlet, headline, date. */
+.edu-company-mentions { margin: 0; border: 1px solid var(--site-bdr-color); border-radius: 16px; background: #fff; overflow: hidden; }
+.edu-company-mention { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; align-items: baseline; gap: 24px; padding: 20px 24px; }
+.edu-company-mention + .edu-company-mention { border-top: 1px solid var(--site-bdr-color); }
+.edu-company-mention__outlet { font-size: 15px; font-weight: 600; color: #15803d; }
+.edu-company-mention__headline { margin: 0; font-size: 18px; line-height: 1.45; font-weight: 500; color: var(--site-black); }
+.edu-company-mention time { font-size: 14px; color: #6b7280; white-space: nowrap; }
+@media (max-width: 767px) { .edu-company-mention { grid-template-columns: 1fr auto; gap: 6px 16px; padding: 16px 18px; } .edu-company-mention__headline { grid-column: 1 / -1; grid-row: 2; font-size: 17px; } }
+.edu-company-brand-preview { min-height: 300px; border-radius: 20px; background: var(--edu-gradient); display: flex; align-items: center; justify-content: center; flex-direction: column; color: #fff; }
+.edu-company-brand-preview strong { font-size: 34px; margin-top: 12px; }
+.edu-company-brand-preview span { text-transform: uppercase; letter-spacing: .15em; font-size: 12px; }
+.edu-company-featured__image { border-radius: 20px; overflow: hidden; }
+.edu-company-featured__image img { width: 100%; height: 370px; object-fit: cover; }
+.edu-company-featured__quote { background: #f0fdf4; }
+.edu-company-featured__quote .testimonial-three__text { font-size: 19px; line-height: 1.7; }
+.edu-company-avatar { width: 50px; height: 50px; flex-shrink: 0; border-radius: 50%; background: #dcfce7; display: grid; place-items: center; color: #15803d; font-weight: 700; }
+.edu-company-story { height: 100%; background: #fff; }
+.edu-company-testimonials .row { row-gap: 24px; }
+.edu-company-story .testimonial-three__text { overflow-wrap: anywhere; }
+.edu-company-story .testimonial-three__client-sub-title, .edu-company-featured__quote .testimonial-three__client-sub-title { overflow-wrap: anywhere; }
+:where(.site-dark) .edu-company-soft, :where(.site-dark) .edu-company-compare, :where(.site-dark) .edu-company-roles { background: #172132; }
+:where(.site-dark) .edu-company-card, :where(.site-dark) .edu-company-team__card, :where(.site-dark) .edu-company-dashboard, :where(.site-dark) .edu-company-dashboard__metrics > div, :where(.site-dark) .edu-company-table-wrap, :where(.site-dark) .edu-company-role, :where(.site-dark) .edu-company-mention, :where(.site-dark) .edu-company-featured__quote, :where(.site-dark) .edu-company-story, :where(.site-dark) .edu-company-philosophy .edu-company-quote, :where(.site-dark) .edu-company-mission { background: #1f2937; border-color: #374151; }
+:where(.site-dark) .edu-company-heading .section-title-two__title, :where(.site-dark) .edu-company-card .why-choose-three__feature-title, :where(.site-dark) .edu-company-quote p, :where(.site-dark) .edu-company-team .team-one__title, :where(.site-dark) .edu-company-dashboard h3, :where(.site-dark) .edu-company-dashboard__metrics strong, :where(.site-dark) .edu-company-dashboard__label, :where(.site-dark) .edu-company-role .courses-one__title, :where(.site-dark) .edu-company-release .blog-two__title, :where(.site-dark) .edu-company-mention .blog-two__title, :where(.site-dark) .edu-company-mission h4, :where(.site-dark) .edu-company-table th { color: #e5e7eb; }
+:where(.site-dark) .edu-company-heading .section-title-two__tagline, :where(.site-dark) .edu-company-heading .section-title-two__title span { color: #4ade80; }
+:where(.site-dark) .edu-company-table thead, :where(.site-dark) .edu-company-dashboard__track { background: #374151; }
+:where(.site-dark) .edu-company-table th, :where(.site-dark) .edu-company-table td { border-color: #374151; }
+:where(.site-dark) .edu-company-table th:last-child, :where(.site-dark) .edu-company-table td:last-child, :where(.site-dark) .edu-company-text-link, :where(.site-dark) .edu-company-roles__note a { color: #4ade80; }
+:where(.site-dark) .edu-company-btn-outline { color: #4ade80; border-color: #4ade80; }
+:where(.site-dark) .edu-company-cta .edu-company-btn-outline { color: #fff; border-color: #fff; }
+:where(.site-dark) .edu-company-featured__quote .testimonial-three__client-name, :where(.site-dark) .edu-company-story .testimonial-three__client-name { color: #e5e7eb; }
+/* Template inner pages hard-code light gradients; replace the entire backgrounds in dark mode. */
+:where(.site-dark) .about-three.edu-company-about,
+:where(.site-dark) .about-three.edu-company-business-hero,
+:where(.site-dark) .about-three.edu-company-lead,
+:where(.site-dark) .about-three.edu-company-section,
+:where(.site-dark) .testimonial-two.edu-company-section { background: #111827; }
+:where(.site-dark) .why-choose-three.edu-company-section { background: #111827; }
+:where(.site-dark) .why-choose-three.edu-company-soft,
+:where(.site-dark) .pricing-one.edu-company-compare,
+:where(.site-dark) .courses-one.edu-company-roles { background: #172132; }
+:where(.site-dark) .edu-company-team .edu-company-team__card,
+:where(.site-dark) .edu-company-philosophy .edu-company-quote,
+:where(.site-dark) .edu-company-about .edu-company-mission,
+:where(.site-dark) .edu-company-business-hero .edu-company-dashboard,
+:where(.site-dark) .edu-company-business-hero .edu-company-dashboard__metrics > div,
+:where(.site-dark) .edu-company-featured__quote { background: #1f2937; border-color: #374151; }
+:where(.site-dark) .edu-company-cta h2,
+:where(.site-dark) .edu-company-cta p,
+:where(.site-dark) .edu-company-facts .section-title-two__title,
+:where(.site-dark) .edu-company-facts .section-title-two__tagline { color: #fff; }
+:where(.site-dark) .edu-company-team .team-one__title,
+:where(.site-dark) .edu-company-about .edu-company-mission h4,
+:where(.site-dark) .edu-company-philosophy .edu-company-quote p { color: #e5e7eb; }
+:where(.site-dark) .edu-company-facts .edu-company-fact strong { color: #374151; }
+:where(.site-dark) .edu-company-facts .edu-company-fact span { color: #6b7280; }
+@media (max-width: 1199px) { .edu-company-about .about-three__right { margin-top: 30px; } .edu-company-cta .edu-company-cta__inner { flex-direction: column; align-items: flex-start; } }
+@media (max-width: 767px) { .edu-company-about .about-three__img-one img { padding-right: 0; } .edu-company-stats .edu-company-stats__list { flex-wrap: wrap; } .edu-company-stats .edu-company-stats__list li { flex: 0 0 50%; padding: 25px 8px; } .edu-company-role { align-items: flex-start; flex-direction: column; } .edu-company-dashboard { padding: 18px; } .edu-company-cta .edu-company-actions { width: 100%; } .edu-company-card { padding: 20px; } .edu-company-featured__image img { height: 260px; } }
+@media (max-width: 430px) { .edu-company-actions .thm-btn { width: 100%; justify-content: center; } .edu-company-dashboard__metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } .edu-company-dashboard__metrics > div { padding: 8px; } .edu-company-dashboard__metrics strong { font-size: 18px; } .edu-company-stats .counter-one__list li p { font-size: 14px; } .edu-company-card { flex-direction: column; } }
+:where(.site-dark) .edu-company-mentions { background: #1F2937; border-color: #374151; }
+:where(.site-dark) .edu-company-mention { background: transparent; }
+:where(.site-dark) .edu-company-mention + .edu-company-mention, :where(.site-dark) .edu-company-release--featured { border-color: #374151; }
+:where(.site-dark) .edu-company-release__title, :where(.site-dark) .edu-company-mention__headline { color: #E5E7EB; }
+:where(.site-dark) .edu-company-release__meta, :where(.site-dark) .edu-company-mention time { color: #9CA3AF; }
+:where(.site-dark) .edu-company-release__tag { background: rgba(74, 222, 128, .12); color: #4ADE80; }
+:where(.site-dark) .edu-company-mention__outlet { color: #4ADE80; }

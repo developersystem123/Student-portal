@@ -1,0 +1,256 @@
+/*
+ * Sign in / create account — the template's login.html and sign-up.html (module-css/shop.css)
+ * with what the portal's real forms need: labels, password reveal, inline errors, role and
+ * qualification selects, a strength meter and the demo accounts.
+ */
+
+/* A focused layout: no page hero and breadcrumb above the form (that repeated the card's own title
+   and pushed the form below the fold) — the card's heading is the page h1, close under the header,
+   on a faint mint wash that fades into the page. The site header is absolutely positioned over the
+   top of the page (150px tall, 90px below 768px), so the top padding includes it. */
+.edu-auth.edu-auth { padding: calc(150px + 56px) 0 104px; background: linear-gradient(180deg, #F0FDF4 0, rgba(240, 253, 244, 0) 520px), var(--site-white); }
+.edu-auth--wide .container { max-width: 760px; }
+
+.edu-auth .inner-title { padding-bottom: 32px; }
+.edu-auth .inner-title h1 { margin: 0; font-size: 44px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; text-transform: none; color: var(--site-black); }
+.edu-auth .inner-title h1 span { color: #15803D; }
+.edu-auth .inner-title p { margin: 14px 0 0; font-size: 17px; color: var(--site-gray); }
+
+.edu-auth__badge {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;
+  padding: 6px 14px; border-radius: 999px;
+  background: rgba(var(--site-base-rgb), .1); color: #166534;
+  font-size: 14px; font-weight: 600; line-height: 1.4;
+}
+
+.edu-auth form { border-radius: 20px; border: 1px solid rgba(var(--site-bdr-color-rgb), .7); padding: 48px 48px 40px; }
+
+/* Labels and the row that can carry "Forgot password?". */
+.edu-auth__label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.edu-auth__label { display: block; margin: 0; font-size: 15px; font-weight: 500; line-height: 1.4; color: var(--site-black); }
+.edu-auth__forgot { font-size: 14px; font-weight: 500; color: #15803D; }
+.edu-auth__forgot:hover { color: var(--site-base); text-decoration: underline; }
+
+/* The template only styles text and email inputs — give password, tel and selects the same field. */
+.edu-auth form input:is([type="text"], [type="email"], [type="password"], [type="tel"]),
+.edu-auth form select {
+  position: relative; display: block; width: 100%; height: 56px;
+  padding: 0 20px; border-radius: 10px;
+  border: 1px solid rgba(var(--site-bdr-color-rgb), .9);
+  background-color: rgba(var(--site-bdr-color-rgb), .25);
+  color: var(--site-black); font-family: var(--site-font); font-size: 16px;
+  outline: none; transition: border-color 180ms ease-out, background-color 180ms ease-out, box-shadow 180ms ease-out;
+}
+.edu-auth form input::placeholder { color: var(--site-gray); opacity: .8; }
+.edu-auth form input:is([type="text"], [type="email"], [type="password"], [type="tel"]):focus,
+.edu-auth form select:focus {
+  border-color: var(--site-base); background-color: var(--site-white);
+  box-shadow: 0 0 0 4px rgba(var(--site-base-rgb), .15);
+}
+.edu-auth form [aria-invalid="true"] { border-color: #B91C1C !important; }
+.edu-auth form [aria-invalid="true"]:focus { box-shadow: 0 0 0 4px rgba(185, 28, 28, .12); }
+
+.edu-auth form .edu-auth__select select { appearance: none; padding-right: 48px; text-overflow: ellipsis; cursor: pointer; }
+.edu-auth__select::after {
+  content: ""; position: absolute; right: 22px; top: 50%; width: 9px; height: 9px; margin-top: -7px;
+  border-right: 2px solid var(--site-gray); border-bottom: 2px solid var(--site-gray);
+  transform: rotate(45deg); pointer-events: none;
+}
+
+/* Password reveal and the confirm-match tick. */
+.edu-auth__password input { padding-right: 56px !important; }
+.edu-auth__password:has(.edu-auth__match) input { padding-right: 88px !important; }
+.edu-auth__reveal {
+  position: absolute; top: 50%; right: 8px; transform: translateY(-50%);
+  width: 40px; height: 40px; display: grid; place-items: center;
+  border: 0; border-radius: 8px; background: transparent; color: var(--site-gray);
+  transition: color 150ms ease-out, background-color 150ms ease-out;
+}
+.edu-auth__reveal:hover { color: var(--site-black); background: rgba(var(--site-bdr-color-rgb), .45); }
+.edu-auth__match { position: absolute; top: 50%; right: 52px; transform: translateY(-50%); font-size: 15px; line-height: 1; }
+.edu-auth__match--match { color: var(--edu-text-green); }
+.edu-auth__match--mismatch { color: #B91C1C; }
+
+.edu-auth .edu-field-error { margin-top: 6px; }
+
+/* Password strength — four segments, coloured by score. */
+.edu-auth__strength { margin-top: 10px; }
+.edu-auth__strength-bars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.edu-auth__strength-bars span { height: 4px; border-radius: 999px; background: rgba(var(--site-bdr-color-rgb), .7); transition: background-color 200ms ease-out; }
+.edu-auth__strength p { margin: 6px 0 0; font-size: 13px; line-height: 1.4; color: var(--site-gray); }
+.edu-auth__strength--0 .is-on, .edu-auth__strength--1 .is-on { background: #DC2626; }
+.edu-auth__strength--2 .is-on { background: #D97706; }
+.edu-auth__strength--3 .is-on, .edu-auth__strength--4 .is-on { background: var(--edu-action); }
+.edu-auth__strength--0 strong, .edu-auth__strength--1 strong { color: #B91C1C; }
+.edu-auth__strength--2 strong { color: #B45309; }
+.edu-auth__strength--3 strong, .edu-auth__strength--4 strong { color: #15803D; }
+
+/* Remember me / terms — the template's checked-box1, usable outside .login-one too. */
+.edu-auth form .remember-forget { padding-top: 0; margin: -4px 0 20px; }
+.edu-auth.edu-auth form .checked-box1 { position: relative; }
+.edu-auth.edu-auth form .checked-box1 input[type="checkbox"] { position: absolute; opacity: 0; width: 18px; height: 18px; margin: 0; top: 4px; left: 0; }
+.edu-auth.edu-auth form .checked-box1 label { position: relative; display: inline-block; padding-left: 28px; font-size: 15px; line-height: 26px; color: var(--site-gray); cursor: pointer; }
+.edu-auth.edu-auth form .checked-box1 label > span {
+  position: absolute; top: 4px; left: 0; width: 18px; height: 18px; border-radius: 5px;
+  border: 1.5px solid rgba(var(--site-black-rgb), .35); background: var(--site-white);
+  transition: border-color 150ms ease-out, background-color 150ms ease-out;
+}
+.edu-auth.edu-auth form .checked-box1 label > span::before {
+  content: ""; position: absolute; left: 5px; top: 1.5px; right: auto; bottom: auto; width: 5px; height: 10px;
+  margin: 0; border-radius: 0; background: none; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg) scale(0); transition: transform 150ms ease-out;
+}
+.edu-auth.edu-auth form .checked-box1 input:checked + label > span { border-color: var(--site-base); background: var(--site-base); }
+.edu-auth.edu-auth form .checked-box1 input:checked + label > span::before { transform: rotate(45deg) scale(1); }
+.edu-auth.edu-auth form .checked-box1 input:focus-visible + label > span { outline: 2px solid #16A34A; outline-offset: 2px; }
+.edu-auth.edu-auth form .checked-box1 input[aria-invalid="true"] + label > span { border-color: #B91C1C; }
+.edu-auth.edu-auth form .checked-box1 label a { color: #15803D; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
+.edu-auth__terms { padding: 14px 16px; margin-bottom: 20px; border-radius: 12px; background: rgba(var(--site-bdr-color-rgb), .25); }
+
+.edu-auth__alert {
+  display: flex; align-items: flex-start; gap: 10px; margin: 0 0 20px; padding: 12px 16px;
+  border-radius: 10px; border: 1px solid rgba(185, 28, 28, .25); background: rgba(185, 28, 28, .06);
+  color: #B91C1C; font-size: 15px; line-height: 1.5;
+}
+.edu-auth__alert i { margin-top: 4px; }
+
+.edu-auth__submit { margin-bottom: 0 !important; }
+.edu-auth form .thm-btn { width: 100%; justify-content: center; border: none; }
+.edu-auth form .thm-btn:disabled { opacity: .7; cursor: wait; }
+
+.edu-auth__divider { display: flex; align-items: center; gap: 16px; margin: 24px 0 16px; font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--site-gray); }
+.edu-auth__divider::before, .edu-auth__divider::after { content: ""; flex: 1; height: 1px; background: rgba(var(--site-bdr-color-rgb), .9); }
+
+/* The template's google-facebook pill, as a full-width button. */
+.edu-auth__social button {
+  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 54px;
+  border: 1px solid rgba(var(--site-black-rgb), .2); border-radius: 10px; background: var(--site-white);
+  color: var(--site-black); font-family: var(--site-font); font-size: 16px; font-weight: 500;
+  transition: border-color 180ms ease-out, background-color 180ms ease-out;
+}
+.edu-auth__social button:hover { border-color: var(--site-base); background: rgba(var(--site-base-rgb), .04); }
+.edu-auth__social button:disabled { opacity: .7; cursor: wait; }
+.edu-auth__social .icon { display: block; line-height: 0; }
+
+.edu-auth.edu-auth form .create-account { padding-top: 22px; }
+.edu-auth.edu-auth form .create-account p { margin: 0; color: var(--site-gray); }
+.edu-auth.edu-auth form .create-account p a { color: #15803D; font-weight: 600; }
+.edu-auth.edu-auth form .create-account p a:hover { color: var(--site-base); text-decoration: underline; }
+
+/* Demo accounts (development / opt-in only, see LoginForm) — one click fills the form. Set off from
+   the form by a hairline, in the same field language as the inputs above it. */
+.edu-auth__demo { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(var(--site-bdr-color-rgb), .9); }
+.edu-auth__demo-title { margin: 0 0 12px; font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--site-black); }
+.edu-auth__demo-roles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.edu-auth__demo-roles button {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; padding: 10px 12px;
+  border: 1px solid rgba(var(--site-bdr-color-rgb), .9); border-radius: 10px;
+  background: rgba(var(--site-bdr-color-rgb), .25); text-align: left;
+  transition: border-color 150ms ease-out, background-color 150ms ease-out;
+}
+.edu-auth__demo-roles button:hover { border-color: var(--site-base); background: rgba(var(--site-base-rgb), .06); }
+.edu-auth__demo-roles button:focus-visible { outline: 2px solid #16A34A; outline-offset: 2px; }
+.edu-auth__demo-role { font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--site-black); }
+.edu-auth__demo-email { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; line-height: 1.4; color: var(--site-gray); }
+.edu-auth__demo-note { margin: 10px 0 0; font-size: 13px; line-height: 1.5; color: var(--site-gray); }
+
+/* ---------- Forgot / reset password (AuthNotice.tsx, ForgotPasswordForm.tsx, Fix F8) ---------- */
+/* The panel takes the form's card treatment, since it stands in the form's place. */
+.edu-auth__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 48px 40px;
+  border: 1px solid rgba(var(--site-bdr-color-rgb), .7);
+  border-radius: 20px;
+  font-size: 15px;
+  color: var(--site-gray);
+  text-align: center;
+}
+/* Focused programmatically so screen readers announce the swap — it isn't a control, so no ring. */
+.edu-auth__panel:focus,
+.edu-auth__panel:focus-visible { outline: none; }
+
+.edu-auth__panel-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 64px; height: 64px; border-radius: 50%; font-size: 24px; line-height: 1;
+}
+.edu-auth__panel--success .edu-auth__panel-icon { color: #15803D; background: rgba(21, 128, 61, .1); }
+.edu-auth__panel--error .edu-auth__panel-icon { color: #B91C1C; background: rgba(185, 28, 28, .1); }
+
+.edu-auth__panel-title {
+  margin: 0; font-size: 26px; font-weight: 600; line-height: 1.2;
+  letter-spacing: -.01em; color: var(--site-black);
+}
+.edu-auth__panel p { margin: 0; max-width: 46ch; line-height: 1.65; }
+.edu-auth__panel strong { color: var(--site-black); font-weight: 600; overflow-wrap: anywhere; }
+.edu-auth__panel p.edu-auth__panel-note,
+.edu-auth__panel p.edu-auth__panel-links { font-size: 14px; }
+.edu-auth__panel-links a { color: #15803D; font-weight: 600; }
+.edu-auth__panel-links a:hover { text-decoration: underline; }
+
+/* Full-width button, like the one inside the form this panel replaced. */
+.edu-auth__panel-actions { width: 100%; max-width: 340px; margin-top: 8px; }
+.edu-auth__panel-actions .thm-btn { width: 100%; justify-content: center; border: none; }
+
+/* Sits under the email field on the forgot-password form. */
+.edu-auth__hint { margin: -6px 0 20px; font-size: 14px; line-height: 1.6; color: var(--site-gray); }
+
+@media (max-width: 767px) {
+  .edu-auth.edu-auth { padding: calc(90px + 32px) 0 72px; }
+  .edu-auth .inner-title h1 { font-size: 32px; }
+  .edu-auth .inner-title { padding-bottom: 24px; }
+  .edu-auth form { padding: 32px 20px 28px !important; }
+  .edu-auth__panel { padding: 32px 20px 28px; }
+}
+@media (max-width: 480px) {
+  .edu-auth__demo-roles { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .edu-auth * { transition: none !important; }
+}
+
+/* ---------- Dark ---------- */
+:where(.site-dark) .edu-auth.edu-auth { background: linear-gradient(180deg, rgba(74, 222, 128, .05) 0, rgba(74, 222, 128, 0) 520px), #111827; }
+:where(.site-dark) .edu-auth form { border-color: #374151; box-shadow: none; background-color: #1F2937; }
+:where(.site-dark) .edu-auth .inner-title h1,
+:where(.site-dark) .edu-auth__label,
+:where(.site-dark) .edu-auth__demo-title,
+:where(.site-dark) .edu-auth__demo-role { color: #F9FAFB; }
+:where(.site-dark) .edu-auth .inner-title h1 span,
+:where(.site-dark) .edu-auth__forgot,
+:where(.site-dark) .edu-auth.edu-auth form .create-account p a,
+:where(.site-dark) .edu-auth.edu-auth form .checked-box1 label a,
+:where(.site-dark) .edu-auth__badge { color: #4ADE80; }
+:where(.site-dark) .edu-auth form input:is([type="text"], [type="email"], [type="password"], [type="tel"]),
+:where(.site-dark) .edu-auth form select { background-color: #111827; border-color: #374151; color: #E5E7EB; }
+:where(.site-dark) .edu-auth form input:is([type="text"], [type="email"], [type="password"], [type="tel"]):focus,
+:where(.site-dark) .edu-auth form select:focus { border-color: #4ADE80; background-color: #111827; box-shadow: 0 0 0 4px rgba(74, 222, 128, .15); }
+:where(.site-dark) .edu-auth form select option { background: #1F2937; color: #E5E7EB; }
+:where(.site-dark) .edu-auth__reveal:hover { color: #F9FAFB; background: #374151; }
+:where(.site-dark) .edu-auth.edu-auth form .checked-box1 label > span { background: #111827; border-color: #4B5563; }
+:where(.site-dark) .edu-auth.edu-auth form .checked-box1 input:checked + label > span { background: var(--edu-action); border-color: #16A34A; }
+:where(.site-dark) .edu-auth__terms { background: #111827; }
+:where(.site-dark) .edu-auth__social button { background: #111827; border-color: #4B5563; color: #F9FAFB; }
+:where(.site-dark) .edu-auth__social button:hover { border-color: #4ADE80; background: #111827; }
+:where(.site-dark) .edu-auth__demo { border-color: #374151; }
+:where(.site-dark) .edu-auth__demo-roles button { background: #111827; border-color: #374151; }
+:where(.site-dark) .edu-auth__demo-roles button:hover { background: #111827; border-color: #4ADE80; }
+:where(.site-dark) .edu-auth__demo-roles button:focus-visible { outline-color: #4ADE80; }
+:where(.site-dark) .edu-auth__strength-bars span { background: #374151; }
+:where(.site-dark) .edu-auth__alert { color: #FCA5A5; background: rgba(248, 113, 113, .08); border-color: rgba(248, 113, 113, .3); }
+:where(.site-dark) .edu-auth .edu-field-error,
+:where(.site-dark) .edu-auth__match--mismatch,
+:where(.site-dark) .edu-auth__strength--0 strong,
+:where(.site-dark) .edu-auth__strength--1 strong { color: #FCA5A5; }
+:where(.site-dark) .edu-auth__strength--2 strong { color: #FCD34D; }
+:where(.site-dark) .edu-auth__strength--3 strong,
+:where(.site-dark) .edu-auth__strength--4 strong,
+:where(.site-dark) .edu-auth__match--match { color: #4ADE80; }
+:where(.site-dark) .edu-auth form [aria-invalid="true"] { border-color: #F87171 !important; }
+:where(.site-dark) .edu-auth__panel { background-color: #1F2937; border-color: #374151; }
+:where(.site-dark) .edu-auth__panel-title,
+:where(.site-dark) .edu-auth__panel strong { color: #F9FAFB; }
+:where(.site-dark) .edu-auth__panel-links a { color: #4ADE80; }
+:where(.site-dark) .edu-auth__panel--success .edu-auth__panel-icon { color: #4ADE80; background: rgba(74, 222, 128, .12); }
+:where(.site-dark) .edu-auth__panel--error .edu-auth__panel-icon { color: #FCA5A5; background: rgba(248, 113, 113, .12); }

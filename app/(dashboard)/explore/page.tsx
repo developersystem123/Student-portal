@@ -237,7 +237,7 @@ export default function ExplorePage() {
                 <button
                   key={f.label}
                   onClick={f.onClear}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[var(--primary-soft)] text-[var(--primary)] hover:bg-red-500/10 hover:text-red-500 transition"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[var(--primary-soft)] text-[var(--primary)] hover:bg-[var(--danger-soft)] hover:text-[var(--danger)] transition"
                 >
                   {f.label} <Icon.X size={10} />
                 </button>
@@ -306,8 +306,8 @@ export default function ExplorePage() {
                       className={cn(
                         "h-8 w-8 rounded-full flex items-center justify-center transition",
                         wishedIds.has(c.id)
-                          ? "bg-red-500/90 text-white"
-                          : "bg-black/40 hover:bg-red-500/80 text-white",
+                          ? "bg-[var(--danger)]/90 text-[var(--solid-fg)]"
+                          : "bg-black/40 hover:bg-[var(--danger)]/80 text-[var(--solid-fg)]",
                       )}
                       title={wishedIds.has(c.id) ? "Remove from wishlist" : "Save to wishlist"}
                     >

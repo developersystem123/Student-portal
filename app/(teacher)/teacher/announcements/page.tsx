@@ -36,15 +36,15 @@ const PRIORITY_STYLES: Record<
   Priority,
   { label: string; tint: string; badge: "info" | "warning" | "danger" }
 > = {
-  normal: { label: "Normal", tint: "from-sky-500/15 to-sky-500/5 border-sky-500/30", badge: "info" },
+  normal: { label: "Normal", tint: "border-l-[var(--info)]", badge: "info" },
   important: {
     label: "Important",
-    tint: "from-amber-500/15 to-amber-500/5 border-amber-500/30",
+    tint: "border-l-[var(--amber)]",
     badge: "warning",
   },
   urgent: {
     label: "Urgent",
-    tint: "from-rose-500/15 to-rose-500/5 border-rose-500/30",
+    tint: "border-l-[var(--danger)] bg-[var(--danger-soft)]",
     badge: "danger",
   },
 };
@@ -189,7 +189,7 @@ export default function TeacherAnnouncementsPage() {
                 const style = PRIORITY_STYLES[a.priority];
                 return (
                   <li key={a.id}>
-                    <div className={`rounded-2xl border bg-gradient-to-br p-4 ${style.tint}`}>
+                    <div className={`rounded-2xl border border-[var(--border)] border-l-4 bg-[var(--surface)] p-4 ${style.tint}`}>
                       <div className="flex items-start gap-3">
                         <div className="h-10 w-10 rounded-xl bg-[var(--surface)] border border-[var(--border)] flex items-center justify-center shrink-0">
                           <Icon.Megaphone size={18} />

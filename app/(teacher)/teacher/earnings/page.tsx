@@ -169,7 +169,7 @@ export default function TeacherEarningsPage() {
             <p className="text-xs text-[var(--muted)]">Your cut of each course sale.</p>
             <div className="rounded-2xl bg-[var(--primary-soft)] text-[var(--primary)] p-4 text-center">
               <p className="text-4xl font-bold">{Math.round(REVENUE_SHARE * 100)}%</p>
-              <p className="text-xs mt-1 opacity-80">
+              <p className="text-xs mt-1 font-medium">
                 to you · {100 - Math.round(REVENUE_SHARE * 100)}% to platform
               </p>
             </div>
@@ -294,10 +294,10 @@ function BigStat({
   tint: "emerald" | "amber" | "sky" | "violet";
 }) {
   const tints: Record<string, string> = {
-    emerald: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-    amber: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-    sky: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
-    violet: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+    emerald: "bg-[var(--primary-soft)] text-[var(--primary)]",
+    amber: "bg-[var(--amber-soft)] text-[var(--amber)]",
+    sky: "bg-[var(--info-soft)] text-[var(--info)]",
+    violet: "bg-[var(--info-soft)] text-[var(--info)]",
   };
   return (
     <Card>

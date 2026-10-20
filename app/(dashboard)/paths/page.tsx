@@ -101,8 +101,8 @@ export default function LearningPathsPage() {
         <div className="grid grid-cols-3 gap-3">
           {[
             { label: "Enrolled", value: stats.enrolled, color: "text-[var(--primary)]", icon: <Icon.Route size={16} /> },
-            { label: "In progress", value: stats.inProgress, color: "text-amber-500", icon: <Icon.TrendingUp size={16} /> },
-            { label: "Completed", value: stats.completed, color: "text-emerald-500", icon: <Icon.CheckCircle size={16} /> },
+            { label: "In progress", value: stats.inProgress, color: "text-[var(--amber)]", icon: <Icon.TrendingUp size={16} /> },
+            { label: "Completed", value: stats.completed, color: "text-[var(--primary)]", icon: <Icon.CheckCircle size={16} /> },
           ].map((s) => (
             <Card key={s.label}>
               <CardBody className="py-3 px-4">
@@ -148,7 +148,7 @@ export default function LearningPathsPage() {
               onClick={() => setCatFilter("all")}
               className={cn(
                 "text-xs px-3 py-1.5 rounded-lg font-medium transition",
-                catFilter === "all" ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
+                catFilter === "all" ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
               )}
             >
               All
@@ -159,7 +159,7 @@ export default function LearningPathsPage() {
                 onClick={() => setCatFilter(catFilter === c ? "all" : c)}
                 className={cn(
                   "text-xs px-3 py-1.5 rounded-lg font-medium transition",
-                  catFilter === c ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
+                  catFilter === c ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
                 )}
               >
                 {c}
@@ -176,7 +176,7 @@ export default function LearningPathsPage() {
               onClick={() => setLevelFilter(l)}
               className={cn(
                 "text-xs px-3 py-1.5 rounded-lg font-medium transition",
-                levelFilter === l ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
+                levelFilter === l ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
               )}
             >
               {l === "all" ? "Any level" : l}
@@ -191,7 +191,7 @@ export default function LearningPathsPage() {
                 onClick={() => setSort(k)}
                 className={cn(
                   "text-xs px-2.5 py-1.5 rounded-lg font-medium transition capitalize",
-                  sort === k ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
+                  sort === k ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
                 )}
               >
                 {k === "featured" ? "Featured" : k === "popular" ? "Popular" : "Progress"}
@@ -255,12 +255,12 @@ function PathCard({ path }: { path: PathSummary }) {
       overlay={
         <>
           {path.featured && (
-            <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-400 text-amber-950">
+            <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--amber)] text-[var(--amber)]">
               <Icon.Star size={11} /> Featured
             </span>
           )}
           {path.enrolled && path.progress > 0 && (
-            <span className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500 text-white">
+            <span className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--primary)] text-[var(--solid-fg)]">
               {path.progress}%
             </span>
           )}

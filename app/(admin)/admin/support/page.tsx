@@ -323,7 +323,7 @@ export default function AdminSupportPage() {
     !!detail && (statusDraft !== detail.status || priorityDraft !== detail.priority);
 
   const pillBase = "text-xs px-3 py-1.5 rounded-full font-medium transition whitespace-nowrap cursor-pointer";
-  const pillActive = "bg-[var(--primary)] text-white";
+  const pillActive = "bg-[var(--primary)] text-[var(--primary-foreground)]";
   const pillInactive = "border border-[var(--border)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]";
 
   return (
@@ -360,7 +360,7 @@ export default function AdminSupportPage() {
         </Card>
         <Card>
           <CardBody className="flex items-center gap-3 !py-3">
-            <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[var(--amber-soft)] flex items-center justify-center text-[var(--amber)] shrink-0">
               <Icon.Clock size={18} />
             </div>
             <div>
@@ -371,7 +371,7 @@ export default function AdminSupportPage() {
         </Card>
         <Card>
           <CardBody className="flex items-center gap-3 !py-3">
-            <div className="w-9 h-9 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[var(--primary-soft)] flex items-center justify-center text-[var(--primary)] shrink-0">
               <Icon.CheckCircle size={18} />
             </div>
             <div>
@@ -382,7 +382,7 @@ export default function AdminSupportPage() {
         </Card>
         <Card>
           <CardBody className="flex items-center gap-3 !py-3">
-            <div className="w-9 h-9 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500 shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[var(--danger-soft)] flex items-center justify-center text-[var(--danger)] shrink-0">
               <Icon.AlertCircle size={18} />
             </div>
             <div>
@@ -406,7 +406,7 @@ export default function AdminSupportPage() {
               >
                 {f === "all" ? "All" : STATUS_LABEL[f as TicketStatus]}
                 {" "}
-                <span className="opacity-70">
+                <span className="tabular-nums font-normal">
                   {f === "all" ? counts.all : counts[f as keyof typeof counts]}
                 </span>
               </button>
@@ -569,7 +569,7 @@ export default function AdminSupportPage() {
                     onClick={() => setPage(pg as number)}
                     className={`min-w-[32px] h-8 text-xs rounded-lg font-medium transition ${
                       currentPage === pg
-                        ? "bg-[var(--primary)] text-white"
+                        ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                         : "border border-[var(--border)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]"
                     }`}
                   >

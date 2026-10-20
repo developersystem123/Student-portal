@@ -280,7 +280,7 @@ function EditCourseModal({ course, onClose }: { course: Course | null; onClose: 
           </div>
         </div>
         {err && (
-          <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{err}</p>
+          <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">{err}</p>
         )}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="outline" type="button" onClick={onClose}>Cancel</Button>

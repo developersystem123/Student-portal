@@ -35,11 +35,11 @@ type Event = {
 };
 
 const TYPE_STYLES: Record<EventType, { bg: string; text: string; border: string; icon: React.ReactNode; label: string }> = {
-  class:      { bg: "bg-violet-500/10", text: "text-violet-600", border: "border-violet-300/40", icon: <Icon.Book size={14} />, label: "Class" },
-  exam:       { bg: "bg-red-500/10",    text: "text-red-600",    border: "border-red-300/40",    icon: <Icon.FilePen size={14} />, label: "Exam" },
-  assignment: { bg: "bg-amber-500/10",  text: "text-amber-600",  border: "border-amber-300/40",  icon: <Icon.FilePen size={14} />, label: "Assignment" },
-  meeting:    { bg: "bg-sky-500/10",    text: "text-sky-600",    border: "border-sky-300/40",    icon: <Icon.Video size={14} />, label: "Meeting" },
-  event:      { bg: "bg-emerald-500/10",text: "text-emerald-600",border: "border-emerald-300/40",icon: <Icon.Calendar size={14} />, label: "Event" },
+  class: { bg: "bg-[var(--info-soft)]", text: "text-[var(--info)]", border: "border-[var(--info)]/40", icon: <Icon.Book size={14} />, label: "Class" },
+  exam: { bg: "bg-[var(--danger-soft)]", text: "text-[var(--danger)]", border: "border-[var(--danger)]/40", icon: <Icon.FilePen size={14} />, label: "Exam" },
+  assignment: { bg: "bg-[var(--amber-soft)]", text: "text-[var(--amber)]", border: "border-[var(--amber)]/40", icon: <Icon.FilePen size={14} />, label: "Assignment" },
+  meeting: { bg: "bg-[var(--info-soft)]", text: "text-[var(--info)]", border: "border-[var(--info)]/40", icon: <Icon.Video size={14} />, label: "Meeting" },
+  event: { bg: "bg-[var(--primary-soft)]",text: "text-[var(--primary)]",border: "border-[var(--primary)]/40",icon: <Icon.Calendar size={14} />, label: "Event" },
 };
 
 type FilterType = "all" | EventType;
@@ -101,11 +101,11 @@ function WeekStrip({ events, now }: { events: Event[]; now: number }) {
             key={key}
             className={cn(
               "flex flex-col items-center gap-1 py-2 rounded-xl transition",
-              isToday ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)]",
+              isToday ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)]",
             )}
           >
             <span className="text-[10px] font-medium">{labels[d.getDay()]}</span>
-            <span className={cn("text-sm font-bold", isToday ? "text-white" : "text-[var(--foreground)]")}>
+            <span className={cn("text-sm font-bold", isToday ? "text-[var(--primary-foreground)]" : "text-[var(--foreground)]")}>
               {d.getDate()}
             </span>
             <span
@@ -263,8 +263,8 @@ export default function SchedulePage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total events", value: stats.total, color: "text-[var(--primary)]", icon: <Icon.Calendar size={16} /> },
-          { label: "Upcoming", value: stats.upcoming, color: "text-blue-500", icon: <Icon.Clock size={16} /> },
-          { label: "Today", value: stats.today, color: "text-emerald-500", icon: <Icon.Sparkles size={16} /> },
+          { label: "Upcoming", value: stats.upcoming, color: "text-[var(--info)]", icon: <Icon.Clock size={16} /> },
+          { label: "Today", value: stats.today, color: "text-[var(--primary)]", icon: <Icon.Sparkles size={16} /> },
           { label: "Past events", value: stats.past, color: "text-[var(--muted)]", icon: <Icon.Check size={16} /> },
         ].map((s) => (
           <Card key={s.label}>
@@ -301,7 +301,7 @@ export default function SchedulePage() {
             className={cn(
               "text-xs px-3 py-1.5 rounded-lg font-medium transition capitalize",
               filter === f
-                ? "bg-[var(--primary)] text-white"
+                ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                 : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
             )}
           >
@@ -509,7 +509,7 @@ function EventRow({
       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition shrink-0">
         {e.meetingUrl && (
           <a href={e.meetingUrl} target="_blank" rel="noreferrer">
-            <button className="p-1.5 rounded-lg text-[var(--muted)] hover:text-sky-500 hover:bg-sky-500/10 transition" title="Join meeting">
+            <button className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--info)] hover:bg-[var(--info-soft)] transition" title="Join meeting">
               <Icon.Video size={14} />
             </button>
           </a>
@@ -526,7 +526,7 @@ function EventRow({
             <button
               onClick={() => onDelete(e.id)}
               disabled={deleting}
-              className="p-1.5 rounded-lg text-[var(--muted)] hover:text-red-500 hover:bg-red-500/10 transition"
+              className="p-1.5 rounded-lg text-[var(--muted)] hover:text-[var(--danger)] hover:bg-[var(--danger-soft)] transition"
               title="Delete"
             >
               {deleting ? <Icon.Loader size={14} /> : <Icon.Trash size={14} />}

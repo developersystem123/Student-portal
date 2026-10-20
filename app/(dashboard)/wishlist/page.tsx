@@ -116,7 +116,7 @@ function WishlistCard({ item, enrolledIds, removing, enrolling, onRemove, onEnro
         <button
           onClick={() => onRemove(course.id)}
           disabled={isRemoving}
-          className="absolute top-2 right-2 h-8 w-8 rounded-full bg-black/40 hover:bg-red-500/80 flex items-center justify-center text-white transition-colors disabled:opacity-60"
+          className="absolute top-2 right-2 h-8 w-8 rounded-full bg-black/40 hover:bg-[var(--danger)]/80 flex items-center justify-center text-[var(--solid-fg)] transition-colors disabled:opacity-60"
           title="Remove from wishlist"
         >
           {isRemoving ? <Icon.Loader size={14} /> : <Icon.X size={14} />}
@@ -140,7 +140,7 @@ function WishlistCard({ item, enrolledIds, removing, enrolling, onRemove, onEnro
 
         <div className="flex items-center gap-3 text-xs text-[var(--muted)]">
           <span className="flex items-center gap-1">
-            <Icon.Star size={12} className="text-amber-400" />
+            <Icon.Star size={12} className="text-[var(--amber)]" />
             {course.rating.toFixed(1)}
           </span>
           <span className="flex items-center gap-1">
@@ -312,7 +312,7 @@ export default function WishlistPage() {
           </Card>
           <Card>
             <CardBody className="flex items-start gap-3 p-4">
-              <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 rounded-xl bg-[var(--primary-soft)] text-[var(--primary)] flex items-center justify-center shrink-0">
                 <Icon.Clock size={18} />
               </div>
               <div>
@@ -323,7 +323,7 @@ export default function WishlistPage() {
           </Card>
           <Card>
             <CardBody className="flex items-start gap-3 p-4">
-              <div className="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 rounded-xl bg-[var(--amber-soft)] text-[var(--amber)] flex items-center justify-center shrink-0">
                 <Icon.DollarSign size={18} />
               </div>
               <div>
@@ -334,7 +334,7 @@ export default function WishlistPage() {
           </Card>
           <Card>
             <CardBody className="flex items-start gap-3 p-4">
-              <div className="h-10 w-10 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0">
+              <div className="h-10 w-10 rounded-xl bg-[var(--info-soft)] text-[var(--info)] flex items-center justify-center shrink-0">
                 <Icon.Star size={18} />
               </div>
               <div>
@@ -412,7 +412,7 @@ export default function WishlistPage() {
                   className={cn(
                     "px-3 h-8 rounded-full text-xs font-medium transition-all border",
                     sortKey === key
-                      ? "bg-[var(--primary)] text-white border-transparent"
+                      ? "bg-[var(--primary)] text-[var(--primary-foreground)] border-transparent"
                       : "bg-[var(--surface)] text-[var(--muted)] border-[var(--border)] hover:border-[var(--border-strong)] hover:text-[var(--foreground)]",
                   )}
                 >

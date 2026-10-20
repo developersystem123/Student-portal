@@ -345,9 +345,10 @@ function Section({
   const toast = useToast();
 
   function copyUrl(url: string) {
-    navigator.clipboard.writeText(url).then(() => {
-      toast.push({ title: "Meeting URL copied", tone: "success" });
-    });
+    navigator.clipboard.writeText(url).then(
+      () => toast.push({ title: "Meeting URL copied", tone: "success" }),
+      () => toast.push({ title: "Couldn't copy the meeting URL", description: url, tone: "danger" }),
+    );
   }
 
   return (
@@ -365,16 +366,16 @@ function Section({
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {items.map((c) => (
-              <Card key={c.id} className={`overflow-hidden ${c.status === "live" ? "border-rose-500/40 shadow-rose-500/10 shadow-lg" : ""}`}>
+              <Card key={c.id} className={`overflow-hidden ${c.status === "live" ? "border-[var(--danger)]/40 shadow-lg" : ""}`}>
                 {c.status === "live" && (
-                  <div className="h-1 w-full bg-gradient-to-r from-rose-500 to-pink-500 animate-pulse" />
+                  <div className="h-1 w-full bg-[var(--danger)] animate-pulse" />
                 )}
                 <CardBody className="space-y-3">
                   <div className="flex items-start gap-3">
                     <div
                       className={`h-11 w-11 rounded-xl flex items-center justify-center shrink-0 ${
                         c.status === "live"
-                          ? "bg-rose-500/15 text-rose-500"
+                          ? "bg-[var(--danger-soft)] text-[var(--danger)]"
                           : "bg-[var(--primary-soft)] text-[var(--primary)]"
                       }`}
                     >
@@ -385,7 +386,7 @@ function Section({
                       <p className="text-xs text-[var(--muted)] truncate">{c.courseTitle}</p>
                     </div>
                     {c.status === "live" && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500 text-white text-[11px] font-bold uppercase tracking-wider shrink-0">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--danger)] text-[var(--solid-fg)] text-[11px] font-bold uppercase tracking-wider shrink-0">
                         <span className="relative flex h-1.5 w-1.5">
                           <span className="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 animate-ping" />
                           <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />

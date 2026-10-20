@@ -1,0 +1,80 @@
+/* EduPortal home-only adjustments for text that replaces template image copy. */
+.edu-banner-badge {
+  display: inline-block;
+  color: var(--edu-text-green);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+:where(.site-dark) .edu-banner-badge {
+  color: #4ade80;
+}
+
+/* Course covers are the portal's own photos, not the 374×230 template crops — frame them the same way. */
+.courses-one__img img {
+  aspect-ratio: 374 / 230;
+  object-fit: cover;
+}
+
+/* The original video controls are now illustrative, not fake working call actions. */
+.edu-video-controls li > span[aria-hidden="true"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #374151;
+  background: #fff;
+}
+:where(.site-dark) .edu-video-controls li > span[aria-hidden="true"] {
+  color: #4ade80;
+  background: #1f2937;
+}
+
+/* Category section: with six topics it is taller than the template's four, so the diagonal light
+   streak is stretched to run edge to edge (top and bottom) like the original. */
+.category-one {
+  overflow: hidden;
+}
+.category-one__shape-2 {
+  bottom: 0;
+}
+.category-one__shape-2 img {
+  height: 100%;
+  max-width: none;
+}
+
+/* Vertical topic text on the left edge: anchor it to the section's left edge and centre it
+   vertically, instead of the template offset that only fitted its longer labels. */
+.category-one__social-media {
+  top: 50%;
+  bottom: auto;
+  left: 16px;
+  transform-origin: 0 0;
+  transform: rotate(-90deg) translateX(-50%);
+}
+/* Hero dashboard illustration: the window sits top-right and the bottom ~30% is left empty, so the two
+   template badges move into that free space (left edge and below) instead of covering the dashboard. */
+.banner-one__student-trained { top: 210px; right: auto; left: -82px; }
+.banner-one__udemy-review { bottom: 0; left: 24px; }
+/* Category: the dashboard collage is shorter than the six-topic list, so centre it beside the list. */
+.category-one .container > .row { align-items: center; }
+/* Hero dashboard illustration has a light and a dark version; show the one matching the theme. */
+.banner-one__img > .edu-hero-dark { display: none; }
+:where(.site-dark) .banner-one__img > .edu-hero-light { display: none; }
+:where(.site-dark) .banner-one__img > .edu-hero-dark { display: block; }
+:where(.site-dark) .banner-one__category-select-box .select-box > select { background-color: var(--edu-surface); }
+
+/* Hero review card: the label and the stars shared one 185px row, so the label wrapped onto three
+   lines. Stack the stars under a single-line label and give the card the room that needs. */
+.banner-one__udemy-review { max-width: 205px; }
+.banner-one__udemy-review-client-info { flex-direction: column; align-items: flex-start; gap: 4px; }
+.banner-one__udemy-review-client-name { font-size: 15px; line-height: 1.2; white-space: nowrap; }
+
+/* Video card chip: a brand pill like the lesson pill beside it, not the template's square box with a red "live" icon. */
+.video-one__live { gap: 8px; padding: 10px 16px; border-radius: 999px; border: 1px solid #D1FAE5; box-shadow: 0 4px 12px rgba(5, 46, 22, .12); }
+.video-one__live-icon span { color: #16A34A; }
+:where(.site-dark) .video-one__live { background-color: #111827; border-color: #374151; box-shadow: none; }
+:where(.site-dark) .video-one__live-text { color: #E5E7EB; }
+:where(.site-dark) .video-one__live-icon span { color: #4ADE80; }

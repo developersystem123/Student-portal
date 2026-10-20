@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import {
   Badge,
   Button,
@@ -84,8 +83,6 @@ export function PhysicalApplicationModal({
     setErrors({});
     setHasAttempted(false);
   }, [open, user]);
-
-  if (!course) return null;
 
   const eligible = meetsMatriculationRequirement(education);
   const notSignedIn = !user;
@@ -229,6 +226,9 @@ export function PhysicalApplicationModal({
     setErrors(validate());
   }, [hasAttempted, validate]);
 
+  // Early return must stay below every hook (Rules of Hooks).
+  if (!course) return null;
+
   async function onSubmit(ev: React.FormEvent) {
     ev.preventDefault();
     if (notSignedIn || wrongRole || !course) return;
@@ -298,7 +298,7 @@ export function PhysicalApplicationModal({
         {/* Eligibility / auth banners */}
         {notSignedIn ? (
           <Banner tone="warning" icon={<Icon.Lock size={16} />}>
-            Please <Link href="/login" className="underline font-semibold">sign in</Link> as a student to
+            Please <a href="/login" className="underline font-semibold">sign in</a> as a student to
             apply for in-person classes.
           </Banner>
         ) : wrongRole ? (
@@ -539,9 +539,9 @@ function cleanDecimal(raw: string): string {
 
 type BannerTone = "success" | "warning" | "danger";
 const BANNER_STYLES: Record<BannerTone, string> = {
-  success: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/30",
-  warning: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30",
-  danger: "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/30",
+  success: "bg-[var(--primary-soft)] text-[var(--primary)] border-[var(--primary)]/30",
+  warning: "bg-[var(--amber-soft)] text-[var(--amber)] border-[var(--amber)]/30",
+  danger: "bg-[var(--danger-soft)] text-[var(--danger)] border-[var(--danger)]/30",
 };
 
 function Banner({

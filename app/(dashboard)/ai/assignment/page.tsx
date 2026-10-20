@@ -112,7 +112,7 @@ export default function AssignmentHelperPage() {
     try {
       const out = await call("polish", { text: drafts[heading] });
       setDrafts((p) => ({ ...p, [heading]: out.text }));
-      push({ title: "Section polished ✨", tone: "success" });
+      push({ title: "Section polished", tone: "success" });
     } finally {
       setBusy(null);
     }
@@ -142,8 +142,9 @@ export default function AssignmentHelperPage() {
   function copyAll() {
     if (!outline) return;
     const md = buildMarkdown(outline, drafts, references);
-    navigator.clipboard.writeText(md).then(() =>
-      push({ title: "Copied to clipboard", tone: "success" })
+    navigator.clipboard.writeText(md).then(
+      () => push({ title: "Copied to clipboard", tone: "success" }),
+      () => push({ title: "Couldn't copy to clipboard", tone: "danger" }),
     );
   }
 
@@ -190,7 +191,7 @@ ${references.length ? `<div class="refs"><h2>References</h2><ol>${references.map
   return (
     <div className="space-y-6">
       {/* Hero header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] p-6 text-white">
+      <div className="relative overflow-hidden rounded-2xl brand-fill p-6 text-white">
         <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
         <div className="absolute right-16 bottom-0 h-20 w-20 rounded-full bg-white/5" />
         <div className="relative flex items-center gap-4">
@@ -212,7 +213,7 @@ ${references.length ? `<div class="refs"><h2>References</h2><ol>${references.map
                 className={cn(
                   "flex items-center gap-1.5 text-xs font-semibold px-3 h-7 rounded-full transition-all",
                   step >= s
-                    ? "bg-white text-[var(--primary)]"
+                    ? "bg-white text-[#15803d]"
                     : "bg-white/20 text-white/70",
                 )}
               >
@@ -298,7 +299,7 @@ ${references.length ? `<div class="refs"><h2>References</h2><ol>${references.map
             </Button>
             {outline && (
               <span className="text-xs text-[var(--muted)] flex items-center gap-1">
-                <Icon.CheckCircle size={14} className="text-emerald-500" />
+                <Icon.CheckCircle size={14} className="text-[var(--primary)]" />
                 Outline ready — {totalSections} sections
               </span>
             )}
@@ -358,7 +359,7 @@ ${references.length ? `<div class="refs"><h2>References</h2><ol>${references.map
                   <div
                     className={cn(
                       "h-full rounded-full transition-all duration-500",
-                      wordProgress >= 100 ? "bg-emerald-500" : "bg-[var(--primary)]",
+                      wordProgress >= 100 ? "bg-[var(--primary)]" : "bg-[var(--primary)]",
                     )}
                     style={{ width: `${wordProgress}%` }}
                   />
@@ -495,7 +496,7 @@ ${references.length ? `<div class="refs"><h2>References</h2><ol>${references.map
               ))}
             </ol>
             <p className="text-xs text-[var(--muted-2)] mt-4 flex items-start gap-1.5">
-              <Icon.AlertCircle size={13} className="shrink-0 mt-0.5 text-amber-500" />
+              <Icon.AlertCircle size={13} className="shrink-0 mt-0.5 text-[var(--amber)]" />
               Always verify these references against your library catalog before citing.
             </p>
           </CardBody>

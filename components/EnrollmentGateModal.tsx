@@ -180,7 +180,7 @@ export function EnrollmentGateModal({ open, onClose, onComplete }: Props) {
                 className={cn(
                   "flex-1 py-2.5 text-sm font-medium transition",
                   authTab === t
-                    ? "bg-[var(--primary)] text-white"
+                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
                     : "bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)]",
                 )}
               >

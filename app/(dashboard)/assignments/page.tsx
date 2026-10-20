@@ -42,21 +42,21 @@ type SortKey = "due-soonest" | "due-latest" | "points-high" | "points-low";
 
 function gradeLabel(score: number, total: number): { letter: string; color: string } {
   const pct = (score / total) * 100;
-  if (pct >= 90) return { letter: "A", color: "text-emerald-600" };
-  if (pct >= 80) return { letter: "B", color: "text-blue-600" };
-  if (pct >= 70) return { letter: "C", color: "text-amber-600" };
-  if (pct >= 60) return { letter: "D", color: "text-orange-600" };
-  return { letter: "F", color: "text-red-600" };
+  if (pct >= 90) return { letter: "A", color: "text-[var(--primary)]" };
+  if (pct >= 80) return { letter: "B", color: "text-[var(--info)]" };
+  if (pct >= 70) return { letter: "C", color: "text-[var(--amber)]" };
+  if (pct >= 60) return { letter: "D", color: "text-[var(--amber)]" };
+  return { letter: "F", color: "text-[var(--danger)]" };
 }
 
 function dueDateChip(dueDate: string, submitted: boolean) {
   if (submitted) return null;
   const diff = new Date(dueDate).getTime() - Date.now();
-  if (diff < 0) return { label: "Overdue", cls: "bg-red-500/10 text-red-600" };
+  if (diff < 0) return { label: "Overdue", cls: "bg-[var(--danger-soft)] text-[var(--danger)]" };
   const h = diff / 3_600_000;
-  if (h < 24) return { label: `Due in ${Math.round(h)}h`, cls: "bg-red-500/10 text-red-600" };
+  if (h < 24) return { label: `Due in ${Math.round(h)}h`, cls: "bg-[var(--danger-soft)] text-[var(--danger)]" };
   const d = Math.floor(h / 24);
-  if (d <= 3) return { label: `Due in ${d}d`, cls: "bg-amber-500/10 text-amber-600" };
+  if (d <= 3) return { label: `Due in ${d}d`, cls: "bg-[var(--amber-soft)] text-[var(--amber)]" };
   return null;
 }
 
@@ -71,7 +71,7 @@ function GradeBar({ score, total }: { score: number; total: number }) {
       </div>
       <div className="h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
         <div
-          className={cn("h-full rounded-full transition-all", pct >= 70 ? "bg-emerald-500" : pct >= 50 ? "bg-amber-500" : "bg-red-400")}
+          className={cn("h-full rounded-full transition-all", pct >= 70 ? "bg-[var(--primary)]" : pct >= 50 ? "bg-[var(--amber)]" : "bg-[var(--danger)]")}
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -222,12 +222,12 @@ export default function AssignmentsPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: "Total", value: counts.all, color: "text-[var(--primary)]", icon: <Icon.FilePen size={16} /> },
-            { label: "Pending", value: counts.pending, color: "text-amber-500", icon: <Icon.Clock size={16} /> },
-            { label: "Overdue", value: stats.overdue, color: "text-red-500", icon: <Icon.AlertCircle size={16} /> },
+            { label: "Pending", value: counts.pending, color: "text-[var(--amber)]", icon: <Icon.Clock size={16} /> },
+            { label: "Overdue", value: stats.overdue, color: "text-[var(--danger)]", icon: <Icon.AlertCircle size={16} /> },
             {
               label: "Avg grade",
               value: stats.avgPct !== null ? `${stats.avgPct}%` : "—",
-              color: stats.avgPct !== null && stats.avgPct >= 70 ? "text-emerald-500" : "text-[var(--muted)]",
+              color: stats.avgPct !== null && stats.avgPct >= 70 ? "text-[var(--primary)]" : "text-[var(--muted)]",
               icon: <Icon.TrendingUp size={16} />,
             },
           ].map((s) => (
@@ -261,7 +261,7 @@ export default function AssignmentsPage() {
               onClick={() => setSort(key)}
               className={cn(
                 "text-xs px-3 py-1.5 rounded-lg font-medium transition",
-                sort === key ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
+                sort === key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]",
               )}
             >
               {label}
@@ -296,10 +296,10 @@ export default function AssignmentsPage() {
             return (
               <Card
                 key={a.id}
-                className={cn(overdue ? "ring-1 ring-red-400/40" : "")}
+                className={cn(overdue ? "ring-1 ring-[var(--danger)]/40" : "")}
               >
                 <CardHeader className="flex items-start gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-violet-500/10 text-violet-500 flex items-center justify-center shrink-0">
+                  <div className="h-10 w-10 rounded-lg bg-[var(--info-soft)] text-[var(--info)] flex items-center justify-center shrink-0">
                     <Icon.FilePen size={18} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -324,7 +324,7 @@ export default function AssignmentsPage() {
                   <p className="text-sm text-[var(--muted)] line-clamp-2">{a.description}</p>
 
                   <div className="flex items-center gap-3 text-xs text-[var(--muted-2)] flex-wrap">
-                    <span className={cn("flex items-center gap-1", overdue ? "text-red-500 font-medium" : "")}>
+                    <span className={cn("flex items-center gap-1", overdue ? "text-[var(--danger)] font-medium" : "")}>
                       <Icon.Calendar size={12} />
                       Due {formatDate(a.dueDate)}
                     </span>
@@ -350,7 +350,7 @@ export default function AssignmentsPage() {
                   )}
 
                   {a.submission?.status === "submitted" && (
-                    <div className="rounded-lg bg-blue-500/10 px-3 py-2 text-xs text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                    <div className="rounded-lg bg-[var(--info-soft)] px-3 py-2 text-xs text-[var(--info)] flex items-center gap-2">
                       <Icon.Check size={12} />
                       Submitted {relativeTime(a.submission.submittedAt)} — awaiting grade
                     </div>

@@ -230,7 +230,7 @@ export default function AdminApplicationsPage() {
           <button
             key={o.key}
             onClick={() => setSortKey(o.key)}
-            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-white" : "border border-border text-muted hover:bg-surface-2"}`}
+            className={`h-8 px-3 rounded-lg text-xs font-medium transition ${sortKey === o.key ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border text-muted hover:bg-surface-2"}`}
           >
             {o.label}
           </button>
@@ -286,7 +286,7 @@ export default function AdminApplicationsPage() {
                     </Td>
                     <Td>
                       {row.physicalClassTitle ? (
-                        <span className="text-xs inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
+                        <span className="text-xs inline-flex items-center gap-1 text-[var(--primary)]">
                           <Icon.CheckCircle size={12} /> {row.physicalClassTitle}
                         </span>
                       ) : (
@@ -346,7 +346,7 @@ export default function AdminApplicationsPage() {
                   .reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, [])
                   .map((p, idx) => p === "…"
                     ? <span key={`e-${idx}`} className="px-2 text-muted text-sm">…</span>
-                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-border hover:bg-surface-2"}`}>{p}</button>
+                    : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-border hover:bg-surface-2"}`}>{p}</button>
                   )}
                 <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
               </div>
@@ -463,7 +463,7 @@ export default function AdminApplicationsPage() {
               <div>
                 <Label>Place into batch</Label>
                 {batchesForReview.length === 0 ? (
-                  <div className="text-sm rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 px-3 py-2.5">
+                  <div className="text-sm rounded-xl border border-[var(--amber)]/30 bg-[var(--amber-soft)] text-[var(--amber)] px-3 py-2.5">
                     No in-person batches exist for this course yet.{" "}
                     <Link href="/admin/physical-classes" className="underline font-semibold">
                       Create a batch

@@ -32,9 +32,9 @@ const STATUS_BADGE: Record<PhysicalClassStatus, "info" | "success" | "default" |
 };
 
 function rateClass(rate: number) {
-  if (rate >= 75) return "text-emerald-500";
-  if (rate >= 50) return "text-amber-500";
-  return "text-red-500";
+  if (rate >= 75) return "text-[var(--primary)]";
+  if (rate >= 50) return "text-[var(--amber)]";
+  return "text-[var(--danger)]";
 }
 
 export default function AdminPhysicalClassDetailPage() {
@@ -122,13 +122,13 @@ export default function AdminPhysicalClassDetailPage() {
           <div className="space-y-1">
             <div className="flex items-center justify-between text-xs text-[var(--muted)]">
               <span>Capacity fill</span>
-              <span className={fillPct >= 90 ? "text-red-500 font-semibold" : fillPct >= 70 ? "text-amber-500 font-semibold" : "text-emerald-600 font-semibold"}>
+              <span className={fillPct >= 90 ? "text-[var(--danger)] font-semibold" : fillPct >= 70 ? "text-[var(--amber)] font-semibold" : "text-[var(--primary)] font-semibold"}>
                 {pc.enrolledCount} / {pc.capacity} seats ({fillPct}%)
               </span>
             </div>
             <div className="h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all ${fillPct >= 90 ? "bg-red-500" : fillPct >= 70 ? "bg-amber-500" : "bg-emerald-500"}`}
+                className={`h-full rounded-full transition-all ${fillPct >= 90 ? "bg-[var(--danger)]" : fillPct >= 70 ? "bg-[var(--amber)]" : "bg-[var(--primary)]"}`}
                 style={{ width: `${fillPct}%` }}
               />
             </div>
@@ -216,7 +216,7 @@ export default function AdminPhysicalClassDetailPage() {
                     >
                       <td className="py-2.5 px-3">
                         <div className="flex items-center gap-2.5">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white text-xs font-semibold flex items-center justify-center shrink-0">
+                          <div className="h-8 w-8 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-semibold flex items-center justify-center shrink-0">
                             {s.studentName.slice(0, 1).toUpperCase()}
                           </div>
                           <div className="min-w-0">

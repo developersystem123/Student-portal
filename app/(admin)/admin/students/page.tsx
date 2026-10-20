@@ -12,6 +12,7 @@ import {
   Label,
   Modal,
   useToast,
+  Drawer,
 } from "@/components/ui";
 import { useAdmin, type StudentSummary } from "@/lib/store";
 import { cleanPhoneInput, validateEmail, validateName, validatePassword, validatePhone } from "@/lib/validation";
@@ -118,9 +119,9 @@ export default function AdminStudentsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total students", value: stats.total, icon: <Icon.User size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-          { label: "Complete profiles", value: stats.complete, icon: <Icon.CheckCircle size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-          { label: "Total enrollments", value: stats.totalEnrolled, icon: <Icon.ListChecks size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-          { label: "Certificates earned", value: stats.totalCerts, icon: <Icon.Award size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+          { label: "Complete profiles", value: stats.complete, icon: <Icon.CheckCircle size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
+          { label: "Total enrollments", value: stats.totalEnrolled, icon: <Icon.ListChecks size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+          { label: "Certificates earned", value: stats.totalCerts, icon: <Icon.Award size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 !py-3">
@@ -149,7 +150,7 @@ export default function AdminStudentsPage() {
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs text-[var(--muted)] shrink-0">Sort by:</span>
               {(["name", "enrolled", "completed", "certificates"] as SortKey[]).map((k) => (
-                <button key={k} onClick={() => setSortKey(k)} className={`px-3 h-8 rounded-lg text-xs font-medium capitalize transition border ${sortKey === k ? "bg-[var(--primary)] text-white border-[var(--primary)]" : "bg-transparent text-[var(--muted)] border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)]"}`}>{k}</button>
+                <button key={k} onClick={() => setSortKey(k)} className={`px-3 h-8 rounded-lg text-xs font-medium capitalize transition border ${sortKey === k ? "bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]" : "bg-transparent text-[var(--muted)] border-[var(--border)] hover:border-[var(--primary)] hover:text-[var(--primary)]"}`}>{k}</button>
               ))}
             </div>
           </div>
@@ -158,13 +159,13 @@ export default function AdminStudentsPage() {
           <div className="flex flex-wrap gap-1.5 items-center">
             <span className="text-xs text-[var(--muted)] mr-1">Profile:</span>
             {(["all", "complete", "incomplete"] as ProfileFilter[]).map((f) => (
-              <button key={f} onClick={() => setProfileFilter(f)} className={`px-3 h-7 rounded-lg text-xs font-medium capitalize transition ${profileFilter === f ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
+              <button key={f} onClick={() => setProfileFilter(f)} className={`px-3 h-7 rounded-lg text-xs font-medium capitalize transition ${profileFilter === f ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
                 {f === "all" ? "All profiles" : f}
               </button>
             ))}
             <span className="text-xs text-[var(--muted)] ml-3 mr-1">Certificates:</span>
             {(["all", "has-certs", "no-certs"] as CertFilter[]).map((f) => (
-              <button key={f} onClick={() => setCertFilter(f)} className={`px-3 h-7 rounded-lg text-xs font-medium transition ${certFilter === f ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
+              <button key={f} onClick={() => setCertFilter(f)} className={`px-3 h-7 rounded-lg text-xs font-medium transition ${certFilter === f ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
                 {f === "all" ? "All" : f === "has-certs" ? "Has certificates" : "No certificates"}
               </button>
             ))}
@@ -219,7 +220,7 @@ export default function AdminStudentsPage() {
                       </td>
                       <td className="py-3 px-3">
                         <div className="flex items-center gap-3">
-                          <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-semibold inline-flex items-center justify-center text-sm shrink-0">{s.name.slice(0, 1).toUpperCase()}</div>
+                          <div className="h-9 w-9 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold inline-flex items-center justify-center text-sm shrink-0">{s.name.slice(0, 1).toUpperCase()}</div>
                           <div className="min-w-0"><p className="font-medium truncate">{s.name}</p><p className="text-xs text-[var(--muted)] truncate">{s.email}</p></div>
                         </div>
                       </td>
@@ -234,7 +235,7 @@ export default function AdminStudentsPage() {
                         <div className="inline-flex gap-1">
                           <button onClick={() => startEdit(s)} title="Edit" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)] transition"><Icon.FilePen size={14} /></button>
                           <button onClick={() => startReset(s)} title="Reset password" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)] transition"><Icon.Lock size={14} /></button>
-                          <button onClick={() => setConfirmDeleteId(s.id)} title="Delete" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-red-500/10 text-[var(--muted)] hover:text-[var(--danger)] transition"><Icon.Trash size={14} /></button>
+                          <button onClick={() => setConfirmDeleteId(s.id)} title="Delete" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-[var(--danger-soft)] text-[var(--muted)] hover:text-[var(--danger)] transition"><Icon.Trash size={14} /></button>
                         </div>
                       </td>
                     </tr>
@@ -260,7 +261,7 @@ export default function AdminStudentsPage() {
                       if (p === totalPages - 1 && safePage < totalPages - 2) return <span key={p} className="w-6 text-center text-xs text-[var(--muted-2)]">…</span>;
                       return null;
                     }
-                    return <button key={p} onClick={() => setPage(p)} className={`h-8 min-w-[2rem] px-2 rounded-lg text-xs font-medium transition ${isActive ? "bg-[var(--primary)] text-white shadow-sm" : "text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)]"}`}>{p}</button>;
+                    return <button key={p} onClick={() => setPage(p)} className={`h-8 min-w-[2rem] px-2 rounded-lg text-xs font-medium transition ${isActive ? "bg-[var(--primary)] text-[var(--primary-foreground)] shadow-sm" : "text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)]"}`}>{p}</button>;
                   })}
                   <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages} className="h-8 w-8 rounded-lg flex items-center justify-center text-[var(--muted)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)] disabled:opacity-30 disabled:cursor-not-allowed transition"><Icon.ChevronRight size={16} /></button>
                 </div>
@@ -273,58 +274,51 @@ export default function AdminStudentsPage() {
 
       {/* Detail drawer */}
       {detailStudent && (
-        <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setDetailStudent(null)}>
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
-          <div className="relative w-full max-w-sm bg-[var(--surface)] h-full shadow-2xl flex flex-col overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] shrink-0">
-              <p className="font-semibold">Student details</p>
-              <button onClick={() => setDetailStudent(null)} className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface-2)] transition"><Icon.X size={16} /></button>
+        <Drawer open onClose={() => setDetailStudent(null)} title="Student details">
+          <div className="p-5 space-y-4 flex-1">
+            <div className="flex items-center gap-4">
+              <div className="h-16 w-16 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-xl flex items-center justify-center shrink-0">{detailStudent.name.slice(0, 1).toUpperCase()}</div>
+              <div>
+                <p className="text-lg font-bold">{detailStudent.name}</p>
+                <p className="text-sm text-[var(--muted)]">{detailStudent.email}</p>
+                {detailStudent.phone && <p className="text-sm text-[var(--muted)]">{detailStudent.phone}</p>}
+              </div>
             </div>
-            <div className="p-5 space-y-4 flex-1">
-              <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-bold text-xl flex items-center justify-center shrink-0">{detailStudent.name.slice(0, 1).toUpperCase()}</div>
-                <div>
-                  <p className="text-lg font-bold">{detailStudent.name}</p>
-                  <p className="text-sm text-[var(--muted)]">{detailStudent.email}</p>
-                  {detailStudent.phone && <p className="text-sm text-[var(--muted)]">{detailStudent.phone}</p>}
-                </div>
+            <div className="rounded-xl bg-[var(--surface-2)] p-3 space-y-2 text-sm">
+              <div className="flex justify-between"><span className="text-[var(--muted)]">Profile</span><span>{isComplete(detailStudent) ? <Badge variant="success">Complete</Badge> : <Badge variant="warning">Incomplete</Badge>}</span></div>
+              {detailStudent.education && detailStudent.education !== "None" && <div className="flex justify-between"><span className="text-[var(--muted)]">Education</span><span className="font-medium">{detailStudent.education}</span></div>}
+              {detailStudent.createdAt && <div className="flex justify-between"><span className="text-[var(--muted)]">Joined</span><span className="font-medium">{new Date(detailStudent.createdAt).toLocaleDateString()}</span></div>}
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="rounded-xl bg-[var(--surface-2)] p-2.5 text-center">
+                <p className="text-xl font-bold">{detailStudent.enrolledCount}</p>
+                <p className="text-[10px] text-[var(--muted)] mt-0.5">Enrolled</p>
               </div>
-              <div className="rounded-xl bg-[var(--surface-2)] p-3 space-y-2 text-sm">
-                <div className="flex justify-between"><span className="text-[var(--muted)]">Profile</span><span>{isComplete(detailStudent) ? <Badge variant="success">Complete</Badge> : <Badge variant="warning">Incomplete</Badge>}</span></div>
-                {detailStudent.education && detailStudent.education !== "None" && <div className="flex justify-between"><span className="text-[var(--muted)]">Education</span><span className="font-medium">{detailStudent.education}</span></div>}
-                {detailStudent.createdAt && <div className="flex justify-between"><span className="text-[var(--muted)]">Joined</span><span className="font-medium">{new Date(detailStudent.createdAt).toLocaleDateString()}</span></div>}
+              <div className="rounded-xl bg-[var(--surface-2)] p-2.5 text-center">
+                <p className="text-xl font-bold">{detailStudent.completedCount}</p>
+                <p className="text-[10px] text-[var(--muted)] mt-0.5">Completed</p>
               </div>
-              <div className="grid grid-cols-3 gap-2">
-                <div className="rounded-xl bg-[var(--surface-2)] p-2.5 text-center">
-                  <p className="text-xl font-bold">{detailStudent.enrolledCount}</p>
-                  <p className="text-[10px] text-[var(--muted)] mt-0.5">Enrolled</p>
-                </div>
-                <div className="rounded-xl bg-[var(--surface-2)] p-2.5 text-center">
-                  <p className="text-xl font-bold">{detailStudent.completedCount}</p>
-                  <p className="text-[10px] text-[var(--muted)] mt-0.5">Completed</p>
-                </div>
-                <div className="rounded-xl bg-[var(--surface-2)] p-2.5 text-center">
-                  <p className="text-xl font-bold">{detailStudent.certificateCount}</p>
-                  <p className="text-[10px] text-[var(--muted)] mt-0.5">Certs</p>
-                </div>
+              <div className="rounded-xl bg-[var(--surface-2)] p-2.5 text-center">
+                <p className="text-xl font-bold">{detailStudent.certificateCount}</p>
+                <p className="text-[10px] text-[var(--muted)] mt-0.5">Certs</p>
               </div>
-              {detailStudent.enrolledCount > 0 && detailStudent.completedCount > 0 && (
-                <div className="space-y-1.5">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Completion rate</p>
-                  <div className="h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
-                    <div className="h-full bg-[var(--primary)] rounded-full" style={{ width: `${Math.round(detailStudent.completedCount / detailStudent.enrolledCount * 100)}%` }} />
-                  </div>
-                  <p className="text-xs text-right text-[var(--muted)]">{Math.round(detailStudent.completedCount / detailStudent.enrolledCount * 100)}%</p>
+            </div>
+            {detailStudent.enrolledCount > 0 && detailStudent.completedCount > 0 && (
+              <div className="space-y-1.5">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Completion rate</p>
+                <div className="h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
+                  <div className="h-full bg-[var(--primary)] rounded-full" style={{ width: `${Math.round(detailStudent.completedCount / detailStudent.enrolledCount * 100)}%` }} />
                 </div>
-              )}
-              <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
-                <Button className="w-full" onClick={() => { startEdit(detailStudent); setDetailStudent(null); }}><Icon.FilePen size={15} /> Edit student</Button>
-                <Button className="w-full" variant="outline" onClick={() => { startReset(detailStudent); setDetailStudent(null); }}><Icon.Lock size={15} /> Reset password</Button>
-                <Button className="w-full" variant="ghost" onClick={() => { setConfirmDeleteId(detailStudent.id); setDetailStudent(null); }}><Icon.Trash size={15} /> Delete student</Button>
+                <p className="text-xs text-right text-[var(--muted)]">{Math.round(detailStudent.completedCount / detailStudent.enrolledCount * 100)}%</p>
               </div>
+            )}
+            <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
+              <Button className="w-full" onClick={() => { startEdit(detailStudent); setDetailStudent(null); }}><Icon.FilePen size={15} /> Edit student</Button>
+              <Button className="w-full" variant="outline" onClick={() => { startReset(detailStudent); setDetailStudent(null); }}><Icon.Lock size={15} /> Reset password</Button>
+              <Button className="w-full text-[var(--danger)]! hover:bg-[var(--danger-soft)]!" variant="ghost" onClick={() => { setConfirmDeleteId(detailStudent.id); setDetailStudent(null); }}><Icon.Trash size={15} /> Delete student</Button>
             </div>
           </div>
-        </div>
+        </Drawer>
       )}
 
       <CreateStudentModal open={mode === "create"} onClose={() => setMode(null)} onCreated={() => { setMode(null); refresh(); }} />
@@ -375,7 +369,7 @@ function CreateStudentModal({ open, onClose, onCreated }: { open: boolean; onClo
         <div><Label htmlFor="s-email">Email</Label><Input id="s-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="student@example.com" icon={<Icon.Mail size={16} />} /></div>
         <div><Label htmlFor="s-password">Temporary password</Label><Input id="s-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" icon={<Icon.Lock size={16} />} maxLength={64} /></div>
         <div><Label htmlFor="s-phone">Phone (optional)</Label><Input id="s-phone" value={phone} onChange={(e) => setPhone(cleanPhoneInput(e.target.value))} placeholder="+92 300 1234567" inputMode="tel" error={phone ? phoneError : undefined} /></div>
-        {err && <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{err}</p>}
+        {err && <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">{err}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="outline" type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit"><Icon.Plus size={16} /> Create account</Button>
@@ -404,7 +398,7 @@ function EditStudentModal({ open, student, onClose, onSaved }: { open: boolean; 
         <div><Label htmlFor="e-name">Full name</Label><Input id="e-name" value={name} onChange={(e) => setName(e.target.value)} maxLength={60} /></div>
         <div><Label htmlFor="e-email">Email</Label><Input id="e-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} icon={<Icon.Mail size={16} />} /></div>
         <div><Label htmlFor="e-phone">Phone</Label><Input id="e-phone" value={phone} onChange={(e) => setPhone(cleanPhoneInput(e.target.value))} placeholder="+92 300 1234567" inputMode="tel" error={phone ? phoneError : undefined} /></div>
-        {err && <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{err}</p>}
+        {err && <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">{err}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="outline" type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit">Save changes</Button>
@@ -431,7 +425,7 @@ function ResetPasswordModal({ open, student, onClose, onDone }: { open: boolean;
     <Modal open={open} onClose={onClose} title={`Reset password${student ? ` — ${student.name}` : ""}`} size="sm">
       <form onSubmit={submit} className="p-5 space-y-4">
         <div><Label htmlFor="rp">New password</Label><Input id="rp" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" icon={<Icon.Lock size={16} />} /></div>
-        {err && <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{err}</p>}
+        {err && <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">{err}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="outline" type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit"><Icon.Lock size={16} /> Set password</Button>

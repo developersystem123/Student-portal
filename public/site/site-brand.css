@@ -1,0 +1,1305 @@
+/*
+ * EduPortal brand layer for the site page.
+ *
+ * Loaded after every template stylesheet. The template draws almost all of its colour from the
+ * --site-* variables, so re-pointing those does most of the work; the rules further down
+ * replace the handful of colours the template hard-codes (same selectors, loaded later → wins).
+ *
+ * Brand: Primary Green #4ADE80 → #16A34A · Charcoal #374151 · White #FFFFFF · Tagline Gray #6B7280
+ */
+
+/* (0,1,1) beats the template's `:root` declaration regardless of order. */
+html:has(.site-page) {
+  --edu-action: #15803D;
+  --edu-action-hover: #166534;
+  --edu-accent: #16A34A;
+  --edu-text-green: #15803D;
+  --edu-search-surface: #FFFFFF;
+  --edu-search-text: #374151;
+  --edu-search-muted: #4B5563;
+  --edu-search-border: #9CA3AF;
+  --site-base: var(--edu-action);
+  --site-base-rgb: 21, 128, 61;
+  /* The template's second accent sits on buttons with white text — green-700 keeps that AA. */
+  --site-primary: #15803D;
+  --site-primary-rgb: 21, 128, 61;
+  --site-black: #374151;
+  --site-black-rgb: 55, 65, 81;
+  --site-gray: #6B7280;
+  --site-gray-rgb: 107, 114, 128;
+  --site-bdr-color: #BBF7D0;
+  --site-bdr-color-rgb: 187, 247, 208;
+
+  --edu-green-light: #4ADE80;
+  --edu-green: var(--edu-action);
+  --edu-gradient: linear-gradient(135deg, #4ADE80 0%, #16A34A 100%);
+}
+
+/* On charcoal surfaces the light end of the brand gradient reads best. */
+.site-page .site-footer,
+.site-page .main-menu__top,
+.site-page .mobile-nav__content {
+  --site-primary: #4ADE80;
+  --site-primary-rgb: 74, 222, 128;
+}
+
+::selection {
+  background-color: rgba(74, 222, 128, 0.35);
+}
+
+/* ---------- Hard-coded template colours → brand ---------- */
+
+.main-menu__top {
+  background-color: var(--site-black);
+}
+
+/* The template's yellow accent → brand green. Star ratings keep their yellow. */
+.main-menu__contact-list li .icon i,
+.main-menu__contact-list li .text p a:hover {
+  color: var(--edu-green-light);
+}
+
+.category-one__left .section-title__tagline-shape {
+  background-color: #FFFFFF;
+}
+
+.about-one__live-class {
+  color: var(--edu-green);
+}
+
+.main-menu__category-sub-menu li a:hover {
+  background-color: #F0FDF4;
+}
+
+.banner-one {
+  background-color: #F0FDF4;
+}
+
+.banner-one__title-clr-2 {
+  color: var(--edu-green);
+}
+
+.banner-one__btn-box {
+  box-shadow: 0 23px 40px rgba(22, 163, 74, 0.32);
+}
+
+.banner-one__img-shape-box,
+.banner-one__img-shape-1,
+.banner-one__img-shape-2 {
+  background: rgba(22, 163, 74, 0.06);
+}
+
+.banner-one__student-trained {
+  box-shadow: 0 0 80px rgba(22, 163, 74, 0.35);
+}
+
+.sliding-text-one {
+  background-color: var(--edu-green);
+}
+
+.category-one {
+  background: linear-gradient(180deg, var(--edu-action-hover) 0%, var(--edu-action) 100%);
+}
+
+.courses-one {
+  background: linear-gradient(256.49deg, #FFFFFF 0%, #F0FDF4 100%);
+}
+
+.why-choose-one__client-box {
+  background: linear-gradient(90deg, rgba(22, 163, 74, 0) 0%, rgba(22, 163, 74, 0.91) 41.4%);
+}
+
+.newsletter-one__inner {
+  background: linear-gradient(90deg, var(--edu-action-hover) 0%, var(--edu-action) 100%);
+}
+
+.testimonial-one {
+  background-color: #F0FDF4;
+}
+
+.testimonial-one__ratting li:nth-child(4) span,
+.testimonial-one__ratting li:nth-child(5) span {
+  color: var(--site-gray);
+}
+
+.site-footer__bottom {
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ---------- EduPortal logo lockup (same as the portal navbar) ---------- */
+
+.edu-logo {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+/* The template's logo is 32px tall + 6.5px padding; keep the header at that same 45px. */
+.main-menu__logo {
+  padding: 2.5px 0;
+}
+
+.edu-logo__mark {
+  display: block;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 2px;
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.2), 0 2px 4px -2px rgba(34, 197, 94, 0.2);
+  transition: box-shadow 200ms ease-out;
+}
+
+.edu-logo:hover .edu-logo__mark {
+  box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3), 0 4px 6px -4px rgba(34, 197, 94, 0.3);
+}
+
+.edu-logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  font-family: var(--site-font);
+}
+
+.edu-logo__name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: var(--edu-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.edu-logo__tagline {
+  margin-top: 1px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: #6B7280;
+}
+
+.edu-logo--on-dark .edu-logo__tagline {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* The lockup is ~70px wider than the template's logo, and the header gains the theme switch — tighten
+   the menu spacing on narrower desktops so the header keeps to one row. */
+@media (min-width: 1200px) and (max-width: 1449px) {
+  .main-menu__left {
+    gap: 28px;
+  }
+
+  .main-menu .main-menu__list > li + li,
+  .stricky-header .main-menu__list > li + li {
+    margin-left: 24px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .main-menu__left {
+    gap: 16px;
+  }
+}
+
+/* The template hides the button boxes at 1200–1320px; Sign in / Get started must stay reachable (the
+   mobile drawer only takes over below 1200px), and without the Category box they fit. */
+@media (min-width: 1200px) and (max-width: 1320px) {
+  .main-header .main-menu__btn-boxes,
+  .stricky-header .main-menu__btn-boxes {
+    display: flex;
+  }
+}
+
+/* ---------- Header "More" menu (MainMenuList.tsx) ---------- */
+
+/* Two columns — Earn & teach | Resources — like the portal Navbar's More panel. Dropdowns stay white
+   in both themes (as in the template), so the panel uses fixed light-surface colours. */
+.main-menu .main-menu__list > li.edu-more > ul.edu-more__menu,
+.stricky-header .main-menu__list > li.edu-more > ul.edu-more__menu {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  width: 600px;
+  left: 50%;
+  margin-left: -300px;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+/* Below 1600px "More" sits too close to the right edge for a centred panel — hang it from its right. */
+@media (max-width: 1599px) {
+  .main-menu .main-menu__list > li.edu-more > ul.edu-more__menu,
+  .stricky-header .main-menu__list > li.edu-more > ul.edu-more__menu {
+    left: auto;
+    right: 0;
+    margin-left: 0;
+  }
+}
+
+.main-menu .main-menu__list > li.edu-more > ul > li,
+.stricky-header .main-menu__list > li.edu-more > ul > li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.main-menu .edu-more__group + .edu-more__group,
+.stricky-header .edu-more__group + .edu-more__group {
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid #E5E7EB;
+}
+
+.main-menu .edu-more__heading,
+.stricky-header .edu-more__heading {
+  margin: 0;
+  padding: 8px 12px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6B7280;
+}
+
+.main-menu .main-menu__list > li.edu-more > ul > li > a,
+.stricky-header .main-menu__list > li.edu-more > ul > li > a {
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  line-height: 1.3;
+  transition: background-color 150ms ease-out;
+}
+
+.main-menu .main-menu__list > li.edu-more > ul > li > a:hover,
+.main-menu .main-menu__list > li.edu-more > ul > li > a.current,
+.stricky-header .main-menu__list > li.edu-more > ul > li > a:hover,
+.stricky-header .main-menu__list > li.edu-more > ul > li > a.current {
+  background-color: #F0FDF4;
+}
+
+.edu-more__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.edu-more__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.edu-more__label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.edu-more__description {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #6B7280;
+}
+
+/* "More" is a <button> disclosure (MainMenuList.tsx), styled like the template's top-level links. */
+.main-menu .main-menu__list > li.edu-more > .edu-more__toggle,
+.stricky-header .main-menu__list > li.edu-more > .edu-more__toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--site-black);
+  cursor: pointer;
+  transition: color 150ms ease-out;
+}
+
+.main-menu .main-menu__list > li.edu-more > .edu-more__toggle::before,
+.stricky-header .main-menu__list > li.edu-more > .edu-more__toggle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  background-color: var(--site-base);
+  transform: scale(0, 1);
+  transform-origin: left center;
+  transition: transform 200ms ease-out;
+}
+
+.main-menu .main-menu__list > li.edu-more:hover > .edu-more__toggle,
+.main-menu .main-menu__list > li.edu-more.current > .edu-more__toggle,
+.main-menu .main-menu__list > li.edu-more.is-open > .edu-more__toggle,
+.stricky-header .main-menu__list > li.edu-more:hover > .edu-more__toggle,
+.stricky-header .main-menu__list > li.edu-more.current > .edu-more__toggle,
+.stricky-header .main-menu__list > li.edu-more.is-open > .edu-more__toggle {
+  color: var(--edu-text-green);
+}
+
+.main-menu .main-menu__list > li.edu-more.current > .edu-more__toggle::before,
+.stricky-header .main-menu__list > li.edu-more.current > .edu-more__toggle::before {
+  transform: scale(1, 1);
+}
+
+.edu-more__chevron {
+  display: inline-flex;
+  transition: transform 200ms ease-out;
+}
+
+.edu-more__toggle[aria-expanded="true"] .edu-more__chevron {
+  transform: rotate(180deg);
+}
+
+/* Open by click/keyboard, not only on hover; Escape dismisses a hover-opened panel until the pointer leaves. */
+.main-menu .main-menu__list > li.edu-more.is-open > ul,
+.stricky-header .main-menu__list > li.edu-more.is-open > ul {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1) translateZ(0);
+}
+
+.main-menu .main-menu__list > li.edu-more.is-dismissed:not(.is-open) > ul,
+.stricky-header .main-menu__list > li.edu-more.is-dismissed:not(.is-open) > ul {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.site-page a:focus-visible,
+.site-page button:focus-visible,
+.site-page input:focus-visible,
+.site-page select:focus-visible,
+.site-page textarea:focus-visible,
+.site-page summary:focus-visible {
+  outline: 2px solid var(--edu-green);
+  outline-offset: 4px;
+}
+
+/* Mobile menu (script.js clones the list): plain rows with group labels, no icons or blurbs. */
+.mobile-nav__content .edu-more__heading {
+  margin: 0;
+  padding: 14px 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mobile-nav__content .edu-more__icon,
+.mobile-nav__content .edu-more__description {
+  display: none;
+}
+
+.mobile-nav__content .edu-more__label {
+  font-size: 14px;
+  color: inherit;
+}
+
+.mobile-nav__content .main-menu__list > li.edu-more > .edu-more__toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--site-font, "Rubik", sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: left;
+  color: #fff;
+  cursor: pointer;
+}
+
+.mobile-nav__content .main-menu__list > li.edu-more.is-open > .edu-more__toggle,
+.mobile-nav__content .main-menu__list > li.edu-more.current > .edu-more__toggle {
+  color: var(--edu-green-light);
+}
+
+.mobile-nav__content .edu-more__chevron {
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: var(--site-base);
+  color: #fff;
+}
+
+.mobile-nav__content .edu-more__toggle[aria-expanded="true"] .edu-more__chevron {
+  background-color: #fff;
+  color: var(--site-base);
+}
+
+.mobile-nav__content .main-menu__list > li.edu-more.is-open > ul {
+  display: block;
+}
+
+.mobile-nav__content .edu-more__group > a + a {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav__content .main-menu__list > li.current > a,
+.mobile-nav__content .main-menu__list > li > ul > li > a.current {
+  color: var(--edu-green-light);
+}
+
+/* The template hides the header's auth buttons below 1200px; repeat them in the mobile menu. */
+.edu-mobile-auth {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.edu-mobile-auth .thm-btn {
+  justify-content: center;
+  padding: 10px 16px;
+  font-size: 15px;
+}
+
+.edu-mobile-auth .edu-mobile-auth__secondary {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ---------- Page wrapper ---------- */
+/* The template clips sideways overflow with overflow: hidden, which also turns the wrapper into a scroll container
+   and silently breaks every position: sticky inside it (course enroll card, legal contents). clip trims the same
+   overflow without that side effect. */
+@supports (overflow: clip) {
+  .page-wrapper { overflow: clip; }
+}
+
+/* ---------- One type family ---------- */
+
+/* The template's second family — Roboto Serif, always in italic — was doing two unrelated jobs: the
+   display accent on one word of a big section title, and the typeface for eyebrows, meta rows,
+   prices, counters, dates and button labels. The first is a deliberate accent; at 12–20px the second
+   just read as a competing typeface next to Outfit. Pointing the second family at the sans makes
+   every `var(--site-font-two)` rule in the template opt into the one type system in a single
+   declaration, and the serif is kept only for the accent word (`.section-title__title span` below).
+   The `!important` is required: the font variables are also set on `html:has(.site-page)` by the
+   layout's inline <style>, which uses the same selector, so only an important declaration wins. */
+html:has(.site-page) {
+  --site-font-two: var(--site-font) !important;
+}
+
+/* The one display accent keeps Roboto Serif (loaded by next/font under the two names below). */
+.site-page .section-title__title span {
+  font-family: "Roboto Serif", "Roboto Serif Fallback", Georgia, serif !important;
+  font-style: italic !important;
+}
+
+/* Outfit has no true italic, so the template's italic on these labels would render as a synthesised
+   oblique that reads as a second typeface. Upright sentence-case keeps the one-family look. */
+.site-page .section-title__tagline,
+.site-page .section-title-two__tagline,
+.site-page .category-two__sub-title,
+.site-page .banner-two__sub-title,
+.site-page .team-two__sub-title,
+.site-page .main-slider__sub-title,
+.site-page .about-one__icon-and-title h3,
+.site-page .about-one__live-class,
+.site-page .about-two__class-title,
+.site-page .about-two__content h3,
+.site-page .about-three__mission-vission-title,
+.site-page .about-one__awards-box p,
+.site-page .banner-one__other-btn-1,
+.site-page .banner-one__student-trained-text,
+.site-page .banner-one__student-trained-count-box-inner p,
+.site-page .banner-one__student-trained-count-box-inner span,
+.site-page .blog-one__meta li a,
+.site-page .blog-two__meta li a,
+.site-page .blog-two__meta li span,
+.site-page .blog-details__client-meta li p,
+.site-page .blog-list__client-meta li p,
+.site-page .sidebar__post-meta > li > p,
+.site-page .category-one__count-content p,
+.site-page .category-one__hover-content p,
+.site-page .category-one__social-media-list li h3,
+.site-page .courses-one__meta li p,
+.site-page .courses-one__tag span,
+.site-page .courses-three__meta li p,
+.site-page .course-list__meta li p,
+.site-page .courses-one__btn-and-doller-box > span,
+.site-page .course-details__cuppon-text,
+.site-page .faq-one-accrodion .accrodion-meta li p,
+.site-page .live-class-one__class-time-text,
+.site-page .skill-one__text,
+.site-page .team-three__text,
+.site-page .team-three__points-date span,
+.site-page .why-choose-three__ceo-text,
+.site-page .footer-widget-two__app-download-title,
+.site-page .main-slider__social a,
+.site-page .account__main-tab-box .tab-buttons .tab-btn span,
+.site-page .sliding-text-two__title,
+.site-page .testimonial-one__text,
+.site-page .testimonial-two__text {
+  font-style: normal;
+}
+
+/* The eyebrow is written in sentence case in the markup; the template re-cased it to Title Case. */
+.site-page .section-title__tagline,
+.site-page .section-title-two__tagline {
+  text-transform: none;
+}
+
+/* Counter figures set italic on top of the serif; keep them upright in the sans too. */
+.site-page .about-one__awards-count-box h3,
+.site-page .about-one__awards-count-box span,
+.site-page .about-one__experience-count h3,
+.site-page .about-one__experience-count span,
+.site-page .about-three__experience-count h3,
+.site-page .about-three__experience-count span,
+.site-page .skill-one__experience-count h3,
+.site-page .skill-one__experience-count span,
+.site-page .why-choose-one__count-box h3,
+.site-page .why-choose-one__count-box span,
+.site-page .banner-two__experience-count > h3,
+.site-page .banner-two__experience-count span,
+.site-page .banner-two__success-student-count-box p,
+.site-page .sliding-text-three__title {
+  font-style: normal !important;
+}
+
+/* pages/content.css sets the "N min read" row with a `font:` shorthand (italic + the serif) and
+   loads after this file, so the plain `.blog-two__meta li span` above ties on specificity and loses
+   the cascade. Match its own `.edu-blog-card …` selector, plus the page scope, to win. */
+.site-page .edu-blog-card .blog-two__meta li > span {
+  font-style: normal;
+}
+
+/* ---------- Type floor ---------- */
+
+/* Meta rows the template sets below 14px ("Instructor", "Published by", the sidebar post meta). The
+   rules live in the generated bundle, which must not be hand-edited, so they are raised here. The
+   .site-page scope outranks the template's single-class selectors. */
+.site-page .courses-two__client-content p,
+.site-page .blog-details__client-content p,
+.site-page .sidebar__post-meta > li > p {
+  font-size: 14px;
+}
+
+/* ---------- Buttons ---------- */
+
+/* The template parks its hover-fill circle half outside the bottom-right corner of every .thm-btn, which reads
+   as a glitch at rest. Keep it collapsed until hover, then grow it from that corner. */
+.thm-btn::before {
+  transform: scale(0);
+  transform-origin: bottom right;
+}
+
+.thm-btn:hover::before {
+  transform: scale(1);
+}
+
+/* Form submits use the same solid .thm-btn as every other primary action. */
+.thm-btn.edu-submit {
+  border: 0;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.thm-btn.edu-submit:focus-visible {
+  outline: 2px solid #16A34A;
+  outline-offset: 3px;
+}
+
+.thm-btn.edu-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+/* .thm-btn-two (pill + arrow circle): drop the faint diagonal stripe that splits the pill into two tones. */
+.thm-btn-two span::after {
+  content: none;
+}
+
+/* ---------- Inner-page banner (PageHeader.tsx) ---------- */
+
+/* Inner-page titles use green accent text rather than green text on the template's green pill. The
+   template also dresses the span as a pill — `display: inline-block`, `padding: 6px 10px`, its own
+   font-size and a radius — so once the fill is gone the padding still leaves an obvious gap around
+   the accent word ("entire team , in one place"). Drop the whole pill box and let the word sit in the
+   line: display, padding, size and leading all inherit from the heading. */
+.site-page .section-title-two__title span {
+  display: inline;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--edu-text-green);
+}
+
+.page-header {
+  background: #F0FDF4;
+}
+
+/* The template's floating banner details were a hot-pink book, a blue cap in a lilac ring and a
+   pink-to-blue squiggle, behind a pink-to-lilac ring. Same sizes and slots, redrawn in the brand
+   greens with the amber the banner illustration already uses for its medal. */
+.page-header__shape-1 { background-image: url(/site/assets/images/edu/page-header-ring.svg); }
+.page-header__shape-2 { background-image: url(/site/assets/images/edu/page-header-book.svg); }
+.page-header__shape-3 { background-image: url(/site/assets/images/edu/page-header-cap.svg); }
+.page-header__shape-4 { background-image: url(/site/assets/images/edu/page-header-squiggle.svg); }
+
+:where(.site-dark) .page-header {
+  background: #111827;
+}
+
+:where(.site-dark) .page-header .page-header__inner .page-header__title {
+  color: #F9FAFB;
+}
+
+/* The banner illustration is drawn for a white page: the cards, the laptop and the pale blob the
+   student sits on are all near-white, so on #111827 it reads as a glowing cut-out pasted on the
+   header. In dark mode the whole scene is pulled down in brightness and its outer edge is faded
+   into the banner, so the light forms become a soft grey and the art sits inside the header
+   instead of on top of it. */
+:where(.site-dark) .page-header__img-art {
+  opacity: 0.88;
+  filter: brightness(0.68) saturate(0.95);
+  -webkit-mask-image: radial-gradient(85% 85% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(85% 85% at 50% 50%, #000 62%, transparent 100%);
+}
+
+/* The pale-green ring would glow on the dark banner; dimmed, it stays a quiet ring behind the illustration. */
+:where(.site-dark) .page-header__shape-1 {
+  opacity: 0.12;
+}
+
+:where(.site-dark) .page-header__shape-2,
+:where(.site-dark) .page-header__shape-3 {
+  opacity: 0.5;
+}
+
+/* The breadcrumb links take --site-base, which is the action green meant for white text on a
+   green button. On #111827 that green is only 3.5:1, so dark mode uses the lighter green (7.9:1).
+   The current crumb is a [aria-current] span and keeps its grey. */
+:where(.site-dark) .page-header .thm-breadcrumb li a,
+:where(.site-dark) .page-header .thm-breadcrumb li > span:not([aria-current]) {
+  color: var(--edu-text-green);
+}
+
+/* The template fades the crumb to black on hover; --site-black *is* the banner colour in dark
+   mode, so the link would disappear on hover. It goes to white instead. */
+:where(.site-dark) .page-header .thm-breadcrumb li:hover a {
+  color: var(--site-white);
+}
+
+/* The template's banner title is an h2; ours is the page's h1 with the same look. */
+.page-header__inner .page-header__title {
+  margin: 0 0 4px;
+  font-family: var(--site-font);
+  font-size: 60px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--site-black);
+}
+
+.thm-breadcrumb .page-header__crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Banner art and banner title get a column each, split at the mid-line, and the title stops 40px
+   short of the art so a long course or article name wraps instead of running under the
+   illustration. The template allows itself 862px of art because its own headings are two words;
+   ours are often ten ("How AI is reshaping the way we learn", "Business Administration 101"). The
+   narrower art also fits inside the banner again, so the hoodie no longer pokes up into the
+   navigation. */
+@media (min-width: 768px) {
+  .page-header__img { width: 40%; }
+
+  .page-header__img-art {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 862 / 648;
+  }
+
+  .page-header__inner .page-header__title,
+  .page-header__inner .thm-breadcrumb__box {
+    position: relative;
+    z-index: 2;
+    max-width: calc(60% - 40px);
+  }
+}
+
+/* The illustration is anchored to the bottom of the banner, so a one-line title (a shorter banner)
+   let it ride up behind the fixed masthead, where its cards and certificate showed through the
+   navigation. A minimum height keeps the banner — and so the illustration — in the same place
+   whatever the title's length. */
+@media (min-width: 1200px) {
+  .page-header__inner { min-height: 540px; }
+}
+
+.thm-breadcrumb .page-header__crumb {
+  text-transform: none;
+}
+
+/* A long current crumb drops onto its own line instead of squeezing into a narrow column. */
+.page-header .thm-breadcrumb {
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+
+.thm-breadcrumb .page-header__crumb > span[aria-current] {
+  color: var(--site-gray);
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .page-header__inner .page-header__title {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .page-header__inner .page-header__title {
+    font-size: 32px;
+  }
+}
+
+/* ---------- Footer legal links (SiteFooter.tsx) ---------- */
+
+.site-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+}
+
+.site-footer__legal a {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 150ms ease-out;
+}
+
+.site-footer__legal a:hover {
+  color: var(--edu-green-light);
+}
+
+/* Footer: same 48px height as the template's footer logo. */
+.edu-logo--lg .edu-logo__mark {
+  width: 48px;
+  height: 48px;
+}
+
+.edu-logo--lg .edu-logo__name {
+  font-size: 26px;
+}
+
+.edu-logo--lg .edu-logo__tagline {
+  font-size: 11px;
+}
+
+/* ---------- Light / dark switch (ThemeToggle.tsx) ---------- */
+
+/* Header button: same 40px ring as the template's search and cart buttons. */
+.site-theme-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--site-base);
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--site-base);
+  font-family: var(--site-font);
+  cursor: pointer;
+  transition: background-color 200ms ease-out, color 200ms ease-out, border-color 200ms ease-out;
+}
+
+.site-theme-toggle:hover {
+  background-color: var(--site-base);
+  color: #FFFFFF;
+}
+
+.site-theme-toggle:focus-visible {
+  outline: 2px solid var(--edu-green-light);
+  outline-offset: 2px;
+}
+
+.site-theme-toggle svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The icon shows what you switch to: a moon in light mode, a sun in dark mode. */
+.site-theme-toggle__sun {
+  display: none;
+}
+
+/* Mobile menu: a full-width labelled row with an on/off switch. */
+.site-theme-toggle--row {
+  width: 100%;
+  height: auto;
+  /* Same 20px the template leaves between the contact list and the social icons. */
+  margin: 24px 0 20px;
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  justify-content: flex-start;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.site-theme-toggle--row:hover {
+  background-color: transparent;
+  color: var(--edu-green-light);
+}
+
+.site-theme-toggle--row svg {
+  color: var(--edu-green-light);
+}
+
+.site-theme-toggle__track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  margin-left: auto;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 200ms ease-out;
+}
+
+.site-theme-toggle__track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  transition: transform 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edu-logo__mark,
+  .site-theme-toggle,
+  .site-theme-toggle__track,
+  .site-theme-toggle__track::after {
+    transition: none;
+  }
+}
+
+/* The cursor rings only belong with body.custom-cursor, which SiteScripts skips on touch screens and for reduced motion. */
+body:not(.custom-cursor) .custom-cursor__cursor,
+body:not(.custom-cursor) .custom-cursor__cursor-two { display: none; }
+
+/* EduPortal illustrations are exported at 2x; pin the template slots that size images by their natural width. */
+.page-header__img > img { width: 370px; max-width: 100%; height: auto; }
+.why-choose-one__img-2 > img { width: 291px; max-width: 100%; height: auto; }
+.newsletter-one__img > img { width: 268px; max-width: 100%; height: auto; }
+.about-three__img-two > img { width: 370px; max-width: 100%; height: auto; }
+
+/* ---------- Site footer polish (Fix G6) ---------- */
+.site-footer__logo-and-contact-box-inner {
+  padding: 24px 0 20px;
+}
+.site-footer__text {
+  max-width: 540px;
+  margin-top: 14px;
+}
+.site-footer__top {
+  padding: 48px 0 70px;
+}
+.site-footer__app-and-social-box {
+  margin-top: 32px;
+}
+
+/* ---------- Footer newsletter form (NewsletterForm.tsx, Fix F6) ---------- */
+/* The footer is always charcoal, so validation messages use light-on-dark tones rather than the
+   light-surface .edu-field-error / .edu-form-result colours. */
+.site-footer__newsletter-msg {
+  margin: 12px 4px 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.site-footer__newsletter-msg:empty {
+  display: none;
+}
+.site-footer__newsletter-msg.edu-newsletter-error { color: #FCA5A5; }
+.site-footer__newsletter-msg.edu-newsletter-success { color: #4ADE80; }
+
+.site-footer__newsletter-input input[aria-invalid="true"] {
+  border-color: #F87171;
+}
+.site-footer__newsletter-input input:focus-visible {
+  border-color: #4ADE80;
+  outline-color: #4ADE80;
+}
+.site-footer__newsletter-form .thm-btn:disabled {
+  opacity: .7;
+  cursor: wait;
+}
+
+/* Course search uses a native modal, independent of template plugin timing. */
+.edu-search-trigger { background: transparent; padding: 0; cursor: pointer; }
+.edu-search-dialog {
+  position: fixed; inset: 96px 16px auto; margin: 0 auto;
+  width: min(640px, calc(100% - 32px)); max-height: calc(100dvh - 128px);
+  overflow: auto; padding: 32px; border: 1px solid var(--edu-search-border);
+  border-radius: 16px; background: var(--edu-search-surface); color: var(--edu-search-text);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .24);
+}
+.edu-search-dialog::backdrop { background: rgba(17, 24, 39, .65); }
+.edu-search-dialog__header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.edu-search-dialog h2 { margin: 0; font-size: 28px; line-height: 1.2; letter-spacing: -.02em; color: var(--edu-search-text); }
+.edu-search-dialog p { margin: 12px 0 24px; color: var(--edu-search-muted); font-size: 16px; line-height: 1.5; }
+.edu-search-dialog__close { display: grid; place-items: center; flex: 0 0 40px; height: 40px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--edu-search-muted); }
+.edu-search-dialog__close:hover { background: rgba(128, 128, 128, .12); color: var(--edu-search-text); }
+.edu-search-dialog label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
+.edu-search-dialog__field { display: flex; gap: 12px; }
+.edu-search-dialog input { min-width: 0; width: 100%; height: 48px; padding: 12px 16px; border: 1px solid var(--edu-search-border); border-radius: 8px; background: var(--edu-search-surface); color: var(--edu-search-text); font: inherit; }
+.edu-search-dialog input::placeholder { color: var(--edu-search-muted); opacity: 1; }
+.edu-search-dialog__submit { flex-shrink: 0; padding: 12px 24px; border: 0; border-radius: 8px; background: var(--edu-action); color: #fff; font-weight: 600; transition: background-color 160ms ease-out; }
+.edu-search-dialog__submit:hover { background: var(--edu-action-hover); }
+.edu-search-dialog__submit:active { transform: translateY(1px); }
+.edu-search-trigger:focus-visible, .edu-search-dialog :is(input, button):focus-visible { outline: 2px solid var(--edu-text-green); outline-offset: 3px; }
+@media (max-width: 767px) {
+  .edu-search-dialog { top: 24px; max-height: calc(100dvh - 48px); padding: 24px; }
+  .edu-search-dialog h2 { font-size: 24px; }
+  .edu-search-dialog__field { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { .edu-search-dialog__submit { transition: none; } }
+
+/* ---------- Mobile menu controls (MainHeader.tsx, MobileNav.tsx) ---------- */
+
+/* The hamburger and the drawer's close control are <button>s; strip the UA chrome and give both a
+   40px tap target without moving their icons. */
+.main-menu .mobile-nav__toggler {
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+}
+
+.mobile-nav__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 10px;
+  right: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  transition: color 150ms ease-out;
+}
+
+.mobile-nav__close:hover {
+  color: var(--edu-green-light);
+}
+
+/* The brand-green ring disappears on the charcoal drawer. */
+.site-page .mobile-nav__content :focus-visible {
+  outline-color: #4ADE80;
+  outline-offset: 2px;
+}
+
+/* Compact header: logo · Sign in · search · menu. Sign in stays one tap away; the theme switch
+   lives in the drawer. */
+@media (max-width: 767px) {
+  .main-menu .main-menu__wrapper-inner { flex-wrap: nowrap; gap: 8px; }
+  .main-menu .main-menu__left { min-width: 0; }
+  .main-menu .main-menu__right { display: flex; order: 2; flex-wrap: nowrap; gap: 8px; margin-left: auto; }
+  .main-menu .main-menu__main-menu-box { order: 3; }
+  .main-menu .main-menu__search-cart-box .site-theme-toggle { display: none; }
+  .main-menu .main-menu__btn-boxes { display: flex; flex-wrap: nowrap; }
+  .main-menu .main-menu__btn-box-1 + .main-menu__btn-box-2 { display: none; }
+  .main-menu .main-menu__btn-boxes .thm-btn {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 389px) {
+  .main-menu .edu-logo__tagline { display: none; }
+}
+
+/* ---------- Loading + error states (app/site/loading.tsx, app/site/error.tsx) ---------- */
+
+.edu-site-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 62vh;
+}
+
+.edu-site-loading__spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--site-bdr-color);
+  border-top-color: var(--edu-action);
+  animation: edu-site-spin 0.8s linear infinite;
+}
+
+@keyframes edu-site-spin {
+  to { transform: rotate(360deg); }
+}
+
+.edu-site-error {
+  background: #F0FDF4;
+  padding: 120px 0 128px;
+}
+
+:where(.site-dark) .edu-site-error { background: #111827; }
+
+.edu-site-error__inner { max-width: 640px; }
+
+.edu-site-error__eyebrow {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--edu-text-green);
+}
+
+.edu-site-error__title {
+  margin: 0 0 16px;
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--site-black);
+}
+
+:where(.site-dark) .edu-site-error__title { color: #F9FAFB; }
+
+.edu-site-error__text {
+  margin: 0 0 32px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--site-gray);
+}
+
+.edu-site-error__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.edu-site-error__secondary {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--edu-text-green);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.edu-site-error__ref {
+  margin: 24px 0 0;
+  font-size: 13px;
+  color: var(--site-gray);
+}
+
+@media (max-width: 767px) {
+  .edu-site-error { padding: 72px 0 80px; }
+  .edu-site-error__title { font-size: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edu-site-loading__spinner { animation-duration: 2.4s; }
+}
+
+/* ---------- Degraded-data notice (app/site/layout.tsx) ---------- */
+/* Shown across the site when the course catalogue came from the built-in fallback rather than the
+   database, so visitors know the listings may be stale instead of trusting fake data. */
+.edu-data-notice {
+  padding: 10px 0;
+  border-bottom: 1px solid #FDE68A;
+  background: #FFFBEB;
+  color: #92400E;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.edu-data-notice p { margin: 0; }
+
+:where(.site-dark) .edu-data-notice {
+  border-bottom-color: #78350F;
+  background: #422006;
+  color: #FDE68A;
+}
+
+/* ---------- Skip link (app/site/layout.tsx) ---------- */
+/* First focusable element on every page, for keyboard and screen-reader users to jump straight to
+   the content. Visually hidden until it receives focus. */
+.edu-skip-link {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1000000;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #15803D;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  transform: translateY(-200%);
+  transition: transform 150ms ease-out;
+}
+
+.edu-skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #15803D;
+  outline-offset: 2px;
+}
+
+:where(.site-dark) .edu-skip-link {
+  background: #1F2937;
+  color: #4ADE80;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* The template's nice-select control is a <div> with tabindex, not a real <select> — give it (and
+   any other focusable container) the same visible focus ring as native controls. */
+.site-page .nice-select:focus-visible,
+.site-page [tabindex]:focus-visible {
+  outline: 2px solid var(--edu-green);
+  outline-offset: 4px;
+}
+
+/* Honour users who ask for less motion: collapse every template animation/transition to an instant
+   change instead of leaving the hundreds of decorative animations running. */
+@media (prefers-reduced-motion: reduce) {
+  .site-page *,
+  .site-page *::before,
+  .site-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Home page: legibility and carousel chrome ---------- */
+
+/* The eyebrow dot is nudged 6px to the right by the template, so it lands on the first letter
+   ("●About Us"). Give it a real gap instead of an overlap. */
+.site-page .section-title__tagline-shape {
+  right: 0;
+  margin-right: 8px;
+}
+
+/* Every carousel arrow wears its hover fill at rest: a `::before` quarter-circle pushed outside the
+   50px round button and clipped by its own `overflow: hidden`. It reads as a rendering glitch.
+   Keep it for the hover state, where it belongs. */
+.site-page .owl-carousel .owl-nav button.owl-prev::before,
+.site-page .owl-carousel .owl-nav button.owl-next::before {
+  display: none;
+}
+
+/* Stat band: the template draws the figures as transparent text with a 1px white outline, which is
+   barely legible over the patterned green artwork. Solid white reads at a glance; the hover state
+   inverts to the charcoal the rest of the page uses. */
+.site-page .counter-one__count h3,
+.site-page .counter-one__count span {
+  color: var(--site-white);
+  -webkit-text-stroke: 0;
+}
+
+.site-page .counter-one__list li:hover .counter-one__count h3,
+.site-page .counter-one__list li:hover .counter-one__count span {
+  color: var(--site-black);
+  -webkit-text-stroke: 0;
+}
+
+/* The newsletter headline carries the same 2px outline treatment; solid white. */
+.site-page .newsletter-one__title {
+  color: var(--site-white);
+  -webkit-text-stroke: 0;
+}
+
+/* This marquee is pulled up over the dark lesson card by the template's -85px margin, which left
+   green-outlined text on a green fill — effectively invisible. Let it run on the page background
+   and keep the outline, which is how the rest of the template draws it. */
+.site-page .sliding-text-two {
+  margin-top: 0;
+  padding-bottom: 90px;
+}
+
+.site-page .sliding-text-two__title {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--edu-text-green);
+}
+
+/* The index figures (01–06) were italic serif; with the serif gone the italic is a synthetic slant
+   the browser fakes, so set them upright like every other number on the site. */
+.site-page .category-one__count::before {
+  font-style: normal;
+}
+
+/* ---------- Rating stars (components/site/StarRating.tsx) ---------- */
+/* The template hard-codes a three-of-five row (`…ratting li:nth-child(4) span { color: gray }`), so
+   every course showed the same picture no matter its score. Each star here is a grey base with a
+   gold copy clipped to the real fraction; these selectors outrank the nth-child rules. */
+.site-page .edu-star-row li > span.edu-star__base {
+  position: relative;
+  display: block;
+  color: #D6DBE1;
+}
+
+.site-page .edu-star-row li > span.edu-star__base > span.edu-star__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #FFC224;
+}
+
+:where(.site-dark) .edu-star-row li > span.edu-star__base { color: #4B5563; }
+:where(.site-dark) .sliding-text-two__title { -webkit-text-stroke-color: #4ADE80; }

@@ -13,6 +13,7 @@ import {
   Modal,
   Textarea,
   useToast,
+  Drawer,
 } from "@/components/ui";
 import { useAdmin, type TeacherSummary } from "@/lib/store";
 import { cleanPhoneInput, validateEmail, validateName, validatePassword, validatePhone } from "@/lib/validation";
@@ -111,9 +112,9 @@ export default function AdminTeachersPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Total teachers", value: stats.total, icon: <Icon.Sparkles size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
-          { label: "Active (with courses)", value: stats.withCourses, icon: <Icon.CheckCircle size={16} />, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
-          { label: "Courses taught", value: stats.totalCourses, icon: <Icon.Book size={16} />, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
-          { label: "Students reached", value: stats.totalStudents, icon: <Icon.Users size={16} />, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+          { label: "Active (with courses)", value: stats.withCourses, icon: <Icon.CheckCircle size={16} />, tint: "bg-[var(--primary-soft)] text-[var(--primary)]" },
+          { label: "Courses taught", value: stats.totalCourses, icon: <Icon.Book size={16} />, tint: "bg-[var(--info-soft)] text-[var(--info)]" },
+          { label: "Students reached", value: stats.totalStudents, icon: <Icon.Users size={16} />, tint: "bg-[var(--amber-soft)] text-[var(--amber)]" },
         ].map((s) => (
           <Card key={s.label}>
             <CardBody className="flex items-center gap-3 !py-3">
@@ -142,13 +143,13 @@ export default function AdminTeachersPage() {
             <div className="flex items-center gap-2 flex-wrap">
               {/* Course filter pills */}
               {(["all", "has-courses", "no-courses"] as CourseFilter[]).map((f) => (
-                <button key={f} onClick={() => setCourseFilter(f)} className={`px-3 h-8 rounded-lg text-xs font-medium transition ${courseFilter === f ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
+                <button key={f} onClick={() => setCourseFilter(f)} className={`px-3 h-8 rounded-lg text-xs font-medium transition ${courseFilter === f ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
                   {f === "all" ? "All teachers" : f === "has-courses" ? "Has courses" : "No courses"}
                 </button>
               ))}
               <span className="text-xs text-[var(--muted)] shrink-0 ml-2">Sort:</span>
               {(["name", "courses", "students"] as SortKey[]).map((k) => (
-                <button key={k} onClick={() => setSortKey(k)} className={`px-3 h-8 rounded-lg text-xs font-medium capitalize transition ${sortKey === k ? "bg-[var(--primary)] text-white" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{k}</button>
+                <button key={k} onClick={() => setSortKey(k)} className={`px-3 h-8 rounded-lg text-xs font-medium capitalize transition ${sortKey === k ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)]"}`}>{k}</button>
               ))}
             </div>
           </div>
@@ -195,7 +196,7 @@ export default function AdminTeachersPage() {
                       </td>
                       <td className="py-3 px-3">
                         <div className="flex items-center gap-3">
-                          <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-semibold inline-flex items-center justify-center text-sm shrink-0">{t.name.slice(0, 1).toUpperCase()}</div>
+                          <div className="h-9 w-9 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold inline-flex items-center justify-center text-sm shrink-0">{t.name.slice(0, 1).toUpperCase()}</div>
                           <div className="min-w-0"><p className="font-medium truncate">{t.name}</p><p className="text-xs text-[var(--muted)] truncate">{t.email}</p></div>
                         </div>
                       </td>
@@ -209,7 +210,7 @@ export default function AdminTeachersPage() {
                         <div className="inline-flex gap-1">
                           <button onClick={() => startEdit(t)} title="Edit" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)] transition"><Icon.FilePen size={14} /></button>
                           <button onClick={() => startReset(t)} title="Reset password" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-[var(--surface-2)] text-[var(--muted)] hover:text-[var(--foreground)] transition"><Icon.Lock size={14} /></button>
-                          <button onClick={() => setConfirmDeleteId(t.id)} title="Delete" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-red-500/10 text-[var(--muted)] hover:text-[var(--danger)] transition"><Icon.Trash size={14} /></button>
+                          <button onClick={() => setConfirmDeleteId(t.id)} title="Delete" className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-[var(--danger-soft)] text-[var(--muted)] hover:text-[var(--danger)] transition"><Icon.Trash size={14} /></button>
                         </div>
                       </td>
                     </tr>
@@ -224,7 +225,7 @@ export default function AdminTeachersPage() {
                 <p className="text-sm text-[var(--muted)]">Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, teachers.length)} of {teachers.length}</p>
                 <div className="flex items-center gap-1">
                   <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}><Icon.ChevronLeft size={16} /></Button>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1).reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, []).map((p, idx) => p === "…" ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span> : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-white" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>)}
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1).reduce<(number | "…")[]>((acc, p, idx, arr) => { if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("…"); acc.push(p); return acc; }, []).map((p, idx) => p === "…" ? <span key={`e-${idx}`} className="px-2 text-[var(--muted)] text-sm">…</span> : <button key={p} onClick={() => setPage(p as number)} className={`h-8 min-w-[32px] px-2 rounded-lg text-sm font-medium transition-all ${safePage === p ? "bg-[var(--primary)] text-[var(--primary-foreground)]" : "border border-[var(--border)] hover:bg-[var(--surface-2)]"}`}>{p}</button>)}
                   <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={safePage === totalPages}><Icon.ChevronRight size={16} /></Button>
                 </div>
               </div>
@@ -239,46 +240,39 @@ export default function AdminTeachersPage() {
 
       {/* Detail drawer */}
       {detailTeacher && (
-        <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setDetailTeacher(null)}>
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
-          <div className="relative w-full max-w-sm bg-[var(--surface)] h-full shadow-2xl flex flex-col overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] shrink-0">
-              <p className="font-semibold">Teacher details</p>
-              <button onClick={() => setDetailTeacher(null)} className="h-8 w-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface-2)] transition"><Icon.X size={16} /></button>
+        <Drawer open onClose={() => setDetailTeacher(null)} title="Teacher details">
+          <div className="p-5 space-y-4 flex-1">
+            <div className="flex items-center gap-4">
+              <div className="h-16 w-16 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-xl flex items-center justify-center shrink-0">{detailTeacher.name.slice(0, 1).toUpperCase()}</div>
+              <div>
+                <p className="text-lg font-bold">{detailTeacher.name}</p>
+                <p className="text-sm text-[var(--muted)]">{detailTeacher.email}</p>
+                {detailTeacher.phone && <p className="text-sm text-[var(--muted)]">{detailTeacher.phone}</p>}
+              </div>
             </div>
-            <div className="p-5 space-y-4 flex-1">
-              <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] text-white font-bold text-xl flex items-center justify-center shrink-0">{detailTeacher.name.slice(0, 1).toUpperCase()}</div>
-                <div>
-                  <p className="text-lg font-bold">{detailTeacher.name}</p>
-                  <p className="text-sm text-[var(--muted)]">{detailTeacher.email}</p>
-                  {detailTeacher.phone && <p className="text-sm text-[var(--muted)]">{detailTeacher.phone}</p>}
-                </div>
+            {detailTeacher.bio && (
+              <div className="rounded-xl bg-[var(--surface-2)] p-3 text-sm text-[var(--muted)] leading-relaxed">{detailTeacher.bio}</div>
+            )}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
+                <p className="text-2xl font-bold">{detailTeacher.courseCount}</p>
+                <p className="text-xs text-[var(--muted)] mt-0.5">Courses</p>
               </div>
-              {detailTeacher.bio && (
-                <div className="rounded-xl bg-[var(--surface-2)] p-3 text-sm text-[var(--muted)] leading-relaxed">{detailTeacher.bio}</div>
-              )}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
-                  <p className="text-2xl font-bold">{detailTeacher.courseCount}</p>
-                  <p className="text-xs text-[var(--muted)] mt-0.5">Courses</p>
-                </div>
-                <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
-                  <p className="text-2xl font-bold">{detailTeacher.studentCount}</p>
-                  <p className="text-xs text-[var(--muted)] mt-0.5">Students</p>
-                </div>
+              <div className="rounded-xl bg-[var(--surface-2)] p-3 text-center">
+                <p className="text-2xl font-bold">{detailTeacher.studentCount}</p>
+                <p className="text-xs text-[var(--muted)] mt-0.5">Students</p>
               </div>
-              {detailTeacher.createdAt && (
-                <p className="text-xs text-[var(--muted)]">Joined: {new Date(detailTeacher.createdAt).toLocaleDateString()}</p>
-              )}
-              <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
-                <Button className="w-full" onClick={() => { startEdit(detailTeacher); setDetailTeacher(null); }}><Icon.FilePen size={15} /> Edit teacher</Button>
-                <Button className="w-full" variant="outline" onClick={() => { startReset(detailTeacher); setDetailTeacher(null); }}><Icon.Lock size={15} /> Reset password</Button>
-                <Button className="w-full" variant="ghost" onClick={() => { setConfirmDeleteId(detailTeacher.id); setDetailTeacher(null); }}><Icon.Trash size={15} /> Remove teacher</Button>
-              </div>
+            </div>
+            {detailTeacher.createdAt && (
+              <p className="text-xs text-[var(--muted)]">Joined: {new Date(detailTeacher.createdAt).toLocaleDateString()}</p>
+            )}
+            <div className="flex flex-col gap-2 pt-2 border-t border-[var(--border)]">
+              <Button className="w-full" onClick={() => { startEdit(detailTeacher); setDetailTeacher(null); }}><Icon.FilePen size={15} /> Edit teacher</Button>
+              <Button className="w-full" variant="outline" onClick={() => { startReset(detailTeacher); setDetailTeacher(null); }}><Icon.Lock size={15} /> Reset password</Button>
+              <Button className="w-full text-[var(--danger)]! hover:bg-[var(--danger-soft)]!" variant="ghost" onClick={() => { setConfirmDeleteId(detailTeacher.id); setDetailTeacher(null); }}><Icon.Trash size={15} /> Remove teacher</Button>
             </div>
           </div>
-        </div>
+        </Drawer>
       )}
 
       <TeacherFormModal open={mode === "create" || mode === "edit"} mode={mode === "edit" ? "edit" : "create"} teacher={mode === "edit" ? editing : null} onClose={() => setMode(null)} onSaved={() => { setMode(null); refresh(); }} />
@@ -336,7 +330,7 @@ function TeacherFormModal({ open, mode, teacher, onClose, onSaved }: { open: boo
         {mode === "create" && <div><Label htmlFor="t-password">Temporary password</Label><Input id="t-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" icon={<Icon.Lock size={16} />} maxLength={64} /></div>}
         <div><Label htmlFor="t-phone">Phone (optional)</Label><Input id="t-phone" value={phone} onChange={(e) => setPhone(cleanPhoneInput(e.target.value))} placeholder="+92 300 1234567" inputMode="tel" error={phone ? phoneError : undefined} /></div>
         <div><Label htmlFor="t-bio">Short bio (optional)</Label><Textarea id="t-bio" value={bio} onChange={(e) => setBio(e.target.value)} placeholder="What they teach, expertise, etc." rows={3} /></div>
-        {err && <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{err}</p>}
+        {err && <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">{err}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="outline" type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit">{mode === "edit" ? "Save changes" : <><Icon.Plus size={16} /> Create teacher</>}</Button>
@@ -363,7 +357,7 @@ function ResetPasswordModal({ open, teacher, onClose, onDone }: { open: boolean;
     <Modal open={open} onClose={onClose} title={`Reset password${teacher ? ` — ${teacher.name}` : ""}`} size="sm">
       <form onSubmit={submit} className="p-5 space-y-4">
         <div><Label htmlFor="trp">New password</Label><Input id="trp" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" icon={<Icon.Lock size={16} />} /></div>
-        {err && <p className="text-sm text-[var(--danger)] bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{err}</p>}
+        {err && <p className="text-sm text-[var(--danger)] bg-[var(--danger-soft)] border border-[var(--danger)]/20 px-3 py-2 rounded-lg">{err}</p>}
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="outline" type="button" onClick={onClose}>Cancel</Button>
           <Button type="submit"><Icon.Lock size={16} /> Set password</Button>
